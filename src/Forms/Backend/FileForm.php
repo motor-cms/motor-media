@@ -9,7 +9,7 @@ class FileForm extends Form
 {
     public function buildForm()
     {
-        $clients = config('motor-backend.models.client')::lists('name', 'id')->toArray();
+        $clients = config('motor-backend.models.client')::pluck('name', 'id')->toArray();
         $this
             ->add('categories', 'hidden')
             ->add('client_id', 'select', ['label' => trans('motor-backend::backend/clients.client'), 'choices' => $clients, 'empty_value' => trans('motor-backend::backend/global.please_choose')])

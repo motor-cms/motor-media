@@ -12,6 +12,7 @@ use Culpa\Traits\DeletedBy;
 use Culpa\Traits\UpdatedBy;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\HasMedia\Interfaces\HasMediaConversions;
+use Spatie\MediaLibrary\Media;
 
 class File extends Model implements HasMediaConversions
 {
@@ -21,9 +22,10 @@ class File extends Model implements HasMediaConversions
     use Blameable, CreatedBy, UpdatedBy, DeletedBy;
     use HasMediaTrait;
 
-    public function registerMediaConversions()
+    public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')->setManipulations([ 'w' => 400, 'h' => 400 ]);
+        $this->addMediaConversion('preview')->setManipulations([ 'w' => 400, 'h' => 400 ]);
     }
 
     /**
