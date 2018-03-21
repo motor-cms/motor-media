@@ -13,11 +13,11 @@ class FileAssociation extends Model
      * @var array
      */
     protected $fillable = [
-        'client_id',
-        'description',
-        'author',
-        'source',
-        'is_global',
+        'file_id',
+        'model_id',
+        'model_type',
+        'identifier',
+        'custom_properties',
         'alt_text',
     ];
 
@@ -28,7 +28,7 @@ class FileAssociation extends Model
     }
 
 
-    public function record()
+    public function model()
     {
         return $this->morphTo();
     }
