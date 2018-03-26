@@ -35,7 +35,7 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->mergeConfigFrom(__DIR__ . '/../../config/laravel-menu/settings.php', 'laravel-menu.settings');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/motor-media.php', 'motor-media');
     }
 
 
@@ -102,7 +102,7 @@ class MotorServiceProvider extends ServiceProvider
 
     public function routeModelBindings()
     {
-        Route::bind('file', function($id){
+        Route::bind('file', function ($id) {
             return \Motor\Media\Models\File::findOrFail($id);
         });
     }

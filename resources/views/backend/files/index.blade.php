@@ -7,7 +7,7 @@
 @section('contentheader_title')
     {{ trans('motor-media::backend/files.files') }}
     @if (has_permission('files.write'))
-	    {!! link_to_route('backend.files.create', trans('motor-media::backend/files.new'), [], ['class' => 'pull-right btn btn-sm btn-success']) !!}
+	    {!! link_to_route('backend.files.create', trans('motor-media::backend/files.new'), [], ['class' => 'float-right btn btn-sm btn-success']) !!}
     @endif
 @endsection
 

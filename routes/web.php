@@ -9,5 +9,7 @@ Route::group([
         'navigation'
     ]
 ], function () {
-    Route::resource('files', 'FilesController');
+    if (config('motor-media.routes.files')) {
+        Route::resource('files', 'FilesController');
+    }
 });
