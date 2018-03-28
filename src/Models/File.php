@@ -22,11 +22,13 @@ class File extends Model implements HasMediaConversions
     use Blameable, CreatedBy, UpdatedBy, DeletedBy;
     use HasMediaTrait;
 
+
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')->width(400)->height(400)->extractVideoFrameAtSecond(10);
         $this->addMediaConversion('preview')->width(400)->height(400)->format('png')->extractVideoFrameAtSecond(10);
     }
+
 
     /**
      * Columns for the Blameable trait
@@ -55,6 +57,7 @@ class File extends Model implements HasMediaConversions
         'is_global',
         'alt_text',
     ];
+
 
     public function categories()
     {
