@@ -24,8 +24,8 @@ class File extends Model implements HasMediaConversions
 
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')->width(400)->height(400)->extractVideoFrameAtSecond(10);
-        $this->addMediaConversion('preview')->width(400)->height(400)->format('png')->extractVideoFrameAtSecond(10);
+        $this->addMediaConversion('thumb')->width(400)->height(400)->extractVideoFrameAtSecond(10)->nonQueued();
+        $this->addMediaConversion('preview')->width(400)->height(400)->format('png')->extractVideoFrameAtSecond(10)->nonQueued();
     }
 
     /**

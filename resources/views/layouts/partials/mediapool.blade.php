@@ -26,6 +26,9 @@
             </option>
         </select>
     </div>
+    <button type="button" class="btn btn-sm btn-primary float-right" @click="next" v-if="pagination && pagination.total_pages > 1 && pagination.current_page < pagination.total_pages"> >> </button>
+    <button type="button" class="btn btn-sm btn-primary float-left" @click="previous" v-if="pagination && pagination.total_pages > 1 && (pagination.current_page >= pagination.total_pages || (pagination.current_page > 1 && pagination.current_page < pagination.total_pages))"> << </button>
+    <div class="clearfix mb-2"></div>
     <draggable v-model="files" :options="{group:{ name:'files',  pull:'clone', put:false }, sort: false, dragClass: 'sortable-drag', ghostClass: 'sortable-ghost'}" @start="onStart" @end="onEnd">
         <div v-for="file in files">
             <div class="card">
@@ -60,6 +63,7 @@
                 files: [],
                 categories: [],
                 category_id: '',
+                pagination: false,
             },
             components: {
                 draggable,
@@ -72,8 +76,22 @@
                     this.$emit('mediapool:drag:end', true);
                 },
                 refreshFiles: function() {
-                    axios.get('{{route('ajax.files.index')}}?category_id='+this.category_id).then(function(response) {
+                    axios.get('{{route('ajax.files.index')}}?sortable_field=created_at&sortable_direction=DESC&category_id='+this.category_id).then(function(response) {
                         vueMediapool.files = response.data.data;
+                        vueMediapool.pagination = response.data.meta.pagination;
+                    });
+                },
+                next: function() {
+                    console.log("PAGINATE");
+                    axios.get('{{route('ajax.files.index')}}?sortable_field=created_at&sortable_direction=DESC&category_id='+this.category_id+'&page='+(vueMediapool.pagination.current_page+1)).then(function(response) {
+                        vueMediapool.files = response.data.data;
+                        vueMediapool.pagination = response.data.meta.pagination;
+                    });
+                },
+                previous: function() {
+                    axios.get('{{route('ajax.files.index')}}?sortable_field=created_at&sortable_direction=DESC&category_id='+this.category_id+'&page='+(vueMediapool.pagination.current_page-1)).then(function(response) {
+                        vueMediapool.files = response.data.data;
+                        vueMediapool.pagination = response.data.meta.pagination;
                     });
                 },
                 isImage: function(file) {
@@ -87,10 +105,12 @@
 
                 axios.get('{{route('ajax.categories.index')}}?scope=media').then(function(response) {
                     vueMediapool.categories = response.data.data;
+
                     // vueMediapool.$emit('test', {data: 'lol'});
                 });
-                axios.get('{{route('ajax.files.index')}}').then(function(response) {
+                axios.get('{{route('ajax.files.index')}}?sortable_field=created_at&sortable_direction=DESC').then(function(response) {
                     vueMediapool.files = response.data.data;
+                    vueMediapool.pagination = response.data.meta.pagination;
                     // vueMediapool.$emit('test', {data: 'lol'});
                 });
             }
