@@ -12,12 +12,16 @@
     }
   ],
   "require": {},
-  "require-dev": {
-    "phpunit/phpunit": "4.0.*"
-  },
   "autoload": {
     "psr-4": {
       "Motor\\Media\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Motor\\Media\\Providers\\MotorServiceProvider"
+      ]
     }
   },
   "minimum-stability": "dev"
