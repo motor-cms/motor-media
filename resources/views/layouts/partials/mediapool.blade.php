@@ -3,7 +3,7 @@
     {{trans('motor-media::backend/mediapool.mediapool')}}
 </div>
 @endif
-<motor-cms-mediapool></motor-cms-mediapool>
+<motor-media-mediapool></motor-media-mediapool>
 @section('view_scripts')
     <script>
         $(function () {

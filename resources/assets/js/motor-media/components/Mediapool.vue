@@ -68,7 +68,7 @@
 
 
     export default {
-        name: 'motor-cms-mediapool',
+        name: 'motor-media-mediapool',
         data: function () {
             return {
                 files: [],
