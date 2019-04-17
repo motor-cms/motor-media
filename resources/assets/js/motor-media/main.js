@@ -1,4 +1,4 @@
 Vue.component(
     'motor-media-mediapool',
-    require('./components/Mediapool.vue')
+    require('./components/Mediapool.vue').default
 );
