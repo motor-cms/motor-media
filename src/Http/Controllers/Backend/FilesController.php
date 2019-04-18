@@ -51,7 +51,7 @@ class FilesController extends Controller
         $newItem = false;
         $selectedItem = null;
 
-        return view('motor-media::backend.files.create', compact('form', 'trees', 'newItem', 'selectedItem', 'root'));
+        return view('motor-media::backend.files.create', compact('form', 'trees', 'newItem', 'selectedItem'));
     }
 
 
@@ -112,7 +112,7 @@ class FilesController extends Controller
         $newItem = false;
         $selectedItem = null;
 
-        return view('motor-media::backend.files.edit', compact('form', 'trees', 'newItem', 'selectedItem', 'root', 'record'));
+        return view('motor-media::backend.files.edit', compact('form', 'trees', 'newItem', 'selectedItem', 'record'));
     }
 
 
