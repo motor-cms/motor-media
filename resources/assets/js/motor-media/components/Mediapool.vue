@@ -1,5 +1,5 @@
 <template>
-    <div id="mediapool" class="container" style="overflow:scroll; position: absolute; top: 50px; bottom: 0;">
+    <div id="mediapool" class="container" :class="[componentModal ? 'component-modal' : '']">
         <div class="form-group">
             <label class="control-label">
                 {{ $t('motor-backend.backend.categories.category') }}
@@ -69,6 +69,7 @@
 
     export default {
         name: 'motor-media-mediapool',
+        props: ['componentModal'],
         data: function () {
             return {
                 files: [],
@@ -130,4 +131,17 @@
 
 
 <style lang="scss">
+    #mediapool.component-modal,
+    #mediapool {
+        overflow: scroll;
+        position: absolute;
+        width: 100%;
+        top: 50px;
+        bottom: 0;
+        right: 0;
+        left: 0;
+    }
+    #mediapool.component-modal {
+        top: 0;
+    }
 </style>
