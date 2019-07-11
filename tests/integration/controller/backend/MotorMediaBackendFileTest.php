@@ -5,6 +5,9 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Motor\Media\Models\File;
 
+/**
+ * Class MotorMediaBackendFileTest
+ */
 class MotorMediaBackendFileTest extends TestCase
 {
 

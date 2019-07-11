@@ -3,14 +3,18 @@
 namespace Motor\Media\Http\Controllers\Api;
 
 use Motor\Backend\Http\Controllers\Controller;
-
 use Motor\Media\Models\File;
 use Motor\Media\Http\Requests\Backend\FileRequest;
 use Motor\Media\Services\FileService;
 use Motor\Media\Transformers\FileTransformer;
 
+/**
+ * Class FilesController
+ * @package Motor\Media\Http\Controllers\Api
+ */
 class FilesController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -19,21 +23,22 @@ class FilesController extends Controller
     public function index()
     {
         $paginator = FileService::collection()->getPaginator();
-        $resource = $this->transformPaginator($paginator, FileTransformer::class);
+        $resource  = $this->transformPaginator($paginator, FileTransformer::class);
 
         return $this->respondWithJson('File collection read', $resource);
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
     public function store(FileRequest $request)
     {
-        $result = FileService::create($request)->getResult();
+        $result   = FileService::create($request)->getResult();
         $resource = $this->transformItem($result, FileTransformer::class);
 
         return $this->respondWithJson('File created', $resource);
@@ -43,13 +48,13 @@ class FilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
     public function show(File $record)
     {
-        $result = FileService::show($record)->getResult();
+        $result   = FileService::show($record)->getResult();
         $resource = $this->transformItem($result, FileTransformer::class);
 
         return $this->respondWithJson('File read', $resource);
@@ -59,14 +64,14 @@ class FilesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
     public function update(FileRequest $request, File $record)
     {
-        $result = FileService::update($record, $request)->getResult();
+        $result   = FileService::update($record, $request)->getResult();
         $resource = $this->transformItem($result, FileTransformer::class);
 
         return $this->respondWithJson('File updated', $resource);
@@ -76,7 +81,7 @@ class FilesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -85,8 +90,9 @@ class FilesController extends Controller
         $result = FileService::delete($record)->getResult();
 
         if ($result) {
-            return $this->respondWithJson('File deleted', ['success' => true]);
+            return $this->respondWithJson('File deleted', [ 'success' => true ]);
         }
-        return $this->respondWithJson('File NOT deleted', ['success' => false]);
+
+        return $this->respondWithJson('File NOT deleted', [ 'success' => false ]);
     }
 }

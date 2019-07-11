@@ -4,7 +4,7 @@ Route::group([
     'namespace'  => 'Motor\Media\Http\Controllers\Api',
     'prefix'     => 'api',
     'as'         => 'api.',
-], function () {
+], static function () {
     Route::resource('files', 'FilesController');
 });
 
@@ -13,7 +13,7 @@ Route::group([
     'namespace'  => 'Motor\Media\Http\Controllers\Api',
     'prefix'     => 'ajax',
     'as'         => 'ajax.',
-], function () {
+], static function () {
     Route::get('files', 'FilesController@index')->name('files.index');
     //Route::resource('files', 'FilesController');
 });

@@ -3,19 +3,23 @@
 namespace Motor\Media\Http\Controllers\Backend;
 
 use Motor\Backend\Http\Controllers\Controller;
-
 use Motor\Backend\Models\Category;
 use Motor\Media\Models\File;
 use Motor\Media\Http\Requests\Backend\FileRequest;
 use Motor\Media\Services\FileService;
 use Motor\Media\Grids\FileGrid;
 use Motor\Media\Forms\Backend\FileForm;
-
 use Kris\LaravelFormBuilder\FormBuilderTrait;
 
+/**
+ * Class FilesController
+ * @package Motor\Media\Http\Controllers\Backend
+ */
 class FilesController extends Controller
 {
+
     use FormBuilderTrait;
+
 
     /**
      * Display a listing of the resource.
@@ -27,8 +31,8 @@ class FilesController extends Controller
         $grid = new FileGrid(File::class);
 
         $service = FileService::collection($grid);
-        $grid->filter = $service->getFilter();
-        $paginator    = $service->getPaginator();
+        $grid->setFilter($service->getFilter());
+        $paginator = $service->getPaginator();
 
         return view('motor-media::backend.files.index', compact('paginator', 'grid'));
     }
@@ -47,8 +51,8 @@ class FilesController extends Controller
             'enctype' => 'multipart/form-data'
         ]);
 
-        $trees = Category::where('scope', 'media')->defaultOrder()->get()->toTree();
-        $newItem = false;
+        $trees        = Category::where('scope', 'media')->defaultOrder()->get()->toTree();
+        $newItem      = false;
         $selectedItem = null;
 
         return view('motor-media::backend.files.create', compact('form', 'trees', 'newItem', 'selectedItem'));
@@ -58,7 +62,7 @@ class FilesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param \Illuminate\Http\Request $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -82,7 +86,7 @@ class FilesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -95,7 +99,7 @@ class FilesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -108,8 +112,8 @@ class FilesController extends Controller
             'model'   => $record
         ]);
 
-        $trees = Category::where('scope', 'media')->defaultOrder()->get()->toTree();
-        $newItem = false;
+        $trees        = Category::where('scope', 'media')->defaultOrder()->get()->toTree();
+        $newItem      = false;
         $selectedItem = null;
 
         return view('motor-media::backend.files.edit', compact('form', 'trees', 'newItem', 'selectedItem', 'record'));
@@ -119,8 +123,8 @@ class FilesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  int                      $id
+     * @param \Illuminate\Http\Request $request
+     * @param int                      $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -144,7 +148,7 @@ class FilesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */

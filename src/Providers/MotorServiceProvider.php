@@ -4,8 +4,11 @@ namespace Motor\Media\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Motor\Backend\Console\Commands\MotorCreatePermissionsCommand;
 
+/**
+ * Class MotorServiceProvider
+ * @package Motor\Media\Providers
+ */
 class MotorServiceProvider extends ServiceProvider
 {
 
@@ -102,7 +105,7 @@ class MotorServiceProvider extends ServiceProvider
 
     public function routeModelBindings()
     {
-        Route::bind('file', function ($id) {
+        Route::bind('file', static function ($id) {
             return \Motor\Media\Models\File::findOrFail($id);
         });
     }

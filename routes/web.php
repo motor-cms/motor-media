@@ -8,7 +8,7 @@ Route::group([
         'web_auth',
         'navigation'
     ]
-], function () {
+], static function () {
     if (config('motor-media.routes.files')) {
         Route::resource('files', 'FilesController');
     }

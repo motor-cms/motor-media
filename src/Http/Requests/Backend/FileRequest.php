@@ -4,6 +4,10 @@ namespace Motor\Media\Http\Requests\Backend;
 
 use Motor\Backend\Http\Requests\Request;
 
+/**
+ * Class FileRequest
+ * @package Motor\Media\Http\Requests\Backend
+ */
 class FileRequest extends Request
 {
 
