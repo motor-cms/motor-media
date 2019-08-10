@@ -42,6 +42,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set assets to be published
+     */
     public function publishResourceAssets()
     {
         $assets = [
@@ -52,12 +55,18 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set migration path
+     */
     public function migrations()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
     }
 
 
+    /**
+     * Merge permission config file
+     */
     public function permissions()
     {
         $config = $this->app['config']->get('motor-backend-permissions', []);
@@ -66,6 +75,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set routes
+     */
     public function routes()
     {
         if ( ! $this->app->routesAreCached()) {
@@ -75,6 +87,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set configuration files for publishing
+     */
     public function config()
     {
         //$this->publishes([
@@ -83,6 +98,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set translation path
+     */
     public function translations()
     {
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'motor-media');
@@ -93,6 +111,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Set view path
+     */
     public function views()
     {
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'motor-media');
@@ -103,6 +124,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Add route model bindings
+     */
     public function routeModelBindings()
     {
         Route::bind('file', static function ($id) {
@@ -111,6 +135,9 @@ class MotorServiceProvider extends ServiceProvider
     }
 
 
+    /**
+     * Merge backend navigation items from configuration file
+     */
     public function navigationItems()
     {
         $config = $this->app['config']->get('motor-backend-navigation', []);
