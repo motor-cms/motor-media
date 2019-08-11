@@ -12,10 +12,11 @@ return [
 
     'file_info' => 'File information',
 
-    'author'         => 'Author',
-    'source'         => 'Source',
-    'alt_text'       => 'Alternate text',
-    'description'    => 'Description',
-    'is_global'      => 'Globally available for all clients',
-    'drop_file_here' => 'Drop file here',
+    'author'                 => 'Author',
+    'source'                 => 'Source',
+    'alt_text'               => 'Alternate text',
+    'description'            => 'Description',
+    'is_global'              => 'Globally available for all clients',
+    'drop_file_here'         => 'Drop file here',
+    'please_select_category' => 'Please select at least one category',
 ];

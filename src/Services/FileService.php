@@ -22,11 +22,24 @@ class FileService extends BaseService
         $categories = Category::where('scope', 'media')
                               ->where('_lft', '>', 1)
                               ->orderBy('_lft', 'ASC')
-                              ->pluck('name', 'id');
+                              ->get();
+
+        $options = [];
+        foreach ($categories as $key => $category) {
+            $returnValue = '';
+            $ancestors   = (int) $category->ancestors()->count();
+            while ($ancestors > 1) {
+                $returnValue .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+                $ancestors--;
+            }
+
+            $options[$category->id] = $returnValue.$category->name;
+        }
+
         $this->filter->add(new RelationRenderer('category_id'))
                      ->setJoin('category_file')
                      ->setEmptyOption('-- ' . trans('motor-backend::backend/categories.categories') . ' --')
-                     ->setOptions($categories);
+                     ->setOptions($options);
     }
 
 

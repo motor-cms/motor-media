@@ -22,13 +22,15 @@ class FileForm extends Form
              ->add('client_id', 'select', [
                  'label'       => trans('motor-backend::backend/clients.client'),
                  'choices'     => $clients,
-                 'empty_value' => trans('motor-backend::backend/global.please_choose')
+                 'empty_value' => trans('motor-backend::backend/global.please_choose'),
+                 'rules' => 'required',
+                 'default_value' => config('motor-backend.models.client')::first()->id
              ])
              ->add('author', 'text', [ 'label' => trans('motor-media::backend/files.author') ])
              ->add('source', 'text', [ 'label' => trans('motor-media::backend/files.source') ])
              ->add('alt_text', 'text', [ 'label' => trans('motor-media::backend/files.alt_text') ])
              ->add('description', 'textarea', [ 'label' => trans('motor-media::backend/files.description') ])
-             ->add('is_global', 'checkbox', [ 'label' => trans('motor-media::backend/files.is_global') ])
+             ->add('is_global', 'checkbox', [ 'label' => trans('motor-media::backend/files.is_global'), 'default_value' => 1 ])
              ->add('file', 'file_file',
                  [ 'label' => trans('motor-backend::backend/global.file'), 'model' => File::class ])
              ->add('submit', 'submit',
