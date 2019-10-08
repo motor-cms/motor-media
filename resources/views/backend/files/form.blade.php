@@ -39,7 +39,7 @@
     <script>
         $.jstree.defaults.checkbox.three_state = false;
 
-        var tree = $('#category-tree').jstree(
+        let tree = $('#category-tree').jstree(
             {
                 "plugins": ["checkbox"]
             }
@@ -58,7 +58,7 @@
 
         $('form#file-form').on('submit', function (e) {
             $('#category-tree-errors').addClass('d-none');
-            var categories = [];
+            let categories = [];
 
             $.each(tree.jstree().get_checked('full'), function(key, item) {
                 categories.push(item.data.categoryId);
