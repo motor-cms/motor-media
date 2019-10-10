@@ -46,7 +46,7 @@ class FileTransformer extends Fractal\TransformerAbstract
      * @param File $record
      * @return Fractal\Resource\Collection
      */
-    function includeCategories(File $record)
+    public function includeCategories(File $record)
     {
         return $this->collection($record->categories, new CategoryTransformer());
     }

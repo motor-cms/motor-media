@@ -31,9 +31,15 @@ class FileForm extends Form
              ->add('alt_text', 'text', [ 'label' => trans('motor-media::backend/files.alt_text') ])
              ->add('description', 'textarea', [ 'label' => trans('motor-media::backend/files.description') ])
              ->add('is_global', 'checkbox', [ 'label' => trans('motor-media::backend/files.is_global'), 'default_value' => 1 ])
-             ->add('file', 'file_file',
-                 [ 'label' => trans('motor-backend::backend/global.file'), 'model' => File::class ])
-             ->add('submit', 'submit',
-                 [ 'attr' => [ 'class' => 'btn btn-primary' ], 'label' => trans('motor-media::backend/files.save') ]);
+             ->add(
+                 'file',
+                 'file_file',
+                 [ 'label' => trans('motor-backend::backend/global.file'), 'model' => File::class ]
+             )
+             ->add(
+                 'submit',
+                 'submit',
+                 [ 'attr' => [ 'class' => 'btn btn-primary' ], 'label' => trans('motor-media::backend/files.save') ]
+             );
     }
 }

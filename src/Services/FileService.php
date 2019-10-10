@@ -13,7 +13,6 @@ use Motor\Backend\Services\BaseService;
  */
 class FileService extends BaseService
 {
-
     protected $model = File::class;
 
 

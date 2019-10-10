@@ -17,7 +17,6 @@ use Kris\LaravelFormBuilder\FormBuilderTrait;
  */
 class FilesController extends Controller
 {
-
     use FormBuilderTrait;
 
 
@@ -71,7 +70,7 @@ class FilesController extends Controller
         $form = $this->form(FileForm::class);
 
         // It will automatically use current request, get the rules, and do the validation
-        if ( ! $form->isValid()) {
+        if (! $form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
 
@@ -129,7 +128,7 @@ class FilesController extends Controller
         $form = $this->form(FileForm::class);
 
         // It will automatically use current request, get the rules, and do the validation
-        if ( ! $form->isValid()) {
+        if (! $form->isValid()) {
             return redirect()->back()->withErrors($form->getErrors())->withInput();
         }
 

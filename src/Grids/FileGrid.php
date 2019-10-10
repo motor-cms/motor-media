@@ -12,7 +12,6 @@ use Motor\Backend\Grid\Renderers\FileRenderer;
  */
 class FileGrid extends Grid
 {
-
     protected function setup()
     {
         $this->addColumn('preview', trans('motor-media::backend/files.file'))

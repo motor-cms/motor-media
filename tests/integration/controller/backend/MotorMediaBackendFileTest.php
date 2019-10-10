@@ -10,7 +10,6 @@ use Motor\Media\Models\File;
  */
 class MotorMediaBackendFileTest extends TestCase
 {
-
     use DatabaseTransactions;
 
     protected $user;
@@ -79,7 +78,7 @@ class MotorMediaBackendFileTest extends TestCase
     {
         $record = create_test_file();
         $this->visit('/backend/files')
-            ->within('table', function(){
+            ->within('table', function () {
                 $this->click(trans('motor-backend::backend/global.edit'));
             })
             ->seePageIs('/backend/files/'.$record->id.'/edit')
@@ -95,7 +94,7 @@ class MotorMediaBackendFileTest extends TestCase
         $this->visit('/backend/files/'.$record->id.'/edit')
             ->see($record->name)
             ->type('Updated File', 'name')
-            ->within('.box-footer', function(){
+            ->within('.box-footer', function () {
                 $this->press(trans('motor-media::backend/files.save'));
             })
             ->see(trans('motor-media::backend/files.updated'))
@@ -120,7 +119,7 @@ class MotorMediaBackendFileTest extends TestCase
         $this->visit('/backend/files/create')
             ->see(trans('motor-media::backend/files.new'))
             ->type('Create File Name', 'name')
-            ->within('.box-footer', function(){
+            ->within('.box-footer', function () {
                 $this->press(trans('motor-media::backend/files.save'));
             })
             ->see(trans('motor-media::backend/files.created'))
@@ -133,7 +132,7 @@ class MotorMediaBackendFileTest extends TestCase
     {
         $this->visit('/backend/files/create')
             ->see(trans('motor-media::backend/files.new'))
-            ->within('.box-footer', function(){
+            ->within('.box-footer', function () {
                 $this->press(trans('motor-media::backend/files.save'));
             })
             ->see('Data missing!')
@@ -147,7 +146,7 @@ class MotorMediaBackendFileTest extends TestCase
         $this->visit('/backend/files/'.$record->id.'/edit')
             ->see(trans('motor-media::backend/files.edit'))
             ->type('Modified File Name', 'name')
-            ->within('.box-footer', function(){
+            ->within('.box-footer', function () {
                 $this->press(trans('motor-media::backend/files.save'));
             })
             ->see(trans('motor-media::backend/files.updated'))
@@ -163,7 +162,7 @@ class MotorMediaBackendFileTest extends TestCase
         $this->assertCount(1, File::all());
 
         $this->visit('/backend/files')
-            ->within('table', function(){
+            ->within('table', function () {
                 $this->press(trans('motor-backend::backend/global.delete'));
             })
             ->seePageIs('/backend/files')
@@ -177,7 +176,7 @@ class MotorMediaBackendFileTest extends TestCase
     {
         $records = create_test_file(100);
         $this->visit('/backend/files')
-            ->within('.pagination', function(){
+            ->within('.pagination', function () {
                 $this->click('3');
             })
             ->seePageIs('/backend/files?page=3');

@@ -56,7 +56,6 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
  */
 class File extends Model implements HasMedia
 {
-
     use Searchable;
     use Filterable;
     use Blameable, CreatedBy, UpdatedBy, DeletedBy;
