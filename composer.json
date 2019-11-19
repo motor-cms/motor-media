@@ -15,8 +15,12 @@
     "motor-cms/motor-backend": "0.9.*"
   },
   "autoload": {
+    "classmap": [
+      "database"
+    ],
     "psr-4": {
-      "Motor\\Media\\": "src"
+      "Motor\\Media\\": "src",
+      "Tests\\Motor\\Media\\": "tests"
     }
   },
   "extra": {
@@ -27,5 +31,5 @@
     }
   },
   "minimum-stability": "dev",
-  "prefer-stable" : true
+  "prefer-stable": true
 }
