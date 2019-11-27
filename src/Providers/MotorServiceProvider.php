@@ -28,6 +28,7 @@ class MotorServiceProvider extends ServiceProvider
         $this->permissions();
         $this->migrations();
         $this->publishResourceAssets();
+        merge_local_config_with_db_configuration_variables('motor-media');
     }
 
 
