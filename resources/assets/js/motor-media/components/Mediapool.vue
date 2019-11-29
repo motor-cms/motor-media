@@ -48,7 +48,7 @@
     }
 
     .sortable-drag .card-body {
-        display: none;
+        /*display: none;*/
     }
 
 </style>
