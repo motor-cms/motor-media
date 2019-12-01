@@ -12,7 +12,8 @@
     }
   ],
   "require": {
-    "motor-cms/motor-backend": "0.9.*"
+    "motor-cms/motor-backend": "0.9.*",
+    "php-ffmpeg/php-ffmpeg": "^0.14"
   },
   "autoload": {
     "classmap": [
