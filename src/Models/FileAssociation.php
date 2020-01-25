@@ -20,14 +20,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation query()
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereCreatedAt( $value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereCustomProperties($value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereFileId( $value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereId( $value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereIdentifier( $value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereModelId( $value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereModelType( $value )
- * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereUpdatedAt( $value )
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereCustomProperties($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereFileId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereIdentifier($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\Motor\Media\Models\FileAssociation whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class FileAssociation extends Model
@@ -45,6 +45,10 @@ class FileAssociation extends Model
         'identifier',
         'custom_properties',
         'alt_text',
+    ];
+
+    protected $casts = [
+        'custom_properties' => 'array'
     ];
 
 
