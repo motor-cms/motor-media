@@ -16,12 +16,11 @@
     "php-ffmpeg/php-ffmpeg": "^0.16"
   },
   "autoload": {
-    "classmap": [
-      "database"
-    ],
     "psr-4": {
       "Motor\\Media\\": "src",
-      "Tests\\Motor\\Media\\": "tests"
+      "Tests\\Motor\\Media\\": "tests",
+      "Motor\\Media\\Database\\Factories\\": "database/factories/",
+      "Motor\\Media\\Database\\Seeders\\": "database/seeders/"
     }
   },
   "extra": {

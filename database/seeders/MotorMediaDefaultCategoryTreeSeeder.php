@@ -1,5 +1,7 @@
 <?php
 
+namespace Motor\Media\Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 /**
