@@ -12,8 +12,9 @@
     }
   ],
   "require": {
-    "motor-cms/motor-backend": "^1.0",
-    "php-ffmpeg/php-ffmpeg": "^0.16"
+    "php": "^7.4|^8.0",
+    "motor-cms/motor-backend": "^1.1",
+    "php-ffmpeg/php-ffmpeg": "^0.18"
   },
   "autoload": {
     "psr-4": {

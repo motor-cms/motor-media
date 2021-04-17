@@ -10,9 +10,9 @@ use Culpa\Traits\Blameable;
 use Culpa\Traits\CreatedBy;
 use Culpa\Traits\DeletedBy;
 use Culpa\Traits\UpdatedBy;
-use Spatie\MediaLibrary\Models\Media;
-use Spatie\MediaLibrary\HasMedia\HasMedia;
-use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * Motor\Media\Models\File
@@ -59,14 +59,14 @@ class File extends Model implements HasMedia
     use Searchable;
     use Filterable;
     use Blameable, CreatedBy, UpdatedBy, DeletedBy;
-    use HasMediaTrait;
+    use InteractsWithMedia;
 
 
     /**
      * @param Media|null $media
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null)
+    public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
              ->width(400)
