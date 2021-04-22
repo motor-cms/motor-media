@@ -5,9 +5,10 @@ Route::group([
     'prefix'     => 'api',
     'as'         => 'api.',
 ], static function () {
-    Route::resource('files', 'FilesController');
+    Route::apiResource('files', 'FilesController');
 });
 
+// TODO: is this still needed?
 Route::group([
     'middleware' => [ 'web', 'web_auth', 'bindings', 'permission' ],
     'namespace'  => 'Motor\Media\Http\Controllers\Api',
