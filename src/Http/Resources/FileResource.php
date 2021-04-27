@@ -71,7 +71,7 @@ class FileResource extends JsonResource
     {
         return [
             'id'          => (int) $this->id,
-            'client'      => (! is_null($this->client_id) ? new ClientResource($this->client) : null),
+            'client'      => new ClientResource($this->client),
             'description' => $this->description,
             'author'      => $this->author,
             'source'      => $this->source,
