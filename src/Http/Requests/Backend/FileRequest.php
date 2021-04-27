@@ -21,7 +21,7 @@ class FileRequest extends Request
      *   ),
      *   @OA\Property(
      *     property="description",
-     *     type="text",
+     *     type="string",
      *     example="Exhaustive description of the file"
      *   ),
      *   @OA\Property(

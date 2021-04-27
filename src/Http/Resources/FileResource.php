@@ -22,7 +22,7 @@ use Motor\Backend\Http\Resources\MediaResource;
  *   ),
  *   @OA\Property(
  *     property="description",
- *     type="text",
+ *     type="string",
  *     example="Exhaustive description of the file"
  *   ),
  *   @OA\Property(
