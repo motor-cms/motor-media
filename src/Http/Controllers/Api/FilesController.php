@@ -16,6 +16,9 @@ use Motor\Media\Services\FileService;
  */
 class FilesController extends ApiController
 {
+    protected string $model = 'Motor\Media\Models\File';
+    protected string $modelResource = 'file';
+
     /**
      * @OA\Get (
      *   tags={"FilesController"},

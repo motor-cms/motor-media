@@ -2,9 +2,9 @@
 
 namespace Motor\Media\Http\Resources;
 
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Motor\Backend\Http\Resources\BaseCollection;
 
-class FileCollection extends ResourceCollection
+class FileCollection extends BaseCollection
 {
     /**
      * Transform the resource collection into an array.

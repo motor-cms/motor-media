@@ -2,7 +2,7 @@
 
 namespace Motor\Media\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Motor\Backend\Http\Resources\BaseResource;
 use Motor\Backend\Http\Resources\CategoryResource;
 use Motor\Backend\Http\Resources\ClientResource;
 use Motor\Backend\Http\Resources\MediaResource;
@@ -59,7 +59,7 @@ use Motor\Backend\Http\Resources\MediaResource;
  *   ),
  * )
  */
-class FileResource extends JsonResource
+class FileResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
