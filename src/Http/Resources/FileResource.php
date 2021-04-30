@@ -69,6 +69,22 @@ class FileResource extends BaseResource
      */
     public function toArray($request)
     {
+        // FIXME: why is is like this? do we call the fileresource wrong?
+        try {
+            $file = new MediaResource($this->getFirstMedia('file'));
+            $categories = CategoryResource::collection($this->categories);
+        } catch (\Exception $e) {
+            // do nothing
+        }
+        if (!is_null($this->file)) {
+            try {
+                $file = new MediaResource($this->file->getFirstMedia('file'));
+                $categories = CategoryResource::collection($this->file->categories);
+            } catch (\Exception $e) {
+                // do nothing
+            }
+        }
+
         return [
             'id'          => (int) $this->id,
             'client'      => new ClientResource($this->client),
@@ -77,8 +93,8 @@ class FileResource extends BaseResource
             'source'      => $this->source,
             'is_global'   => $this->is_gobal,
             'alt_text'    => $this->alt_text,
-            'file'        => new MediaResource($this->getFirstMedia('file')),
-            'categories'  => CategoryResource::collection($this->categories),
+            'file'        => (isset($file) ? $file : null),
+            'categories'  => (isset($categories) ? $categories : null),
         ];
     }
 }

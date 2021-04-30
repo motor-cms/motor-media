@@ -24,11 +24,11 @@
                @start="onStart" @end="onEnd">
       <div v-for="file in files">
         <div class="card">
-          <img v-if="isImage(file)" class="card-img-top" :src="file.file.preview">
+          <img v-if="isImage(file)" class="card-img-top" :src="file.file.conversions.preview">
           <div class="card-body" data-toggle="tooltip" data-placement="top" :title="file.description">
             <p class="card-text">
               {{ file.file.file_name }}<br>
-              <!--{{ file.description }}<br>-->
+              {{ file.description }}<br>
               <span class="badge badge-secondary badge-pill">{{ file.file.mime_type }}</span>
             </p>
           </div>
