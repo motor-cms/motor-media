@@ -73,6 +73,8 @@ class FileResource extends BaseResource
         // FIXME: why is is like this? do we call the fileresource wrong?
         try {
             $file = new MediaResource($this->getFirstMedia('file'));
+            $exists = file_exists($this->getFirstMedia('file')
+                                       ->getPath());
             $categories = CategoryResource::collection($this->categories);
         } catch (Exception $e) {
             // do nothing
@@ -80,6 +82,8 @@ class FileResource extends BaseResource
         if (! is_null($this->file)) {
             try {
                 $file = new MediaResource($this->file->getFirstMedia('file'));
+                $exists = file_exists($this->file->getFirstMedia('file')
+                                                 ->getPath());
                 $categories = CategoryResource::collection($this->file->categories);
             } catch (Exception $e) {
                 // do nothing
@@ -96,6 +100,7 @@ class FileResource extends BaseResource
             'alt_text'    => $this->alt_text,
             'file'        => (isset($file) ? $file : null),
             'categories'  => (isset($categories) ? $categories : null),
+            'exists'      => isset($exists) ? $exists : false,
         ];
     }
 }
