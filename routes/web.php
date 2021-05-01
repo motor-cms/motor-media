@@ -6,8 +6,8 @@ Route::group([
     'middleware' => [
         'web',
         'web_auth',
-        'navigation'
-    ]
+        'navigation',
+    ],
 ], static function () {
     if (config('motor-media.routes.files')) {
         Route::resource('files', 'FilesController');

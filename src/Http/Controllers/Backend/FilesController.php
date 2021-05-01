@@ -2,23 +2,23 @@
 
 namespace Motor\Media\Http\Controllers\Backend;
 
+use Kris\LaravelFormBuilder\FormBuilderTrait;
 use Motor\Backend\Http\Controllers\Controller;
 use Motor\Backend\Models\Category;
-use Motor\Media\Models\File;
-use Motor\Media\Http\Requests\Backend\FileRequest;
-use Motor\Media\Services\FileService;
-use Motor\Media\Grids\FileGrid;
 use Motor\Media\Forms\Backend\FileForm;
-use Kris\LaravelFormBuilder\FormBuilderTrait;
+use Motor\Media\Grids\FileGrid;
+use Motor\Media\Http\Requests\Backend\FileRequest;
+use Motor\Media\Models\File;
+use Motor\Media\Services\FileService;
 
 /**
  * Class FilesController
+ *
  * @package Motor\Media\Http\Controllers\Backend
  */
 class FilesController extends Controller
 {
     use FormBuilderTrait;
-
 
     /**
      * Display a listing of the resource.
@@ -37,7 +37,6 @@ class FilesController extends Controller
         return view('motor-media::backend.files.index', compact('paginator', 'grid'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -48,16 +47,18 @@ class FilesController extends Controller
         $form = $this->form(FileForm::class, [
             'method'  => 'POST',
             'route'   => 'backend.files.store',
-            'enctype' => 'multipart/form-data'
+            'enctype' => 'multipart/form-data',
         ]);
 
-        $trees        = Category::where('scope', 'media')->defaultOrder()->get()->toTree();
-        $newItem      = false;
+        $trees = Category::where('scope', 'media')
+                         ->defaultOrder()
+                         ->get()
+                         ->toTree();
+        $newItem = false;
         $selectedItem = null;
 
         return view('motor-media::backend.files.create', compact('form', 'trees', 'newItem', 'selectedItem'));
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -71,7 +72,10 @@ class FilesController extends Controller
 
         // It will automatically use current request, get the rules, and do the validation
         if (! $form->isValid()) {
-            return redirect()->back()->withErrors($form->getErrors())->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
         }
 
         FileService::createWithForm($request, $form);
@@ -80,7 +84,6 @@ class FilesController extends Controller
 
         return redirect('backend/files');
     }
-
 
     /**
      * Display the specified resource.
@@ -92,7 +95,6 @@ class FilesController extends Controller
         //
     }
 
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -103,24 +105,26 @@ class FilesController extends Controller
     {
         $form = $this->form(FileForm::class, [
             'method'  => 'PATCH',
-            'url'     => route('backend.files.update', [ $record->id ]),
+            'url'     => route('backend.files.update', [$record->id]),
             'enctype' => 'multipart/form-data',
-            'model'   => $record
+            'model'   => $record,
         ]);
 
-        $trees        = Category::where('scope', 'media')->defaultOrder()->get()->toTree();
-        $newItem      = false;
+        $trees = Category::where('scope', 'media')
+                         ->defaultOrder()
+                         ->get()
+                         ->toTree();
+        $newItem = false;
         $selectedItem = null;
 
         return view('motor-media::backend.files.edit', compact('form', 'trees', 'newItem', 'selectedItem', 'record'));
     }
 
-
     /**
      * Update the specified resource in storage.
      *
      * @param FileRequest $request
-     * @param File        $record
+     * @param File $record
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(FileRequest $request, File $record)
@@ -129,7 +133,10 @@ class FilesController extends Controller
 
         // It will automatically use current request, get the rules, and do the validation
         if (! $form->isValid()) {
-            return redirect()->back()->withErrors($form->getErrors())->withInput();
+            return redirect()
+                ->back()
+                ->withErrors($form->getErrors())
+                ->withInput();
         }
 
         FileService::updateWithForm($record, $request, $form);
@@ -138,7 +145,6 @@ class FilesController extends Controller
 
         return redirect('backend/files');
     }
-
 
     /**
      * Remove the specified resource from storage.

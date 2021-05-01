@@ -17,6 +17,7 @@ use Motor\Media\Services\FileService;
 class FilesController extends ApiController
 {
     protected string $model = 'Motor\Media\Models\File';
+
     protected string $modelResource = 'file';
 
     /**
@@ -323,7 +324,6 @@ class FilesController extends ApiController
     {
         $result = FileService::delete($record)
                              ->getResult();
-
 
         if ($result) {
             return response()->json(['message' => 'File deleted']);

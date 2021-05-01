@@ -2,6 +2,7 @@
 
 namespace Motor\Media\Http\Resources;
 
+use Exception;
 use Motor\Backend\Http\Resources\BaseResource;
 use Motor\Backend\Http\Resources\CategoryResource;
 use Motor\Backend\Http\Resources\ClientResource;
@@ -73,14 +74,14 @@ class FileResource extends BaseResource
         try {
             $file = new MediaResource($this->getFirstMedia('file'));
             $categories = CategoryResource::collection($this->categories);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // do nothing
         }
-        if (!is_null($this->file)) {
+        if (! is_null($this->file)) {
             try {
                 $file = new MediaResource($this->file->getFirstMedia('file'));
                 $categories = CategoryResource::collection($this->file->categories);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // do nothing
             }
         }

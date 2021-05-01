@@ -3,18 +3,18 @@
 namespace Motor\Media\Services;
 
 use Motor\Backend\Models\Category;
+use Motor\Backend\Services\BaseService;
 use Motor\Core\Filter\Renderers\RelationRenderer;
 use Motor\Media\Models\File;
-use Motor\Backend\Services\BaseService;
 
 /**
  * Class FileService
+ *
  * @package Motor\Media\Services
  */
 class FileService extends BaseService
 {
     protected $model = File::class;
-
 
     public function filters()
     {
@@ -26,7 +26,8 @@ class FileService extends BaseService
         $options = [];
         foreach ($categories as $key => $category) {
             $returnValue = '';
-            $ancestors   = (int) $category->ancestors()->count();
+            $ancestors = (int) $category->ancestors()
+                                        ->count();
             while ($ancestors > 1) {
                 $returnValue .= '&nbsp;&nbsp;&nbsp;&nbsp;';
                 $ancestors--;
@@ -37,10 +38,9 @@ class FileService extends BaseService
 
         $this->filter->add(new RelationRenderer('category_id'))
                      ->setJoin('category_file')
-                     ->setEmptyOption('-- ' . trans('motor-backend::backend/categories.categories') . ' --')
+                     ->setEmptyOption('-- '.trans('motor-backend::backend/categories.categories').' --')
                      ->setOptions($options);
     }
-
 
     public function afterCreate()
     {
@@ -48,22 +48,20 @@ class FileService extends BaseService
         $this->updateCategories();
     }
 
-
     public function afterUpdate()
     {
         $this->upload();
         $this->updateCategories();
     }
 
-
     protected function upload()
     {
         $this->uploadFile($this->request->file('file'), 'file');
     }
 
-
     protected function updateCategories()
     {
-        $this->record->categories()->sync(explode(',', $this->request->get('categories')));
+        $this->record->categories()
+                     ->sync(explode(',', $this->request->get('categories')));
     }
 }
