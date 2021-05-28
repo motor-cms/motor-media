@@ -46,9 +46,9 @@ class FileRequest extends Request
      *   ),
      *   @OA\Property(
      *     property="categories",
-     *     type="string",
-     *     description="Comma separated list of category ids",
-     *     example="1,3"
+     *     type="array",
+     *     description="Array of category ids",
+     *     example="[1, 3]]"
      *   ),
      *   @OA\Property(
      *     property="file",
@@ -82,7 +82,7 @@ class FileRequest extends Request
             'alt_text'    => 'nullable',
             'file'        => 'nullable',
             'is_global'   => 'nullable',
-            'categories'  => 'required|string',
+            'categories'  => 'required|array',
         ];
     }
 }

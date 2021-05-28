@@ -2,6 +2,7 @@
 
 namespace Motor\Media\Http\Controllers\Api;
 
+use Illuminate\Support\Facades\Log;
 use Motor\Backend\Http\Controllers\ApiController;
 use Motor\Media\Http\Requests\Backend\FileRequest;
 use Motor\Media\Http\Resources\FileCollection;
@@ -127,8 +128,14 @@ class FilesController extends ApiController
      */
     public function store(FileRequest $request)
     {
-        $result = FileService::create($request)
-                             ->getResult();
+        // Check if we have multiple files and instance one new file model per uploaded file
+        for ($i = 0; $i < count($request->get('file')); $i++) {
+            // Copy request object
+            $requestClone = $request->all();
+            $requestClone['file'] = $requestClone['file'][$i];
+            $result = FileService::create($requestClone)
+                                 ->getResult();
+        }
 
         return (new FileResource($result))->additional(['message' => 'File created'])
                                           ->response()

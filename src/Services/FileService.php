@@ -2,6 +2,7 @@
 
 namespace Motor\Media\Services;
 
+use Illuminate\Support\Arr;
 use Motor\Backend\Models\Category;
 use Motor\Backend\Services\BaseService;
 use Motor\Core\Filter\Renderers\RelationRenderer;
@@ -56,12 +57,12 @@ class FileService extends BaseService
 
     protected function upload()
     {
-        $this->uploadFile($this->request->file('file'), 'file');
+        $this->uploadFile(Arr::get($this->data, 'file'), 'file');
     }
 
     protected function updateCategories()
     {
         $this->record->categories()
-                     ->sync(explode(',', $this->request->get('categories')));
+                     ->sync(array_filter(Arr::get($this->data, 'categories')));
     }
 }

@@ -14,7 +14,7 @@ return [
                          'slug'        => 'files',
                          'name'        => 'motor-media.files.files',
                          'icon'        => 'fa fa-plus',
-                         'route'       => 'backend.files.index',
+                         'route'       => 'admin.motor-media.files',
                          'roles'       => ['SuperAdmin'],
                          'permissions' => ['files.read'],
                 ],
