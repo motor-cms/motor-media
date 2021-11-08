@@ -3,16 +3,21 @@
 namespace Motor\Media\Http\Resources;
 
 use Exception;
-use Motor\Backend\Http\Resources\BaseResource;
-use Motor\Backend\Http\Resources\CategoryResource;
-use Motor\Backend\Http\Resources\ClientResource;
-use Motor\Backend\Http\Resources\MediaResource;
+use Motor\Admin\Http\Resources\BaseResource;
+use Motor\Admin\Http\Resources\CategoryResource;
+use Motor\Admin\Http\Resources\ClientResource;
+use Motor\Admin\Http\Resources\MediaResource;
 
 /**
  * @OA\Schema(
  *   schema="FileResource",
  *   @OA\Property(
  *     property="id",
+ *     type="integer",
+ *     example="1"
+ *   ),
+ *   @OA\Property(
+ *     property="client_id",
  *     type="integer",
  *     example="1"
  *   ),
@@ -37,14 +42,14 @@ use Motor\Backend\Http\Resources\MediaResource;
  *     example="Some photographer"
  *   ),
  *   @OA\Property(
- *     property="alt_text",
- *     type="string",
- *     example="Alternative Text For The IMG Tag"
- *   ),
- *   @OA\Property(
  *     property="is_global",
  *     type="boolean",
  *     example="true"
+ *   ),
+ *   @OA\Property(
+ *     property="alt_text",
+ *     type="string",
+ *     example="Alternative Text For The IMG Tag"
  *   ),
  *   @OA\Property(
  *     property="file",
@@ -58,6 +63,11 @@ use Motor\Backend\Http\Resources\MediaResource;
  *       ref="#/components/schemas/CategoryResource"
  *     ),
  *   ),
+ *   @OA\Property(
+ *     property="exists",
+ *     type="boolean",
+ *     example="true"
+ *   ),
  * )
  */
 class FileResource extends BaseResource
@@ -68,14 +78,14 @@ class FileResource extends BaseResource
      * @param \Illuminate\Http\Request $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         // FIXME: why is is like this? do we call the fileresource wrong?
         try {
             $file = new MediaResource($this->getFirstMedia('file'));
 
             $firstMedia = $this->getFirstMedia('file');
-            if (!is_null($firstMedia)) {
+            if (! is_null($firstMedia)) {
                 $exists = file_exists($firstMedia->getPath());
             }
             $categories = CategoryResource::collection($this->categories);
@@ -86,7 +96,7 @@ class FileResource extends BaseResource
             try {
                 $file = new MediaResource($this->file->getFirstMedia('file'));
                 $firstMedia = $this->file->getFirstMedia('file');
-                if (!is_null($firstMedia)) {
+                if (! is_null($firstMedia)) {
                     $exists = file_exists($firstMedia->getPath());
                 }
                 $categories = CategoryResource::collection($this->file->categories);
@@ -97,15 +107,16 @@ class FileResource extends BaseResource
 
         return [
             'id'          => (int) $this->id,
+            'client_id'   => $this->client_id,
             'client'      => new ClientResource($this->client),
             'description' => $this->description,
             'author'      => $this->author,
             'source'      => $this->source,
             'is_global'   => $this->is_gobal,
             'alt_text'    => $this->alt_text,
-            'file'        => (isset($file) ? $file : null),
-            'categories'  => (isset($categories) ? $categories : null),
-            'exists'      => isset($exists) ? $exists : false,
+            'file'        => $file ?? null,
+            'categories'  => $categories ?? null,
+            'exists'      => $exists ?? false,
         ];
     }
 }

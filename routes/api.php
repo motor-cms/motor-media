@@ -1,9 +1,11 @@
 <?php
+
+use Motor\Media\Http\Controllers\Api\FilesController;
+
 Route::group([
     'middleware' => ['auth:sanctum', 'bindings', 'permission'],
-    'namespace'  => 'Motor\Media\Http\Controllers\Api',
     'prefix'     => 'api',
     'as'         => 'api.',
 ], static function () {
-    Route::apiResource('files', 'FilesController');
+    Route::apiResource('files', FilesController::class);
 });

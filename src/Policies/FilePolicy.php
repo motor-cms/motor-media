@@ -3,7 +3,7 @@
 namespace Motor\Media\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Motor\Backend\Models\User;
+use Motor\Admin\Models\User;
 use Motor\Media\Models\File;
 
 class FilePolicy
@@ -13,7 +13,7 @@ class FilePolicy
     /**
      * Perform pre-authorization checks.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @param string $ability
      * @return void|bool
      */
@@ -27,7 +27,7 @@ class FilePolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -38,7 +38,7 @@ class FilePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @param \Motor\Media\Models\File $file
      * @return mixed
      */
@@ -50,7 +50,7 @@ class FilePolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @return mixed
      */
     public function create(User $user)
@@ -61,7 +61,7 @@ class FilePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @param \Motor\Media\Models\File $file
      * @return mixed
      */
@@ -73,7 +73,7 @@ class FilePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @param \Motor\Media\Models\File $file
      * @return mixed
      */
@@ -85,7 +85,7 @@ class FilePolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @param \Motor\Media\Models\File $file
      * @return mixed
      */
@@ -97,7 +97,7 @@ class FilePolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param \Motor\Backend\Models\User $user
+     * @param \Motor\Admin\Models\User $user
      * @param \Motor\Media\Models\File $file
      * @return mixed
      */

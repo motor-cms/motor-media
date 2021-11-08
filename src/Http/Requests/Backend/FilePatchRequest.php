@@ -2,18 +2,18 @@
 
 namespace Motor\Media\Http\Requests\Backend;
 
-use Motor\Backend\Http\Requests\Request;
+use Motor\Admin\Http\Requests\Request;
 
 /**
- * Class FileRequest
+ * Class FilePatchRequest
  *
  * @package Motor\Media\Http\Requests\Backend
  */
-class FileRequest extends Request
+class FilePatchRequest extends Request
 {
     /**
      * @OA\Schema(
-     *   schema="FileRequest",
+     *   schema="FilePatchRequest",
      *   @OA\Property(
      *     property="client_id",
      *     type="integer",
@@ -48,13 +48,19 @@ class FileRequest extends Request
      *     property="categories",
      *     type="array",
      *     description="Array of category ids",
-     *     example="[1, 3]]"
+     *     @OA\Items(
+     *       anyOf={
+     *         @OA\Schema(type="integer")
+     *       }
+     *     ),
+     *     example="[1,3]"
      *   ),
      *   @OA\Property(
      *     property="file",
-     *     type="string",
-     *     format="binary"
-     *   )
+     *     type="object",
+     *     ref="#/components/schemas/FileUpload",
+     *     description="If false, the existing file will be deleted"
+     *   ),
      * )
      */
 
@@ -63,7 +69,7 @@ class FileRequest extends Request
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -73,16 +79,19 @@ class FileRequest extends Request
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'description' => 'nullable',
-            'author'      => 'nullable',
-            'source'      => 'nullable',
-            'alt_text'    => 'nullable',
-            'file'        => 'nullable',
-            'is_global'   => 'nullable',
-            'categories'  => 'required|array',
+            'client_id'    => 'nullable|integer',
+            'description'  => 'nullable',
+            'author'       => 'nullable',
+            'source'       => 'nullable',
+            'alt_text'     => 'nullable',
+            'is_global'    => 'nullable',
+            'categories'   => 'required|array|min:1',
+            'file'         => 'nullable',
+            'file.dataUrl' => 'nullable|string',
+            'file.name'    => 'nullable|string',
         ];
     }
 }

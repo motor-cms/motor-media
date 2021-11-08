@@ -17,7 +17,7 @@ class MotorMediaDefaultCategoryTreeSeeder extends Seeder
      */
     public function run()
     {
-        $node = \Motor\Backend\Models\Category::create([
+        $node = \Motor\Admin\Models\Category::create([
             'name'       => 'Media',
             'scope'      => 'media',
             'created_by' => 1,

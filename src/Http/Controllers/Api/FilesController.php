@@ -2,9 +2,10 @@
 
 namespace Motor\Media\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Log;
-use Motor\Backend\Http\Controllers\ApiController;
-use Motor\Media\Http\Requests\Backend\FileRequest;
+use Illuminate\Http\JsonResponse;
+use Motor\Admin\Http\Controllers\ApiController;
+use Motor\Media\Http\Requests\Backend\FilePatchRequest;
+use Motor\Media\Http\Requests\Backend\FilePostRequest;
 use Motor\Media\Http\Resources\FileCollection;
 use Motor\Media\Http\Resources\FileResource;
 use Motor\Media\Models\File;
@@ -17,7 +18,7 @@ use Motor\Media\Services\FileService;
  */
 class FilesController extends ApiController
 {
-    protected string $model = 'Motor\Media\Models\File';
+    protected string $model = File::class;
 
     protected string $modelResource = 'file';
 
@@ -26,13 +27,12 @@ class FilesController extends ApiController
      *   tags={"FilesController"},
      *   path="/api/files",
      *   summary="Get files collection",
+     *   security={ {"sanctum": {} }},
      *   @OA\Parameter(
      *     @OA\Schema(type="string"),
-     *     in="query",
-     *     allowReserved=true,
-     *     name="api_token",
-     *     parameter="api_token",
-     *     description="Personal api_token of the user"
+     *     in="header",
+     *     name="Accept",
+     *     example="application/json"
      *   ),
      *   @OA\Response(
      *     response=200,
@@ -69,7 +69,7 @@ class FilesController extends ApiController
      *
      * @return \Motor\Media\Http\Resources\FileCollection
      */
-    public function index()
+    public function index(): FileCollection
     {
         $paginator = FileService::collection()
                                 ->getPaginator();
@@ -83,15 +83,14 @@ class FilesController extends ApiController
      *   path="/api/files",
      *   summary="Create new file",
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/FileRequest")
+     *     @OA\JsonContent(ref="#/components/schemas/FilePostRequest")
      *   ),
+     *   security={ {"sanctum": {} }},
      *   @OA\Parameter(
      *     @OA\Schema(type="string"),
-     *     in="query",
-     *     allowReserved=true,
-     *     name="api_token",
-     *     parameter="api_token",
-     *     description="Personal api_token of the user"
+     *     in="header",
+     *     name="Accept",
+     *     example="application/json"
      *   ),
      *   @OA\Response(
      *     response=200,
@@ -123,10 +122,10 @@ class FilesController extends ApiController
      *
      * Store a newly created resource in storage.
      *
-     * @param \Motor\Media\Http\Requests\Backend\FileRequest $request
-     * @return \Illuminate\Http\JsonResponse|object
+     * @param \Motor\Media\Http\Requests\Backend\FilePostRequest $request
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(FileRequest $request)
+    public function store(FilePostRequest $request): JsonResponse
     {
         // Check if we have multiple files and instance one new file model per uploaded file
         for ($i = 0; $i < count($request->get('file')); $i++) {
@@ -147,13 +146,12 @@ class FilesController extends ApiController
      *   tags={"FilesController"},
      *   path="/api/files/{file}",
      *   summary="Get single file",
+     *   security={ {"sanctum": {} }},
      *   @OA\Parameter(
      *     @OA\Schema(type="string"),
-     *     in="query",
-     *     allowReserved=true,
-     *     name="api_token",
-     *     parameter="api_token",
-     *     description="Personal api_token of the user"
+     *     in="header",
+     *     name="Accept",
+     *     example="application/json"
      *   ),
      *   @OA\Parameter(
      *     @OA\Schema(type="integer"),
@@ -195,7 +193,7 @@ class FilesController extends ApiController
      * @param \Motor\Media\Models\File $record
      * @return \Motor\Media\Http\Resources\FileResource
      */
-    public function show(File $record)
+    public function show(File $record): FileResource
     {
         $result = FileService::show($record)
                              ->getResult();
@@ -209,15 +207,14 @@ class FilesController extends ApiController
      *   path="/api/files/{file}",
      *   summary="Update an existing file",
      *   @OA\RequestBody(
-     *     @OA\JsonContent(ref="#/components/schemas/FileRequest")
+     *     @OA\JsonContent(ref="#/components/schemas/FilePatchRequest")
      *   ),
+     *   security={ {"sanctum": {} }},
      *   @OA\Parameter(
      *     @OA\Schema(type="string"),
-     *     in="query",
-     *     allowReserved=true,
-     *     name="api_token",
-     *     parameter="api_token",
-     *     description="Personal api_token of the user"
+     *     in="header",
+     *     name="Accept",
+     *     example="application/json"
      *   ),
      *   @OA\Parameter(
      *     @OA\Schema(type="integer"),
@@ -256,11 +253,11 @@ class FilesController extends ApiController
      *
      * Update the specified resource in storage.
      *
-     * @param \Motor\Media\Http\Requests\Backend\FileRequest $request
+     * @param \Motor\Media\Http\Requests\Backend\FilePatchRequest $request
      * @param \Motor\Media\Models\File $record
      * @return \Motor\Media\Http\Resources\FileResource
      */
-    public function update(FileRequest $request, File $record)
+    public function update(FilePatchRequest $request, File $record): FileResource
     {
         $result = FileService::update($record, $request)
                              ->getResult();
@@ -273,13 +270,12 @@ class FilesController extends ApiController
      *   tags={"FilesController"},
      *   path="/api/files/{file}",
      *   summary="Delete a file",
+     *   security={ {"sanctum": {} }},
      *   @OA\Parameter(
      *     @OA\Schema(type="string"),
-     *     in="query",
-     *     allowReserved=true,
-     *     name="api_token",
-     *     parameter="api_token",
-     *     description="Personal api_token of the user"
+     *     in="header",
+     *     name="Accept",
+     *     example="application/json"
      *   ),
      *   @OA\Parameter(
      *     @OA\Schema(type="integer"),
@@ -327,7 +323,7 @@ class FilesController extends ApiController
      * @param \Motor\Media\Models\File $record
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(File $record)
+    public function destroy(File $record): JsonResponse
     {
         $result = FileService::delete($record)
                              ->getResult();

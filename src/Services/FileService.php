@@ -3,8 +3,8 @@
 namespace Motor\Media\Services;
 
 use Illuminate\Support\Arr;
-use Motor\Backend\Models\Category;
-use Motor\Backend\Services\BaseService;
+use Motor\Admin\Models\Category;
+use Motor\Admin\Services\BaseService;
 use Motor\Core\Filter\Renderers\RelationRenderer;
 use Motor\Media\Models\File;
 
@@ -17,6 +17,9 @@ class FileService extends BaseService
 {
     protected $model = File::class;
 
+    /**
+     *
+     */
     public function filters()
     {
         $categories = Category::where('scope', 'media')
@@ -43,25 +46,45 @@ class FileService extends BaseService
                      ->setOptions($options);
     }
 
+    /**
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     */
     public function afterCreate()
     {
         $this->upload();
         $this->updateCategories();
     }
 
+    /**
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     */
     public function afterUpdate()
     {
         $this->upload();
         $this->updateCategories();
     }
 
+    /**
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     */
     protected function upload()
     {
         $this->uploadFile(Arr::get($this->data, 'file'), 'file');
     }
 
+    /**
+     *
+     */
     protected function updateCategories()
     {
+        // Only update categories if they are present in the request
+        if (! Arr::get($this->data, 'categories')) {
+            return;
+        }
+
         $this->record->categories()
                      ->sync(array_filter(Arr::get($this->data, 'categories')));
     }
