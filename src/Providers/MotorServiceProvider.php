@@ -97,10 +97,10 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function translations()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'motor-media');
+        $this->loadTranslationsFrom(__DIR__.'/../../lang', 'motor-media');
 
         $this->publishes([
-            __DIR__.'/../../resources/lang' => resource_path('lang/vendor/motor-media'),
+            __DIR__.'/../../lang' => resource_path('lang/vendor/motor-media'),
         ], 'motor-media-translations');
     }
 
