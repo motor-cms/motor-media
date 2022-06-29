@@ -1,6 +1,6 @@
 <?php
 /**
- * @param int $count
+ * @param  int  $count
  * @return mixed
  */
 function create_test_file($count = 1)

@@ -8,8 +8,6 @@ use Motor\Media\Models\File;
 
 /**
  * Class MotorServiceProvider
- *
- * @package Motor\Media\Providers
  */
 class MotorServiceProvider extends ServiceProvider
 {

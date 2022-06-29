@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'mediapool' => 'Mediapool'
+    'mediapool' => 'Mediapool',
 ];

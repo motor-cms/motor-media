@@ -11,8 +11,6 @@ use Motor\Media\Services\FileService;
 
 /**
  * Class FilesController
- *
- * @package Motor\Media\Http\Controllers\Api
  */
 class FilesController extends ApiController
 {
@@ -122,7 +120,7 @@ class FilesController extends ApiController
      *
      * Store a newly created resource in storage.
      *
-     * @param \Motor\Media\Http\Requests\Backend\FileRequest $request
+     * @param  \Motor\Media\Http\Requests\Backend\FileRequest  $request
      * @return \Illuminate\Http\JsonResponse|object
      */
     public function store(FileRequest $request)
@@ -185,7 +183,7 @@ class FilesController extends ApiController
      *
      * Display the specified resource.
      *
-     * @param \Motor\Media\Models\File $record
+     * @param  \Motor\Media\Models\File  $record
      * @return \Motor\Media\Http\Resources\FileResource
      */
     public function show(File $record)
@@ -249,8 +247,8 @@ class FilesController extends ApiController
      *
      * Update the specified resource in storage.
      *
-     * @param \Motor\Media\Http\Requests\Backend\FileRequest $request
-     * @param \Motor\Media\Models\File $record
+     * @param  \Motor\Media\Http\Requests\Backend\FileRequest  $request
+     * @param  \Motor\Media\Models\File  $record
      * @return \Motor\Media\Http\Resources\FileResource
      */
     public function update(FileRequest $request, File $record)
@@ -317,7 +315,7 @@ class FilesController extends ApiController
      *
      * Remove the specified resource from storage.
      *
-     * @param \Motor\Media\Models\File $record
+     * @param  \Motor\Media\Models\File  $record
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(File $record)

@@ -65,7 +65,7 @@ class FileResource extends BaseResource
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
@@ -75,7 +75,7 @@ class FileResource extends BaseResource
             $file = new MediaResource($this->getFirstMedia('file'));
 
             $firstMedia = $this->getFirstMedia('file');
-            if (!is_null($firstMedia)) {
+            if (! is_null($firstMedia)) {
                 $exists = file_exists($firstMedia->getPath());
             }
             $categories = CategoryResource::collection($this->categories);
@@ -86,7 +86,7 @@ class FileResource extends BaseResource
             try {
                 $file = new MediaResource($this->file->getFirstMedia('file'));
                 $firstMedia = $this->file->getFirstMedia('file');
-                if (!is_null($firstMedia)) {
+                if (! is_null($firstMedia)) {
                     $exists = file_exists($firstMedia->getPath());
                 }
                 $categories = CategoryResource::collection($this->file->categories);

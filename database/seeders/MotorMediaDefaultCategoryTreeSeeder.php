@@ -9,7 +9,6 @@ use Illuminate\Database\Seeder;
  */
 class MotorMediaDefaultCategoryTreeSeeder extends Seeder
 {
-
     /**
      * Run the database seeds.
      *

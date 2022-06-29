@@ -36,6 +36,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read \Motor\Backend\Models\User|null $eraser
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
  * @property-read \Motor\Backend\Models\User $updater
+ *
  * @method static Builder|File filteredBy(Filter $filter, $column)
  * @method static Builder|File filteredByMultiple(Filter $filter)
  * @method static Builder|File newModelQuery()
@@ -64,7 +65,8 @@ class File extends Model implements HasMedia
     use InteractsWithMedia;
 
     /**
-     * @param Media|null $media
+     * @param  Media|null  $media
+     *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void

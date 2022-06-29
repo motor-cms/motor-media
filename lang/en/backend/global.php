@@ -2,5 +2,5 @@
 
 return [
     'media'   => 'Media',
-    'no_file' => 'No file'
+    'no_file' => 'No file',
 ];

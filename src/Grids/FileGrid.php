@@ -8,8 +8,6 @@ use Motor\Backend\Grid\Renderers\FileRenderer;
 
 /**
  * Class FileGrid
- *
- * @package Motor\Media\Grids
  */
 class FileGrid extends Grid
 {

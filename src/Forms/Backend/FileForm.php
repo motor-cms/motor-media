@@ -7,8 +7,6 @@ use Motor\Media\Models\File;
 
 /**
  * Class FileForm
- *
- * @package Motor\Media\Forms\Backend
  */
 class FileForm extends Form
 {
@@ -36,12 +34,12 @@ class FileForm extends Form
                  'default_value' => 1,
              ])
              ->add('file', 'file_file', [
-                     'label' => trans('motor-backend::backend/global.file'),
-                     'model' => File::class,
-                 ])
+                 'label' => trans('motor-backend::backend/global.file'),
+                 'model' => File::class,
+             ])
              ->add('submit', 'submit', [
-                     'attr'  => ['class' => 'btn btn-primary'],
-                     'label' => trans('motor-media::backend/files.save'),
-                 ]);
+                 'attr'  => ['class' => 'btn btn-primary'],
+                 'label' => trans('motor-media::backend/files.save'),
+             ]);
     }
 }

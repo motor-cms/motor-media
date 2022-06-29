@@ -1,4 +1,5 @@
 <?php
+
 Route::group([
     'as'         => 'backend.',
     'prefix'     => 'backend',

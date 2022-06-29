@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Motor\Media\Models\File $file
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ *
  * @method static Builder|FileAssociation newModelQuery()
  * @method static Builder|FileAssociation newQuery()
  * @method static Builder|FileAssociation query()

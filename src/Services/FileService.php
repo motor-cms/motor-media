@@ -9,8 +9,6 @@ use Motor\Media\Models\File;
 
 /**
  * Class FileService
- *
- * @package Motor\Media\Services
  */
 class FileService extends BaseService
 {
