@@ -6,8 +6,6 @@ use Motor\Admin\Http\Requests\Request;
 
 /**
  * Class FilePatchRequest
- *
- * @package Motor\Media\Http\Requests\Backend
  */
 class FilePatchRequest extends Request
 {

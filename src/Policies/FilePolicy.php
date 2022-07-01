@@ -13,8 +13,8 @@ class FilePolicy
     /**
      * Perform pre-authorization checks.
      *
-     * @param \Motor\Admin\Models\User $user
-     * @param string $ability
+     * @param  \Motor\Admin\Models\User  $user
+     * @param  string  $ability
      * @return void|bool
      */
     public function before(User $user, $ability)
@@ -27,7 +27,7 @@ class FilePolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param \Motor\Admin\Models\User $user
+     * @param  \Motor\Admin\Models\User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -38,8 +38,8 @@ class FilePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param \Motor\Admin\Models\User $user
-     * @param \Motor\Media\Models\File $file
+     * @param  \Motor\Admin\Models\User  $user
+     * @param  \Motor\Media\Models\File  $file
      * @return mixed
      */
     public function view(User $user, File $file)
@@ -50,7 +50,7 @@ class FilePolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param \Motor\Admin\Models\User $user
+     * @param  \Motor\Admin\Models\User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -61,8 +61,8 @@ class FilePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param \Motor\Admin\Models\User $user
-     * @param \Motor\Media\Models\File $file
+     * @param  \Motor\Admin\Models\User  $user
+     * @param  \Motor\Media\Models\File  $file
      * @return mixed
      */
     public function update(User $user, File $file)
@@ -73,8 +73,8 @@ class FilePolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param \Motor\Admin\Models\User $user
-     * @param \Motor\Media\Models\File $file
+     * @param  \Motor\Admin\Models\User  $user
+     * @param  \Motor\Media\Models\File  $file
      * @return mixed
      */
     public function delete(User $user, File $file)
@@ -85,8 +85,8 @@ class FilePolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param \Motor\Admin\Models\User $user
-     * @param \Motor\Media\Models\File $file
+     * @param  \Motor\Admin\Models\User  $user
+     * @param  \Motor\Media\Models\File  $file
      * @return mixed
      */
     public function restore(User $user, File $file)
@@ -97,8 +97,8 @@ class FilePolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param \Motor\Admin\Models\User $user
-     * @param \Motor\Media\Models\File $file
+     * @param  \Motor\Admin\Models\User  $user
+     * @param  \Motor\Media\Models\File  $file
      * @return mixed
      */
     public function forceDelete(User $user, File $file)

@@ -5,7 +5,6 @@ namespace Motor\Media\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
-
 /**
  * Motor\Media\Models\FileAssociation
  *
@@ -19,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Motor\Media\Models\File $file
  * @property-read Model|\Eloquent $model
+ *
  * @method static Builder|FileAssociation newModelQuery()
  * @method static Builder|FileAssociation newQuery()
  * @method static Builder|FileAssociation query()

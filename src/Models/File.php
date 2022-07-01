@@ -9,13 +9,11 @@ use Culpa\Traits\UpdatedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Motor\Admin\Models\Category;
-use Motor\Core\Filter\Filter;
 use Motor\Core\Traits\Filterable;
 use Motor\Core\Traits\Searchable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 
 /**
  * Motor\Media\Models\File
@@ -36,6 +34,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property-read int|null $categories_count
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
  * @property-read int|null $media_count
+ *
  * @method static Builder|File filteredBy(\Motor\Core\Filter\Filter $filter, $column)
  * @method static Builder|File filteredByMultiple(\Motor\Core\Filter\Filter $filter)
  * @method static Builder|File newModelQuery()
@@ -64,7 +63,8 @@ class File extends Model implements HasMedia
     use InteractsWithMedia;
 
     /**
-     * @param Media|null $media
+     * @param  Media|null  $media
+     *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void

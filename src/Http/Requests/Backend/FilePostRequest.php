@@ -6,8 +6,6 @@ use Motor\Admin\Http\Requests\Request;
 
 /**
  * Class FilePostRequest
- *
- * @package Motor\Media\Http\Requests\Backend
  */
 class FilePostRequest extends Request
 {

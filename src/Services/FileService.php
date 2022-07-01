@@ -10,16 +10,11 @@ use Motor\Media\Models\File;
 
 /**
  * Class FileService
- *
- * @package Motor\Media\Services
  */
 class FileService extends BaseService
 {
     protected $model = File::class;
 
-    /**
-     *
-     */
     public function filters()
     {
         $categories = Category::where('scope', 'media')
@@ -75,9 +70,6 @@ class FileService extends BaseService
         $this->uploadFile(Arr::get($this->data, 'file'), 'file');
     }
 
-    /**
-     *
-     */
     protected function updateCategories()
     {
         // Only update categories if they are present in the request
