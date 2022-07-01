@@ -1,5 +1,7 @@
 <?php
 
+use Motor\Media\Http\Controllers\Backend\FilesController;
+
 Route::group([
     'as'         => 'backend.',
     'prefix'     => 'backend',
@@ -11,6 +13,6 @@ Route::group([
     ],
 ], static function () {
     if (config('motor-media.routes.files')) {
-        Route::resource('files', 'FilesController');
+        Route::resource('files', FilesController::class);
     }
 });
