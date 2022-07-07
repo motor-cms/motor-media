@@ -3,7 +3,7 @@
 use Motor\Media\Http\Controllers\Api\FilesController;
 
 Route::group([
-    'middleware' => ['auth:sanctum', 'bindings', 'permission'],
+    'middleware' => ['auth:sanctum', 'bindings'],
     'prefix'     => 'api',
     'as'         => 'api.',
 ], static function () {
