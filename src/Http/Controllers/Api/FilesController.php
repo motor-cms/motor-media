@@ -125,18 +125,14 @@ class FilesController extends ApiController
      */
     public function store(FilePostRequest $request): JsonResponse
     {
-        // Check if we have multiple files and instance one new file model per uploaded file
-        for ($i = 0; $i < count($request->get('file')); $i++) {
+        for ($i = 0; $i < count($request->get('files')); $i++) {
             // Copy request object
             $requestClone = $request->all();
-            $requestClone['file'] = $requestClone['file'][$i];
-            $result = FileService::create($requestClone)
-                                 ->getResult();
+            $requestClone['file'] = $requestClone['files'][$i];
+            FileService::create($requestClone)
+                ->getResult();
         }
-
-        return (new FileResource($result))->additional(['message' => 'File created'])
-                                          ->response()
-                                          ->setStatusCode(201);
+        return response()->json(['message' => 'File created'])->setStatusCode(201);
     }
 
     /**

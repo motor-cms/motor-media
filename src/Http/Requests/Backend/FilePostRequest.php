@@ -86,9 +86,9 @@ class FilePostRequest extends Request
             'alt_text'     => 'nullable',
             'is_global'    => 'nullable',
             'categories'   => 'required|array|min:1',
-            'file'         => 'required',
-            'file.dataUrl' => 'required|string',
-            'file.name'    => 'nullable|string',
+            'files'        => 'required|array|min:1',
+            'files.*.dataUrl' => 'required|string',
+            'files.*.name'    => 'nullable|string',
         ];
     }
 }
