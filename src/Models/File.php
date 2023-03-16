@@ -1,11 +1,6 @@
 <?php
 
 namespace Motor\Media\Models;
-
-use Culpa\Traits\Blameable;
-use Culpa\Traits\CreatedBy;
-use Culpa\Traits\DeletedBy;
-use Culpa\Traits\UpdatedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Motor\Admin\Models\Category;
