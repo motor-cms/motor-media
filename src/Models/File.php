@@ -2,16 +2,14 @@
 
 namespace Motor\Media\Models;
 
-use Culpa\Traits\Blameable;
-use Culpa\Traits\CreatedBy;
-use Culpa\Traits\DeletedBy;
-use Culpa\Traits\UpdatedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Motor\Backend\Models\Category;
 use Motor\Core\Filter\Filter;
 use Motor\Core\Traits\Filterable;
 use Motor\Core\Traits\Searchable;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -61,8 +59,9 @@ class File extends Model implements HasMedia
 {
     use Searchable;
     use Filterable;
-    use Blameable, CreatedBy, UpdatedBy, DeletedBy;
+    use BlameableTrait;
     use InteractsWithMedia;
+    use HasUuids;
 
     /**
      * @param  Media|null  $media
@@ -84,13 +83,6 @@ class File extends Model implements HasMedia
              ->extractVideoFrameAtSecond(10)
              ->nonQueued();
     }
-
-    /**
-     * Columns for the Blameable trait
-     *
-     * @var array
-     */
-    protected $blameable = ['created', 'updated', 'deleted'];
 
     /**
      * Searchable columns for the searchable trait
