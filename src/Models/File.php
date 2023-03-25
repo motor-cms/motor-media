@@ -3,7 +3,7 @@
 namespace Motor\Media\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Kra8\Snowflake\HasSnowflakePrimary;
+use Kra8\Snowflake\HasShortFlakePrimary;
 use Illuminate\Database\Eloquent\Model;
 use Motor\Backend\Models\Category;
 use Motor\Core\Filter\Filter;
@@ -61,7 +61,7 @@ class File extends Model implements HasMedia
     use Filterable;
     use BlameableTrait;
     use InteractsWithMedia;
-    use HasSnowflakePrimary;
+    use HasShortFlakePrimary;
 
     /**
      * @param  Media|null  $media

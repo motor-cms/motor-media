@@ -17,31 +17,31 @@ class CreateFilesTable extends Migration
     {
         Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('client_id')->nullable()->index();
+            $table->bigInteger('client_id')->unsigned()->nullable()->index();
             $table->text('description');
             $table->string('author');
             $table->string('source');
             $table->string('alt_text');
             $table->boolean('is_global');
 
-            $table->integer('created_by')->nullable();
-            $table->integer('updated_by')->nullable();
-            $table->integer('deleted_by')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('updated_by')->nullable();
+            $table->bigInteger('deleted_by')->nullable();
             $table->timestamps();
 
             $table->foreign('client_id')->references('id')->on('clients')->onDelete('set null');
         });
 
         Schema::create('category_file', function (Blueprint $table) {
-            $table->integer('category_id')->unsigned()->index();
+            $table->bigInteger('category_id')->unsigned()->index();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->integer('file_id')->unsigned()->index();
+            $table->bigInteger('file_id')->unsigned()->index();
             $table->foreign('file_id')->references('id')->on('files')->onDelete('cascade');
         });
 
         Schema::create('file_associations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('file_id')->index();
+            $table->bigInteger('file_id')->unsigned()->index();
             $table->morphs('model');
             $table->string('identifier');
             $table->text('custom_properties');
