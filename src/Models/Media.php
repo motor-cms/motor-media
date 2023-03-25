@@ -2,9 +2,9 @@
 
 namespace Motor\Media\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Kra8\Snowflake\HasSnowflakePrimary;
 
 class Media extends \Spatie\MediaLibrary\MediaCollections\Models\Media
 {
-    use HasUuids;
+    use HasSnowflakePrimary;
 }

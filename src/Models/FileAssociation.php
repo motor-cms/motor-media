@@ -3,7 +3,7 @@
 namespace Motor\Media\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Kra8\Snowflake\HasSnowflakePrimary;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 class FileAssociation extends Model
 {
 
-    use HasUuids;
+    use HasSnowflakePrimary;
 
     /**
      * The attributes that are mass assignable.

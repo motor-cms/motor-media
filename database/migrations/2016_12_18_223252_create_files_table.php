@@ -16,7 +16,7 @@ class CreateFilesTable extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedInteger('client_id')->nullable()->index();
             $table->text('description');
             $table->string('author');
@@ -40,7 +40,7 @@ class CreateFilesTable extends Migration
         });
 
         Schema::create('file_associations', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->unsignedInteger('file_id')->index();
             $table->morphs('model');
             $table->string('identifier');
