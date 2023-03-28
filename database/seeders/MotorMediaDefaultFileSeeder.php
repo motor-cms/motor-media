@@ -21,12 +21,18 @@ class MotorMediaDefaultFileSeeder extends Seeder
      */
     public function run()
     {
+
+        if (env('APP_ENV') === 'local') {
+            $files = Storage::disk('media')->allFiles();
+            Storage::disk('media')->delete($files);
+        }
+
         $files = File::factory()->count(10)->create();
         $imageFile = file_get_contents('https://images.pexels.com/photos/7336640/pexels-photo-7336640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
         foreach ($files as $file) {
             $filename = \Str::random(10).".png";
-            Storage::put('/public/media/'. $file->id . '/' . $filename, $imageFile);
+            Storage::disk('media')->put( $file->id . '/' . $filename, $imageFile);
             sleep(1);
             $fileSize = strlen($imageFile);
             DB::table("media")->insert([
