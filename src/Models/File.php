@@ -2,10 +2,14 @@
 
 namespace Motor\Media\Models;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Motor\Admin\Models\Category;
+use Motor\Builder\Database\Factories\NavigationFactory;
+use Motor\Media\Database\Factories\FileFactory;
 use Motor\Core\Traits\Filterable;
 use Motor\Core\Traits\Searchable;
+use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -54,8 +58,9 @@ class File extends Model implements HasMedia
 {
     use Searchable;
     use Filterable;
-    use Blameable, CreatedBy, UpdatedBy, DeletedBy;
+    use BlameableTrait;
     use InteractsWithMedia;
+    use HasFactory;
 
     /**
      * @param  Media|null  $media
@@ -83,7 +88,7 @@ class File extends Model implements HasMedia
      *
      * @var array
      */
-    protected array $blameable = ['created', 'updated', 'deleted'];
+  //  protected array $blameable = ['created', 'updated', 'deleted'];
 
     /**
      * Searchable columns for the searchable trait
@@ -105,6 +110,11 @@ class File extends Model implements HasMedia
         'is_global',
         'alt_text',
     ];
+
+    protected static function newFactory(): FileFactory
+    {
+        return FileFactory::new();
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

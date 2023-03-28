@@ -1,6 +1,6 @@
 <?php
 
-namespace Motor\CMS\Database\Factories;
+namespace Motor\Media\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Motor\Media\Models\File;
@@ -22,7 +22,11 @@ class FileFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
+            'description' => $this->faker->sentence,
+            'author'        => $this->faker->name,
+            'source'        => $this->faker->url,
+            'alt_text'      => $this->faker->sentence,
+            'is_global'     => $this->faker->boolean,
         ];
     }
 }
