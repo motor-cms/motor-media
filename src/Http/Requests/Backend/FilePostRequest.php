@@ -87,6 +87,7 @@ class FilePostRequest extends Request
             'is_global'    => 'nullable',
             'categories'   => 'required|array|min:1',
             'files'        => 'required|array|min:1',
+            'file'         =>  'nullable',
             'files.*.dataUrl' => 'required|string',
             'files.*.name'    => 'nullable|string',
         ];
