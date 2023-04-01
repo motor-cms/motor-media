@@ -4,6 +4,7 @@ namespace Motor\Media\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Motor\Media\Console\Commands\MediaSyncToS3sCommand;
 use Motor\Media\Models\File;
 
 /**
@@ -25,6 +26,7 @@ class MotorServiceProvider extends ServiceProvider
         $this->views();
         $this->navigationItems();
         $this->permissions();
+        $this->registerCommands();
         $this->migrations();
         $this->publishResourceAssets();
         merge_local_config_with_db_configuration_variables('motor-media');
@@ -67,6 +69,19 @@ class MotorServiceProvider extends ServiceProvider
     {
         $config = $this->app['config']->get('motor-backend-permissions', []);
         $this->app['config']->set('motor-backend-permissions', array_replace_recursive(require __DIR__.'/../../config/motor-backend-permissions.php', $config));
+    }
+
+    /**
+     * Register commands
+     * @return void
+     */
+    public function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MediaSyncToS3sCommand::class,
+            ]);
+        }
     }
 
     /**
