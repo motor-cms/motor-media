@@ -15,4 +15,12 @@ return [
             'delete',
         ],
     ],
+    'ajax.files' => [
+        'name'   => 'motor-media::backend/files.ajax.files',
+        'values' => [
+            'read',
+            'write',
+            'delete',
+        ],
+    ],
 ];
