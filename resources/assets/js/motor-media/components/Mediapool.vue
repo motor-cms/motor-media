@@ -100,7 +100,7 @@ export default {
       });
     },
     isImage: function (file) {
-      if (file.file.mime_type === 'image/png' || file.file.mime_type === 'image/jpg' || file.file.mime_type === 'image/jpeg' || file.file.mime_type === 'video/mp4') {
+      if (file.file.mime_type === 'image/png' || file.file.mime_type === 'image/jpg' || file.file.mime_type === 'image/jpeg' || file.file.mime_type === 'video/x-m4v') {
         return true;
       }
       return false;
