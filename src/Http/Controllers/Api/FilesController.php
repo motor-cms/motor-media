@@ -26,21 +26,28 @@ class FilesController extends ApiController
      *   path="/api/files",
      *   summary="Get files collection",
      *   security={ {"sanctum": {} }},
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="string"),
      *     in="header",
      *     name="Accept",
      *     example="application/json"
      *   ),
+     *
      *   @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="data",
      *         type="array",
+     *
      *         @OA\Items(ref="#/components/schemas/FileResource")
      *       ),
+     *
      *       @OA\Property(
      *         property="meta",
      *         ref="#/components/schemas/PaginationMeta"
@@ -56,21 +63,21 @@ class FilesController extends ApiController
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="403",
      *     description="Access denied",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/AccessDenied"),
      *   )
      * )
      *
      * Display a listing of the resource.
-     *
-     * @return \Motor\Media\Http\Resources\FileCollection
      */
     public function index(): FileCollection
     {
         $paginator = FileService::collection()
-                                ->getPaginator();
+            ->getPaginator();
 
         return (new FileCollection($paginator))->additional(['message' => 'File collection read']);
     }
@@ -80,20 +87,27 @@ class FilesController extends ApiController
      *   tags={"FilesController"},
      *   path="/api/files",
      *   summary="Create new file",
+     *
      *   @OA\RequestBody(
+     *
      *     @OA\JsonContent(ref="#/components/schemas/FilePostRequest")
      *   ),
      *   security={ {"sanctum": {} }},
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="string"),
      *     in="header",
      *     name="Accept",
      *     example="application/json"
      *   ),
+     *
      *   @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="data",
      *         type="object",
@@ -106,22 +120,23 @@ class FilesController extends ApiController
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="403",
      *     description="Access denied",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/AccessDenied"),
      *   ),
+     *
      *   @OA\Response(
      *     response="404",
      *     description="Not found",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/NotFound"),
      *   )
      * )
      *
      * Store a newly created resource in storage.
-     *
-     * @param  \Motor\Media\Http\Requests\Backend\FilePostRequest  $request
-     * @return \Illuminate\Http\JsonResponse
      */
     public function store(FilePostRequest $request): JsonResponse
     {
@@ -132,6 +147,7 @@ class FilesController extends ApiController
             FileService::create($requestClone)
                 ->getResult();
         }
+
         return response()->json(['message' => 'File created'])->setStatusCode(201);
     }
 
@@ -141,23 +157,30 @@ class FilesController extends ApiController
      *   path="/api/files/{file}",
      *   summary="Get single file",
      *   security={ {"sanctum": {} }},
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="string"),
      *     in="header",
      *     name="Accept",
      *     example="application/json"
      *   ),
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="integer"),
      *     in="path",
      *     name="file",
      *     parameter="file",
      *     description="File id"
      *   ),
+     *
      *   @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="data",
      *         type="object",
@@ -170,27 +193,28 @@ class FilesController extends ApiController
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="403",
      *     description="Access denied",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/AccessDenied"),
      *   ),
+     *
      *   @OA\Response(
      *     response="404",
      *     description="Not found",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/NotFound"),
      *   )
      * )
      *
      * Display the specified resource.
-     *
-     * @param  \Motor\Media\Models\File  $record
-     * @return \Motor\Media\Http\Resources\FileResource
      */
     public function show(File $record): FileResource
     {
         $result = FileService::show($record)
-                             ->getResult();
+            ->getResult();
 
         return (new FileResource($result))->additional(['message' => 'File read']);
     }
@@ -200,27 +224,36 @@ class FilesController extends ApiController
      *   tags={"FilesController"},
      *   path="/api/files/{file}",
      *   summary="Update an existing file",
+     *
      *   @OA\RequestBody(
+     *
      *     @OA\JsonContent(ref="#/components/schemas/FilePatchRequest")
      *   ),
      *   security={ {"sanctum": {} }},
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="string"),
      *     in="header",
      *     name="Accept",
      *     example="application/json"
      *   ),
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="integer"),
      *     in="path",
      *     name="file",
      *     parameter="file",
      *     description="File id"
      *   ),
+     *
      *   @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="data",
      *         type="object",
@@ -233,28 +266,28 @@ class FilesController extends ApiController
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="403",
      *     description="Access denied",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/AccessDenied"),
      *   ),
+     *
      *   @OA\Response(
      *     response="404",
      *     description="Not found",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/NotFound"),
      *   )
      * )
      *
      * Update the specified resource in storage.
-     *
-     * @param  \Motor\Media\Http\Requests\Backend\FilePatchRequest  $request
-     * @param  \Motor\Media\Models\File  $record
-     * @return \Motor\Media\Http\Resources\FileResource
      */
     public function update(FilePatchRequest $request, File $record): FileResource
     {
         $result = FileService::update($record, $request)
-                             ->getResult();
+            ->getResult();
 
         return (new FileResource($result))->additional(['message' => 'File updated']);
     }
@@ -265,23 +298,30 @@ class FilesController extends ApiController
      *   path="/api/files/{file}",
      *   summary="Delete a file",
      *   security={ {"sanctum": {} }},
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="string"),
      *     in="header",
      *     name="Accept",
      *     example="application/json"
      *   ),
+     *
      *   @OA\Parameter(
+     *
      *     @OA\Schema(type="integer"),
      *     in="path",
      *     name="file",
      *     parameter="file",
      *     description="File id"
      *   ),
+     *
      *   @OA\Response(
      *     response=200,
      *     description="Success",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -289,20 +329,27 @@ class FilesController extends ApiController
      *       )
      *     )
      *   ),
+     *
      *   @OA\Response(
      *     response="403",
      *     description="Access denied",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/AccessDenied"),
      *   ),
+     *
      *   @OA\Response(
      *     response="404",
      *     description="Not found",
+     *
      *     @OA\JsonContent(ref="#/components/schemas/NotFound"),
      *   ),
+     *
      *   @OA\Response(
      *     response="400",
      *     description="Bad request",
+     *
      *     @OA\JsonContent(
+     *
      *       @OA\Property(
      *         property="message",
      *         type="string",
@@ -313,14 +360,11 @@ class FilesController extends ApiController
      * )
      *
      * Remove the specified resource from storage.
-     *
-     * @param  \Motor\Media\Models\File  $record
-     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(File $record): JsonResponse
     {
         $result = FileService::delete($record)
-                             ->getResult();
+            ->getResult();
 
         if ($result) {
             return response()->json(['message' => 'File deleted']);

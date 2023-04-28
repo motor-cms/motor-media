@@ -1,14 +1,15 @@
 <?php
 
 namespace Motor\Media\Models;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Kra8\Snowflake\HasShortflakePrimary;
 use Motor\Admin\Models\Category;
-use Motor\Builder\Database\Factories\NavigationFactory;
-use Motor\Media\Database\Factories\FileFactory;
 use Motor\Core\Traits\Filterable;
 use Motor\Core\Traits\Searchable;
+use Motor\Media\Database\Factories\FileFactory;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -52,6 +53,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|File whereSource($value)
  * @method static Builder|File whereUpdatedAt($value)
  * @method static Builder|File whereUpdatedBy($value)
+ *
  * @mixin \Eloquent
  */
 class File extends Model implements HasMedia
@@ -61,39 +63,34 @@ class File extends Model implements HasMedia
     use BlameableTrait;
     use InteractsWithMedia;
     use HasFactory;
+    use HasShortflakePrimary;
 
     /**
-     * @param  Media|null  $media
-     *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-             ->width(400)
-             ->height(400)
-             ->format('png')
-             ->extractVideoFrameAtSecond(10)
-             ->nonQueued();
+            ->width(400)
+            ->height(400)
+            ->format('png')
+            ->extractVideoFrameAtSecond(10)
+            ->nonQueued();
         $this->addMediaConversion('preview')
-             ->width(400)
-             ->height(400)
-             ->format('png')
-             ->extractVideoFrameAtSecond(10)
-             ->nonQueued();
+            ->width(400)
+            ->height(400)
+            ->format('png')
+            ->extractVideoFrameAtSecond(10)
+            ->nonQueued();
     }
 
     /**
      * Columns for the Blameable trait
-     *
-     * @var array
      */
   //  protected array $blameable = ['created', 'updated', 'deleted'];
 
     /**
      * Searchable columns for the searchable trait
-     *
-     * @var array
      */
     protected array $searchableColumns = ['description', 'author', 'source', 'alt_text'];
 
@@ -116,9 +113,6 @@ class File extends Model implements HasMedia
         return FileFactory::new();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Category::class);

@@ -9,6 +9,7 @@ use Motor\Admin\Http\Requests\Request;
  *
  * @OA\Schema(
  *   schema="FilePostRequest",
+ *
  *   @OA\Property(
  *     property="client_id",
  *     type="integer",
@@ -43,13 +44,16 @@ use Motor\Admin\Http\Requests\Request;
  *     property="categories",
  *     type="array",
  *     description="Array of category ids",
+ *
  *     @OA\Items(
  *       anyOf={
+ *
  *         @OA\Schema(type="integer")
  *       }
  *     ),
  *     example="[1,3]"
  *   ),
+ *
  *   @OA\Property(
  *     property="file",
  *     type="object",
@@ -60,11 +64,8 @@ use Motor\Admin\Http\Requests\Request;
  */
 class FilePostRequest extends Request
 {
-
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
     public function authorize(): bool
     {
@@ -73,8 +74,6 @@ class FilePostRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

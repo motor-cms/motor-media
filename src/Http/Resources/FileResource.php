@@ -11,6 +11,7 @@ use Motor\Admin\Http\Resources\MediaResource;
 /**
  * @OA\Schema(
  *   schema="FileResource",
+ *
  *   @OA\Property(
  *     property="id",
  *     type="integer",
@@ -59,10 +60,12 @@ use Motor\Admin\Http\Resources\MediaResource;
  *   @OA\Property(
  *     property="categories",
  *     type="array",
+ *
  *     @OA\Items(
  *       ref="#/components/schemas/CategoryResource"
  *     ),
  *   ),
+ *
  *   @OA\Property(
  *     property="exists",
  *     type="boolean",
@@ -76,7 +79,6 @@ class FileResource extends BaseResource
      * Transform the resource into an array.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return array
      */
     public function toArray($request): array
     {
