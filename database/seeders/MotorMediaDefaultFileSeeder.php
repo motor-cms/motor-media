@@ -4,6 +4,7 @@ namespace Motor\Media\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Motor\Admin\Http\Resources\MediaResource;
 use Motor\Media\Models\File;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -31,7 +32,7 @@ class MotorMediaDefaultFileSeeder extends Seeder
         $imageFile = file_get_contents('https://images.pexels.com/photos/7336640/pexels-photo-7336640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
 
         foreach ($files as $file) {
-            $filename = \Str::random(10).".png";
+            $filename = Str::random(10).".png";
             Storage::disk('media')->put( $file->id . '/' . $filename, $imageFile);
             sleep(1);
             $fileSize = strlen($imageFile);
@@ -49,7 +50,7 @@ class MotorMediaDefaultFileSeeder extends Seeder
                 'responsive_images' => '[]',
                 'order_column' => 1,
                 'conversions_disk' => "media",
-                'uuid' => \Str::uuid(),
+                'uuid' => Str::uuid(),
                 'generated_conversions' => '{"thumb": true, "preview": true}',
             ]);
         }
