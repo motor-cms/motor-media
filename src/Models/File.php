@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kra8\Snowflake\HasShortflakePrimary;
+use Laravel\Scout\Searchable;
 use Motor\Admin\Models\Category;
 use Motor\Core\Traits\Filterable;
-use Motor\Core\Traits\Searchable;
 use Motor\Media\Database\Factories\FileFactory;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -66,6 +66,14 @@ class File extends Model implements HasMedia
     use HasShortflakePrimary;
 
     /**
+     * Get the name of the index associated with the model.
+     */
+    public function searchableAs(): string
+    {
+        return 'motor_media_files_index';
+    }
+
+    /**
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void
@@ -83,16 +91,6 @@ class File extends Model implements HasMedia
             ->extractVideoFrameAtSecond(10)
             ->nonQueued();
     }
-
-    /**
-     * Columns for the Blameable trait
-     */
-  //  protected array $blameable = ['created', 'updated', 'deleted'];
-
-    /**
-     * Searchable columns for the searchable trait
-     */
-    protected array $searchableColumns = ['description', 'author', 'source', 'alt_text'];
 
     /**
      * The attributes that are mass assignable.
