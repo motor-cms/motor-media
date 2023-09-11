@@ -5,6 +5,7 @@ namespace Motor\Media\Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Kra8\Snowflake\Snowflake;
 use Motor\Media\Models\File;
 use Storage;
 
@@ -34,6 +35,7 @@ class MotorMediaDefaultFileSeeder extends Seeder
             Storage::disk('media')->put($file->id.'/'.$filename, $imageFile);
             $fileSize = strlen($imageFile);
             DB::table('media')->insert([
+                'id' => app(Snowflake::class)->short(),
                 'model_type' => "Motor\Media\Models\File",
                 'model_id' => $file->id,
                 'collection_name' => 'file',
