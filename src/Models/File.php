@@ -85,8 +85,8 @@ class File extends Model implements HasMedia
             ->extractVideoFrameAtSecond(10)
             ->nonQueued();
         $this->addMediaConversion('preview')
-            ->width(400)
-            ->height(400)
+            ->width(1920)
+            ->height(1080)
             ->format('png')
             ->extractVideoFrameAtSecond(10)
             ->nonQueued();
