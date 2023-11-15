@@ -80,6 +80,7 @@ class File extends Model implements HasMedia
             'author' => $this->author,
             'alt_text' => $this->alt_text,
             'source' => $this->source,
+            'file_name' => $this->getFirstMedia('file')->file_name,
             'categories' => $this->categories->pluck('id')->toArray(),
         ];
     }
