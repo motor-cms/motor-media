@@ -73,6 +73,17 @@ class File extends Model implements HasMedia
         return 'motor_media_files_index';
     }
 
+    public function toSearchableArray()
+    {
+        return [
+            'description' => $this->description,
+            'author' => $this->author,
+            'alt_text' => $this->alt_text,
+            'source' => $this->source,
+            'categories' => $this->categories->pluck('id')->toArray(),
+        ];
+    }
+
     /**
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */

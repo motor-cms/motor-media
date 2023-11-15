@@ -18,7 +18,7 @@ return [
     'meilisearch' => [
         'index-settings' => [
             \Motor\Media\Models\File::class => [
-                'filterableAttributes' => [],
+                'filterableAttributes' => ['categories'],
                 'sortableAttributes'   => ['files.id', 'author', 'created_at', 'updated_at', 'id'],
             ],
         ],
