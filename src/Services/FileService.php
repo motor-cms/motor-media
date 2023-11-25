@@ -41,6 +41,17 @@ class FileService extends BaseService
             ->setOptions($options);
     }
 
+    public function beforeCreate()
+    {
+        // check if we have separate description and alt_text fields in the file object
+        if (Arr::get($this->data, 'file.description')) {
+            $this->data['description'] = Arr::get($this->data, 'file.description');
+        }
+        if (Arr::get($this->data, 'file.alt_text')) {
+            $this->data['alt_text'] = Arr::get($this->data, 'file.alt_text');
+        }
+    }
+
     /**
      * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
      * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
@@ -49,6 +60,7 @@ class FileService extends BaseService
     {
         $this->upload();
         $this->updateCategories();
+        $this->updateTags();
     }
 
     /**
@@ -59,6 +71,7 @@ class FileService extends BaseService
     {
         $this->upload();
         $this->updateCategories();
+        $this->updateTags();
     }
 
     /**
@@ -79,5 +92,12 @@ class FileService extends BaseService
 
         $this->record->categories()
             ->sync(array_filter(Arr::get($this->data, 'categories')));
+    }
+
+    protected function updateTags()
+    {
+        if (Arr::get($this->data, 'tags')) {
+            $this->record->syncTags(Arr::get($this->data, 'tags'));
+        }
     }
 }

@@ -14,6 +14,7 @@ use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Tags\HasTags;
 
 /**
  * Motor\Media\Models\File
@@ -64,6 +65,7 @@ class File extends Model implements HasMedia
     use InteractsWithMedia;
     use HasFactory;
     use HasShortflakePrimary;
+    use HasTags;
 
     /**
      * Get the name of the index associated with the model.
@@ -82,6 +84,8 @@ class File extends Model implements HasMedia
             'source' => $this->source,
             'file_name' => $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '',
             'categories' => $this->categories->pluck('id')->toArray(),
+            'tags' => $this->tags->pluck('name')->toArray(),
+            'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
         ];
     }
 
@@ -116,6 +120,7 @@ class File extends Model implements HasMedia
         'source',
         'is_global',
         'alt_text',
+        'is_excluded_from_search_index',
     ];
 
     protected static function newFactory(): FileFactory

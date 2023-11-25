@@ -108,17 +108,24 @@ class FileResource extends BaseResource
         }
 
         return [
-            'id'          => (int) $this->id,
-            'client_id'   => $this->client_id,
-            'client'      => new ClientResource($this->client),
-            'description' => $this->description,
-            'author'      => $this->author,
-            'source'      => $this->source,
-            'is_global'   => $this->is_global,
-            'alt_text'    => $this->alt_text,
-            'file'        => $file ?? null,
-            'categories'  => $categories ?? null,
-            'exists'      => $exists ?? false,
+            'id'                            => (int) $this->id,
+            'client_id'                     => $this->client_id,
+            'client'                        => new ClientResource($this->client),
+            'description'                   => $this->description,
+            'author'                        => $this->author,
+            'source'                        => $this->source,
+            'is_global'                     => $this->is_global,
+            'alt_text'                      => $this->alt_text,
+            'file'                          => $file ?? null,
+            'categories'                    => $categories ?? null,
+            'exists'                        => $exists ?? false,
+            'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
+            'tags'                          => $this->tags()
+                ->get()
+                ->map(function ($tag) {
+                    return $tag->name;
+                }),
+
         ];
     }
 }
