@@ -78,13 +78,15 @@ class File extends Model implements HasMedia
     public function toSearchableArray()
     {
         return [
-            'description' => $this->description,
-            'author' => $this->author,
-            'alt_text' => $this->alt_text,
-            'source' => $this->source,
-            'file_name' => $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '',
-            'categories' => $this->categories->pluck('id')->toArray(),
-            'tags' => $this->tags->pluck('name')->toArray(),
+            'description'                   => $this->description,
+            'author'                        => $this->author,
+            'alt_text'                      => $this->alt_text,
+            'source'                        => $this->source,
+            'file_name'                     => $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '',
+            'categories'                    => $this->categories->pluck('id')
+                ->toArray(),
+            'tags'                          => $this->tags->pluck('name')
+                ->toArray(),
             'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
         ];
     }
@@ -94,18 +96,29 @@ class File extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb')
-            ->width(400)
-            ->height(400)
-            ->format('png')
-            ->extractVideoFrameAtSecond(10)
-            ->nonQueued();
-        $this->addMediaConversion('preview')
-            ->width(1920)
-            ->height(1080)
-            ->format('png')
-            ->extractVideoFrameAtSecond(10)
-            ->nonQueued();
+        if ($media->mime_type == 'image/gif') {
+            $this->addMediaConversion('thumb')
+                ->keepOriginalImageFormat()
+                ->nonOptimized()
+                ->nonQueued();
+            $this->addMediaConversion('preview')
+                ->keepOriginalImageFormat()
+                ->nonOptimized()
+                ->nonQueued();
+        } else {
+            $this->addMediaConversion('thumb')
+                ->width(400)
+                ->height(400)
+                //->format('png')
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
+            $this->addMediaConversion('preview')
+                ->width(1920)
+                ->height(1080)
+                //->format('png')
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
+        }
     }
 
     /**
