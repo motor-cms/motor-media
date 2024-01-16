@@ -109,13 +109,13 @@ class File extends Model implements HasMedia
             $this->addMediaConversion('thumb')
                 ->width(400)
                 ->height(400)
-                //->format('png')
+                ->keepOriginalImageFormat()
                 ->extractVideoFrameAtSecond(10)
                 ->nonQueued();
             $this->addMediaConversion('preview')
                 ->width(1920)
                 ->height(1080)
-                //->format('png')
+                ->keepOriginalImageFormat()
                 ->extractVideoFrameAtSecond(10)
                 ->nonQueued();
         }
