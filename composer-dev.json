@@ -13,7 +13,8 @@
   ],
   "require": {
     "php": "^8.2",
-    "php-ffmpeg/php-ffmpeg": "^v1.0"
+    "php-ffmpeg/php-ffmpeg": "^v1.0",
+    "league/flysystem-aws-s3-v3": "^3.0"
   },
   "autoload": {
     "psr-4": {
