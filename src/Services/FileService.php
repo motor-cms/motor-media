@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Motor\Admin\Models\Category;
 use Motor\Admin\Services\BaseService;
 use Motor\Core\Filter\Renderers\RelationRenderer;
+use Motor\Core\Filter\Renderers\SelectRenderer;
 use Motor\Media\Models\File;
 
 /**
@@ -39,6 +40,8 @@ class FileService extends BaseService
             ->setJoin('category_file')
             ->setEmptyOption('-- '.trans('motor-backend::backend/categories.categories').' --')
             ->setOptions($options);
+
+        $this->filter->add(new SelectRenderer('mime_type'))->setOptions(['application/pdf' => 'PDF']);
     }
 
     public function beforeCreate()
