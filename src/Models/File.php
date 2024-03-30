@@ -70,7 +70,16 @@ class File extends Model implements HasMedia
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        if ($media->mime_type != 'image/gif') {
+        if ($media->mime_type == 'image/gif') {
+            $this->addMediaConversion('thumb')
+                 ->format('png')
+                 ->nonOptimized()
+                 ->nonQueued();
+            $this->addMediaConversion('preview')
+                 ->format('png')
+                 ->nonOptimized()
+                 ->nonQueued();
+        } else {
             $this->addMediaConversion('thumb')
                  ->width(400)
                  ->height(400)
