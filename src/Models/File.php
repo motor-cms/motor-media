@@ -64,24 +64,26 @@ class File extends Model implements HasMedia
     use HasShortflakePrimary;
 
     /**
-     * @param  Media|null  $media
+     * @param Media|null $media
      *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
     public function registerMediaConversions(Media $media = null): void
     {
-        $this->addMediaConversion('thumb')
-             ->width(400)
-             ->height(400)
-             ->format('png')
-             ->extractVideoFrameAtSecond(10)
-             ->nonQueued();
-        $this->addMediaConversion('preview')
-             ->width(400)
-             ->height(400)
-             ->format('png')
-             ->extractVideoFrameAtSecond(10)
-             ->nonQueued();
+        if ($media->mime_type != 'image/gif') {
+            $this->addMediaConversion('thumb')
+                 ->width(400)
+                 ->height(400)
+                 ->keepOriginalImageFormat()
+                 ->extractVideoFrameAtSecond(10)
+                 ->nonQueued();
+            $this->addMediaConversion('preview')
+                 ->width(1920)
+                 ->height(1080)
+                 ->keepOriginalImageFormat()
+                 ->extractVideoFrameAtSecond(10)
+                 ->nonQueued();
+        }
     }
 
     /**
