@@ -64,6 +64,9 @@ class FileService extends BaseService
         $this->upload();
         $this->updateCategories();
         $this->updateTags();
+
+        // We need to update the model for scout
+        $this->record->refresh()->searchable();
     }
 
     /**
@@ -75,6 +78,9 @@ class FileService extends BaseService
         $this->upload();
         $this->updateCategories();
         $this->updateTags();
+
+        // We need to update the model for scout
+        $this->record->refresh()->searchable();
     }
 
     /**
