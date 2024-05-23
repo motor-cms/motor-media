@@ -77,13 +77,17 @@ class File extends Model implements HasMedia
 
     public function toSearchableArray()
     {
+        $file_name = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '';
+        $mime_type = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '';
         return [
             'description'                   => $this->description,
             'author'                        => $this->author,
             'alt_text'                      => $this->alt_text,
             'source'                        => $this->source,
-            'file_name'                     => $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '',
-            'mime_type'                     => $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '',
+            'file_name'                     => $file_name,
+            'file.file_name'                     => $file_name,
+            'mime_type'                     => $mime_type,
+            'file.mime_type'                     => $mime_type,
             'categories'                    => $this->categories->pluck('id')
                 ->toArray(),
             'tags'                          => $this->tags->pluck('name')
