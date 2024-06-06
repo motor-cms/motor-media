@@ -147,6 +147,9 @@ class FilesController extends ApiController
             FileService::create($requestClone)
                 ->getResult();
         }
+        if (count($request->get('files')) == 0) {
+            FileService::create($request)->getResult();
+        }
 
         return response()->json(['message' => 'File created'])->setStatusCode(201);
     }
