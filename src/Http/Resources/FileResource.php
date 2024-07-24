@@ -88,7 +88,7 @@ class FileResource extends BaseResource
 
             $firstMedia = $this->getFirstMedia('file');
             if (! is_null($firstMedia)) {
-                $exists = file_exists($firstMedia->getPath());
+                $exists = file_exists($firstMedia->getPath()) || $firstMedia->disk == "media-s3";
             }
             $categories = CategoryResource::collection($this->categories);
         } catch (Exception $e) {
@@ -99,7 +99,7 @@ class FileResource extends BaseResource
                 $file = new MediaResource($this->file->getFirstMedia('file'));
                 $firstMedia = $this->file->getFirstMedia('file');
                 if (! is_null($firstMedia)) {
-                    $exists = file_exists($firstMedia->getPath());
+                    $exists = file_exists($firstMedia->getPath()) || $firstMedia->disk == "media-s3";
                 }
                 $categories = CategoryResource::collection($this->file->categories);
             } catch (Exception $e) {
@@ -118,7 +118,7 @@ class FileResource extends BaseResource
             'alt_text'                      => $this->alt_text,
             'file'                          => $file ?? null,
             'categories'                    => $categories ?? null,
-            'exists'                        => $exists ?? false,
+            'exists'                        => $exists ?? false, //always true for s3
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
             'tags'                          => $this->tags()
                 ->get()

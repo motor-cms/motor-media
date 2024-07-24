@@ -4,6 +4,9 @@ namespace Motor\Media\Providers;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Motor\Media\Console\Commands\MigrateMedia;
+use Motor\Media\Console\Commands\DeleteLocalMedia;
+use Motor\Media\Console\Commands\CopyMedia;
 use Motor\Media\Models\File;
 
 /**
@@ -24,6 +27,12 @@ class MotorServiceProvider extends ServiceProvider
         $this->permissions();
         $this->migrations();
         merge_local_config_with_db_configuration_variables('motor-media');
+        $this->commands([
+            MigrateMedia::class,
+            CopyMedia::class,
+            DeleteLocalMedia::class,
+
+        ]);
     }
 
     /**
