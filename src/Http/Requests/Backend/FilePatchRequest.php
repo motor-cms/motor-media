@@ -78,16 +78,41 @@ class FilePatchRequest extends Request
     public function rules(): array
     {
         return [
-            'client_id'    => 'nullable|integer',
-            'description'  => 'nullable',
-            'author'       => 'nullable',
-            'source'       => 'nullable',
-            'alt_text'     => 'nullable',
-            'is_global'    => 'nullable',
-            'categories'   => 'required|array|min:1',
-            'file'         => 'nullable',
-            'file.dataUrl' => 'nullable|string',
-            'file.name'    => 'nullable|string',
+            'client_id'    => [
+                'nullable',
+                'integer',
+            ],
+            'description'  => [
+                'nullable',
+            ],
+            'author'       => [
+                'nullable',
+            ],
+            'source'       => [
+                'nullable',
+            ],
+            'alt_text'     => [
+                'nullable',
+            ],
+            'is_global'    => [
+                'nullable',
+            ],
+            'categories'   => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'file'         => [
+                'nullable',
+            ],
+            'file.dataUrl' => [
+                'nullable',
+                'string',
+            ],
+            'file.name'    => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }

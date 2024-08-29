@@ -20,7 +20,7 @@ class FileService extends BaseService
     {
         $categories = Category::where('scope', 'media')
             ->where('_lft', '>', 1)
-            ->orderBy('_lft', 'ASC')
+            ->orderBy('_lft')
             ->get();
 
         $options = [];
