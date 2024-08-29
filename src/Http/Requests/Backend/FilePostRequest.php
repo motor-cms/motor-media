@@ -78,17 +78,46 @@ class FilePostRequest extends Request
     public function rules(): array
     {
         return [
-            'client_id'    => 'nullable|integer',
-            'description'  => 'nullable',
-            'author'       => 'nullable',
-            'source'       => 'nullable',
-            'alt_text'     => 'nullable',
-            'is_global'    => 'nullable',
-            'categories'   => 'required|array|min:1',
-            'files'        => 'required|array|min:1',
-            'file'         =>  'nullable',
-            'files.*.dataUrl' => 'required|string',
-            'files.*.name'    => 'nullable|string',
+            'client_id'    => [
+                'nullable',
+                'integer',
+            ],
+            'description'  => [
+                'nullable',
+            ],
+            'author'       => [
+                'nullable',
+            ],
+            'source'       => [
+                'nullable',
+            ],
+            'alt_text'     => [
+                'nullable',
+            ],
+            'is_global'    => [
+                'nullable',
+            ],
+            'categories'   => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'files'        => [
+                'required',
+                'array',
+                'min:1',
+            ],
+            'file'         => [
+                'nullable',
+            ],
+            'files.*.dataUrl' => [
+                'required',
+                'string',
+            ],
+            'files.*.name'    => [
+                'nullable',
+                'string',
+            ],
         ];
     }
 }
