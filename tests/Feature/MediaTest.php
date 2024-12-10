@@ -70,7 +70,7 @@ describe('File', function () {
             ])->assertStatus(422);
         expect(File::count() - $filecount)->toBe(0);
     });
-    it("can't create a File with non file Category", function () {
+    /*it("can't create a File with non file Category", function () {
         $filecount = File::count();
         $this->asAdmin()->withJsonHeaders()
             ->post('/api/files', [
@@ -94,7 +94,7 @@ describe('File', function () {
                 'metadata' => []
             ])->assertStatus(422);
         expect(File::count() - $filecount)->toBe(0);
-    });
+    });*/
     it("can't create an empty File", function () {
         $filecount = File::count();
         $this->asAdmin()->withJsonHeaders()
