@@ -102,6 +102,9 @@ class FilePostRequest extends Request
                 'array',
                 'min:1',
             ],
+            'categories.*' => [
+                'exists:categories,id'
+            ],
             'files'        => [
                 'required',
                 'array',

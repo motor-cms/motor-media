@@ -102,6 +102,9 @@ class FilePatchRequest extends Request
                 'array',
                 'min:1',
             ],
+            'categories.*' => [
+                'exists:categories,id'
+            ],
             'file'         => [
                 'nullable',
             ],
