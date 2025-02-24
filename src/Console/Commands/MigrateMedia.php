@@ -21,7 +21,7 @@ class MigrateMedia extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Migrate (move) media files to S3';
 
     /**
      * Execute the console command.
@@ -36,8 +36,11 @@ class MigrateMedia extends Command
                 try {
                     $movedItem = $mediaItem->move($model, 'file', 'media-s3');
                     $name = $movedItem->name;
-                    $this->info("Migrated ${name}");
-                } catch (Exception $e) {}
+                    $this->info("Migrated {$name}");
+                } catch (Exception $e) {
+                    $this->error("Error migrating {$mediaItem->name}");
+                    $this->error($e->getMessage());
+                }
             }
         });
         $this->info("Disk migration completed.");
