@@ -21,7 +21,7 @@ class CopyMedia extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Copy media files to S3';
 
     /**
      * Execute the console command.
@@ -32,16 +32,16 @@ class CopyMedia extends Command
             $mediaItems = $model->getMedia('file', function(Media $media) {
                 return $media->disk == 'media';
             });
-            $modelname = $model->description;
             foreach ($mediaItems as $mediaItem) {
-                if ($mediaItem->name == 'other.png') {
-                    $this->info("other");
-                }
+                $this->info("Copying {$mediaItem->name}");
                 try {
                     $copiedItem = $mediaItem->copy($model, 'file', 'media-s3');
                     $name = $copiedItem->name;
-                    $this->info("Copied ${name}");
-                } catch (Exception $e) {}
+                    $this->info("Copied {$name}");
+                } catch (Exception $e) {
+                    $this->error("Error copying {$mediaItem->name}");
+                    $this->error($e->getMessage());
+                }
             }
         });
         $this->info("Disk copy completed.");
