@@ -21,7 +21,7 @@ class DeleteLocalMedia extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Delete local media files';
 
     /**
      * Execute the console command.
@@ -34,8 +34,13 @@ class DeleteLocalMedia extends Command
             });
             foreach ($mediaItems as $mediaItem) {
                 $name = $mediaItem->name;
-                $mediaItem->forceDelete();
-                $this->info("Deleted ${name}");
+                try {
+                    $mediaItem->forceDelete();
+                    $this->info("Deleted {$name}");
+                } catch (Exception $e) {
+                    $this->error("Error deleting {$name}");
+                    $this->error($e->getMessage());
+                }
             }
         });
         $this->info("Deletion completed");
