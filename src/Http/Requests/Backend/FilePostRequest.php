@@ -103,7 +103,7 @@ class FilePostRequest extends Request
                 'min:1',
             ],
             'categories.*' => [
-                'exists:categories,id'
+                'exists:categories,id',
             ],
             'files'        => [
                 'required',

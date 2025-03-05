@@ -59,13 +59,13 @@ use Spatie\Tags\HasTags;
  */
 class File extends Model implements HasMedia
 {
-    use Searchable;
-    use Filterable;
     use BlameableTrait;
-    use InteractsWithMedia;
+    use Filterable;
     use HasFactory;
     use HasShortflakePrimary;
     use HasTags;
+    use InteractsWithMedia;
+    use Searchable;
 
     /**
      * Get the name of the index associated with the model.
@@ -79,6 +79,7 @@ class File extends Model implements HasMedia
     {
         $file_name = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '';
         $mime_type = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '';
+
         return [
             'description'                   => $this->description,
             'author'                        => $this->author,
@@ -99,7 +100,7 @@ class File extends Model implements HasMedia
     /**
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
