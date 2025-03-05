@@ -103,7 +103,7 @@ class FilePatchRequest extends Request
                 'min:1',
             ],
             'categories.*' => [
-                'exists:categories,id'
+                'exists:categories,id',
             ],
             'file'         => [
                 'nullable',

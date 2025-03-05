@@ -28,7 +28,7 @@ class DownloadsController extends ApiController
         } else {
             // download from s3 instead of just redirecting to file
             // return response()->redirectTo($download->getUrl());
-           return redirect(Storage::disk('media-s3')->temporaryUrl(
+            return redirect(Storage::disk('media-s3')->temporaryUrl(
                 $download->getPath(),
                 now()->addMinutes(60),
                 ['ResponseContentDisposition' => 'attachment']
