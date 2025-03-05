@@ -29,7 +29,7 @@ class MigrateMedia extends Command
     public function handle()
     {
         File::all()->each(function ($model) {
-            $mediaItems = $model->getMedia('file', function(Media $media) {
+            $mediaItems = $model->getMedia('file', function (Media $media) {
                 return $media->disk == 'media';
             });
             foreach ($mediaItems as $mediaItem) {
@@ -43,6 +43,6 @@ class MigrateMedia extends Command
                 }
             }
         });
-        $this->info("Disk migration completed.");
+        $this->info('Disk migration completed.');
     }
 }

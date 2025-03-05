@@ -29,7 +29,7 @@ class DeleteLocalMedia extends Command
     public function handle()
     {
         File::all()->each(function ($model) {
-            $mediaItems = $model->getMedia('file', function(Media $media) {
+            $mediaItems = $model->getMedia('file', function (Media $media) {
                 return $media->disk == 'media';
             });
             foreach ($mediaItems as $mediaItem) {
@@ -43,6 +43,6 @@ class DeleteLocalMedia extends Command
                 }
             }
         });
-        $this->info("Deletion completed");
+        $this->info('Deletion completed');
     }
 }
