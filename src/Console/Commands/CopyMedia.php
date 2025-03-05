@@ -29,7 +29,7 @@ class CopyMedia extends Command
     public function handle()
     {
         File::all()->each(function ($model) {
-            $mediaItems = $model->getMedia('file', function(Media $media) {
+            $mediaItems = $model->getMedia('file', function (Media $media) {
                 return $media->disk == 'media';
             });
             foreach ($mediaItems as $mediaItem) {
@@ -44,6 +44,6 @@ class CopyMedia extends Command
                 }
             }
         });
-        $this->info("Disk copy completed.");
+        $this->info('Disk copy completed.');
     }
 }

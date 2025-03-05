@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Support\Facades\Artisan;
-use Motor\Media\Models\File;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Motor\Admin\Models\Category;
+use Motor\Media\Models\File;
 
 describe('File', function () {
     it('can get all Files')
         ->asAdmin()
         ->get('/api/files')
         ->assertStatus(200)
-        ->assertJson(fn(AssertableJson $json) => $json->has(
+        ->assertJson(fn (AssertableJson $json) => $json->has(
             'data',
             10,
-            fn(AssertableJson $data) =>
-            $data
+            fn (AssertableJson $data) => $data
                 ->has('id')
                 ->has('author')
                 ->has('source')
@@ -24,7 +23,7 @@ describe('File', function () {
         $filecount = File::count();
         $this->asAdmin()
             ->post('/api/files', [
-                'alt_text' => "alttext",
+                'alt_text' => 'alttext',
                 'author' => 'author',
                 'categories' => [Category::whereName('Images')->first()->id],
                 'description' => 'An Image',
@@ -34,14 +33,14 @@ describe('File', function () {
                 ],
                 'files' => [
                     [
-                        'alt_text' => "",
+                        'alt_text' => '',
                         'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
                         'name' => 'test.pbm',
                         'description' => '',
-                    ]
+                    ],
                 ],
                 'is_excluded_from_search_index' => false,
-                'metadata' => []
+                'metadata' => [],
             ])->assertStatus(201);
         expect(File::count() - $filecount)->toBe(1);
     });
@@ -49,7 +48,7 @@ describe('File', function () {
         $filecount = File::count();
         $this->asAdmin()->withJsonHeaders()
             ->post('/api/files', [
-                'alt_text' => "alttext",
+                'alt_text' => 'alttext',
                 'author' => 'author',
                 'categories' => [0],
                 'description' => 'An Image',
@@ -59,14 +58,14 @@ describe('File', function () {
                 ],
                 'files' => [
                     [
-                        'alt_text' => "",
+                        'alt_text' => '',
                         'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
                         'name' => 'test.pbm',
                         'description' => '',
-                    ]
+                    ],
                 ],
                 'is_excluded_from_search_index' => false,
-                'metadata' => []
+                'metadata' => [],
             ])->assertStatus(422);
         expect(File::count() - $filecount)->toBe(0);
     });
@@ -103,13 +102,11 @@ describe('File', function () {
     });
     it(
         'can get a specific File',
-        fn() =>
-        $this->asAdmin()->get('/api/files/' . File::first()->id)
+        fn () => $this->asAdmin()->get('/api/files/'.File::first()->id)
             ->assertStatus(200)
-            ->assertJson(fn(AssertableJson $json) => $json->has(
+            ->assertJson(fn (AssertableJson $json) => $json->has(
                 'data',
-                fn(AssertableJson $data) =>
-                $data
+                fn (AssertableJson $data) => $data
                     ->has('id')
                     ->has('description')
                     ->has('author')
@@ -124,9 +121,9 @@ describe('File', function () {
                     ->etc()
             )->etc())
     );
-    it('can update files', fn() => $this->asAdmin()
-        ->put('/api/files/' . File::first()->id, [
-            'alt_text' => "alttext",
+    it('can update files', fn () => $this->asAdmin()
+        ->put('/api/files/'.File::first()->id, [
+            'alt_text' => 'alttext',
             'author' => 'changed',
             'categories' => [Category::whereName('Images')->first()->id],
             'description' => 'An Image',
@@ -136,20 +133,19 @@ describe('File', function () {
             ],
             'files' => [
                 [
-                    'alt_text' => "",
+                    'alt_text' => '',
                     'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
                     'name' => 'test.pbm',
                     'description' => '',
-                ]
+                ],
             ],
             'is_excluded_from_search_index' => false,
-            'metadata' => []
+            'metadata' => [],
         ])->assertStatus(200)
-        ->assertJson(fn(AssertableJson $json) => $json->has('data', fn(AssertableJson $data) =>
-        $data->where('author', 'changed')->etc())->etc()));
+        ->assertJson(fn (AssertableJson $json) => $json->has('data', fn (AssertableJson $data) => $data->where('author', 'changed')->etc())->etc()));
     it('can delete files', function () {
         $filecount = File::count();
-        $this->asAdmin()->delete('/api/files/' . File::whereAuthor('changed')->first()->id)
+        $this->asAdmin()->delete('/api/files/'.File::whereAuthor('changed')->first()->id)
             ->assertStatus(200);
         expect($filecount - File::count())->toBe(1);
         Artisan::call('migrate:fresh --seed');
@@ -158,10 +154,10 @@ describe('File', function () {
         "can't do anything without permissions",
         function () {
             $this->asBasic()->getJson('/api/files')->assertStatus(403);
-            $this->asBasic()->getJson('/api/files/' . File::first()->id)->assertStatus(403);
+            $this->asBasic()->getJson('/api/files/'.File::first()->id)->assertStatus(403);
             $this->asBasic()->post('/api/files', [])->assertStatus(403);
-            $this->asBasic()->put('/api/files/' . File::first()->id, [])->assertStatus(403);
-            $this->asBasic()->delete('/api/files/' . File::first()->id)->assertStatus(403);
+            $this->asBasic()->put('/api/files/'.File::first()->id, [])->assertStatus(403);
+            $this->asBasic()->delete('/api/files/'.File::first()->id)->assertStatus(403);
         }
     );
 });
