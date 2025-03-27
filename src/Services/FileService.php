@@ -7,6 +7,8 @@ use Motor\Admin\Models\Category;
 use Motor\Admin\Services\BaseService;
 use Motor\Core\Filter\Renderers\RelationRenderer;
 use Motor\Core\Filter\Renderers\SelectRenderer;
+use Motor\Media\Events\FileDeleted;
+use Motor\Media\Events\FileUploaded;
 use Motor\Media\Models\File;
 
 /**
@@ -15,6 +17,8 @@ use Motor\Media\Models\File;
 class FileService extends BaseService
 {
     protected $model = File::class;
+
+    protected bool $updateBuilderPage = false;
 
     public function filters()
     {
@@ -44,6 +48,11 @@ class FileService extends BaseService
         $this->filter->add(new SelectRenderer('mime_type'))->setOptions(['application/pdf' => 'PDF']);
     }
 
+    public function beforeDelete()
+    {
+        FileDeleted::dispatch($this->record);
+    }
+
     public function beforeCreate()
     {
         // check if we have separate description and alt_text fields in the file object
@@ -69,6 +78,23 @@ class FileService extends BaseService
         $this->record->refresh()->searchable();
     }
 
+    public function beforeUpdate()
+    {
+        // check if we have separate description and alt_text fields in the file object
+        if (Arr::get($this->data, 'description')) {
+            if ($this->record->description !== Arr::get($this->data, 'description')) {
+                // We need to update the file in BuilderPage
+                $this->updateBuilderPage = true;
+            }
+        }
+        if (Arr::get($this->data, 'alt_text')) {
+            if ($this->record->description !== Arr::get($this->data, 'alt_text')) {
+                // We need to update the file in BuilderPage
+                $this->updateBuilderPage = true;
+            }
+        }
+    }
+
     /**
      * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
      * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
@@ -78,6 +104,11 @@ class FileService extends BaseService
         $this->upload();
         $this->updateCategories();
         $this->updateTags();
+
+        // Update Metadata by replacing file description and alt_text with the new values
+        if ($this->updateBuilderPage) {
+            FileUploaded::dispatch($this->record);
+        }
 
         // We need to update the model for scout
         $this->record->refresh()->searchable();
