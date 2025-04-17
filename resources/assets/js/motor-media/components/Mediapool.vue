@@ -25,11 +25,11 @@
                :options="{group:{ name:'files',  pull:'clone', put:false }, sort: false, dragClass: 'sortable-drag', ghostClass: 'sortable-ghost'}"
                @start="onStart" @end="onEnd">
       <div v-for="file in files">
-        <div class="card">
-          <img v-if="isImage(file) && file.exists" class="card-img-top" :src="file.file.conversions.preview">
+        <div class="card" v-if="file.file !== null">
+          <img v-if="isImage(file) && file.exists" class="card-img-top" :src="file.file?.conversions?.preview">
           <div class="card-body" data-toggle="tooltip" data-placement="top" :title="file.description">
             <p class="card-text">
-              <b v-if="!file.exists">File not found!<br></b>
+              <b v-if="!file.exists && file.file">File not found!<br></b>
               {{ file.file.file_name }}<br>
               {{ file.description }}<br>
               <span class="badge badge-secondary badge-pill">{{ file.file.mime_type }}</span>
