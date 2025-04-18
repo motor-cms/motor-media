@@ -3,6 +3,7 @@
 namespace Motor\Media\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -46,8 +47,12 @@ class MediaSyncToS3sCommand extends Command
             //}
             if (! Storage::disk($to)->exists($file)) {
                 Storage::disk($to)->writeStream($file, Storage::disk($from)->readStream($file));
-                $this->info($direction == 'to' ? 'Sent' : 'Received'.' file '.$file);
-            }
+
+                $log = $direction == 'to' ? 'Sent' : 'Received';
+
+                Log::info($log.' file '.$file);
+                $this->info($log .' file '.$file);
+           }
         }
         foreach (Storage::disk($from)->directories($directory) as $dir) {
             $this->copyFiles($from, $to, $dir, $direction);
