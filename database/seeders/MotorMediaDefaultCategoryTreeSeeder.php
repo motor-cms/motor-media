@@ -17,27 +17,27 @@ class MotorMediaDefaultCategoryTreeSeeder extends Seeder
     public function run()
     {
         $node = \Motor\Backend\Models\Category::create([
-            'name'       => 'Media',
-            'scope'      => 'media',
+            'name' => 'Media',
+            'scope' => 'media',
             'created_by' => 1,
             'updated_by' => 1,
 
             'children' => [
                 [
-                    'name'       => 'Images',
-                    'scope'      => 'media',
+                    'name' => 'Images',
+                    'scope' => 'media',
                     'created_by' => 1,
                     'updated_by' => 1,
                 ],
                 [
-                    'name'       => 'Videos',
-                    'scope'      => 'media',
+                    'name' => 'Videos',
+                    'scope' => 'media',
                     'created_by' => 1,
                     'updated_by' => 1,
                 ],
                 [
-                    'name'       => 'Documents',
-                    'scope'      => 'media',
+                    'name' => 'Documents',
+                    'scope' => 'media',
                     'created_by' => 1,
                     'updated_by' => 1,
                 ],

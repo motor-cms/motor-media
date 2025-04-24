@@ -3,9 +3,9 @@
 use Motor\Media\Http\Controllers\Backend\FilesController;
 
 Route::group([
-    'as'         => 'backend.',
-    'prefix'     => 'backend',
-    'namespace'  => 'Motor\Media\Http\Controllers\Backend',
+    'as' => 'backend.',
+    'prefix' => 'backend',
+    'namespace' => 'Motor\Media\Http\Controllers\Backend',
     'middleware' => [
         'web',
         'web_auth',

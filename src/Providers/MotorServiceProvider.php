@@ -73,6 +73,7 @@ class MotorServiceProvider extends ServiceProvider
 
     /**
      * Register commands
+     *
      * @return void
      */
     public function registerCommands()
@@ -100,9 +101,9 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function config()
     {
-        //$this->publishes([
+        // $this->publishes([
         //    __DIR__ . '/../../config/motor-backend-project.php'          => config_path('motor-backend-project.php'),
-        //], 'motor-backend-install');
+        // ], 'motor-backend-install');
     }
 
     /**

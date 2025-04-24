@@ -17,15 +17,15 @@ class FileService extends BaseService
     public function filters()
     {
         $categories = Category::where('scope', 'media')
-                              ->where('_lft', '>', 1)
-                              ->orderBy('_lft', 'ASC')
-                              ->get();
+            ->where('_lft', '>', 1)
+            ->orderBy('_lft', 'ASC')
+            ->get();
 
         $options = [];
         foreach ($categories as $key => $category) {
             $returnValue = '';
             $ancestors = (int) $category->ancestors()
-                                        ->count();
+                ->count();
             while ($ancestors > 1) {
                 $returnValue .= '&nbsp;&nbsp;&nbsp;&nbsp;';
                 $ancestors--;
@@ -35,9 +35,9 @@ class FileService extends BaseService
         }
 
         $this->filter->add(new RelationRenderer('category_id'))
-                     ->setJoin('category_file')
-                     ->setEmptyOption('-- '.trans('motor-backend::backend/categories.categories').' --')
-                     ->setOptions($options);
+            ->setJoin('category_file')
+            ->setEmptyOption('-- '.trans('motor-backend::backend/categories.categories').' --')
+            ->setOptions($options);
     }
 
     public function afterCreate()
@@ -60,6 +60,6 @@ class FileService extends BaseService
     protected function updateCategories()
     {
         $this->record->categories()
-                     ->sync(explode(',', $this->request->get('categories')));
+            ->sync(explode(',', $this->request->get('categories')));
     }
 }

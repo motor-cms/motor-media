@@ -44,15 +44,15 @@ class FilesController extends Controller
     public function create()
     {
         $form = $this->form(FileForm::class, [
-            'method'  => 'POST',
-            'route'   => 'backend.files.store',
+            'method' => 'POST',
+            'route' => 'backend.files.store',
             'enctype' => 'multipart/form-data',
         ]);
 
         $trees = Category::where('scope', 'media')
-                         ->defaultOrder()
-                         ->get()
-                         ->toTree();
+            ->defaultOrder()
+            ->get()
+            ->toTree();
         $newItem = false;
         $selectedItem = null;
 
@@ -62,7 +62,6 @@ class FilesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  FileRequest  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(FileRequest $request)
@@ -86,8 +85,6 @@ class FilesController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param $id
      */
     public function show($id)
     {
@@ -97,22 +94,21 @@ class FilesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  File  $record
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(File $record)
     {
         $form = $this->form(FileForm::class, [
-            'method'  => 'PATCH',
-            'url'     => route('backend.files.update', [$record->id]),
+            'method' => 'PATCH',
+            'url' => route('backend.files.update', [$record->id]),
             'enctype' => 'multipart/form-data',
-            'model'   => $record,
+            'model' => $record,
         ]);
 
         $trees = Category::where('scope', 'media')
-                         ->defaultOrder()
-                         ->get()
-                         ->toTree();
+            ->defaultOrder()
+            ->get()
+            ->toTree();
         $newItem = false;
         $selectedItem = null;
 
@@ -122,8 +118,6 @@ class FilesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  FileRequest  $request
-     * @param  File  $record
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function update(FileRequest $request, File $record)
@@ -148,7 +142,6 @@ class FilesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  File  $record
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(File $record)

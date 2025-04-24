@@ -11,6 +11,7 @@ use Motor\Backend\Http\Resources\MediaResource;
 /**
  * @OA\Schema(
  *   schema="FileResource",
+ *
  *   @OA\Property(
  *     property="id",
  *     type="integer",
@@ -54,6 +55,7 @@ use Motor\Backend\Http\Resources\MediaResource;
  *   @OA\Property(
  *     property="categories",
  *     type="array",
+ *
  *     @OA\Items(
  *       ref="#/components/schemas/CategoryResource"
  *     ),
@@ -96,16 +98,16 @@ class FileResource extends BaseResource
         }
 
         return [
-            'id'          => (int) $this->id,
-            'client'      => new ClientResource($this->client),
+            'id' => (int) $this->id,
+            'client' => new ClientResource($this->client),
             'description' => $this->description,
-            'author'      => $this->author,
-            'source'      => $this->source,
-            'is_global'   => $this->is_gobal,
-            'alt_text'    => $this->alt_text,
-            'file'        => (isset($file) ? $file : null),
-            'categories'  => (isset($categories) ? $categories : null),
-            'exists'      => isset($exists) ? $exists : false,
+            'author' => $this->author,
+            'source' => $this->source,
+            'is_global' => $this->is_gobal,
+            'alt_text' => $this->alt_text,
+            'file' => (isset($file) ? $file : null),
+            'categories' => (isset($categories) ? $categories : null),
+            'exists' => isset($exists) ? $exists : false,
         ];
     }
 }

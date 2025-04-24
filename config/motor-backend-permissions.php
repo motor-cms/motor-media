@@ -2,13 +2,13 @@
 
 return [
     'media' => [
-        'name'   => 'motor-media::backend/global.media',
+        'name' => 'motor-media::backend/global.media',
         'values' => [
             'read',
         ],
     ],
     'files' => [
-        'name'   => 'motor-media::backend/files.files',
+        'name' => 'motor-media::backend/files.files',
         'values' => [
             'read',
             'write',
@@ -16,7 +16,7 @@ return [
         ],
     ],
     'ajax.files' => [
-        'name'   => 'motor-media::backend/files.ajax.files',
+        'name' => 'motor-media::backend/files.ajax.files',
         'values' => [
             'read',
             'write',

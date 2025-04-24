@@ -39,20 +39,21 @@ class MediaSyncToS3sCommand extends Command
         $this->copyFiles('do-s3', 'media', '/', 'from');
     }
 
-    protected function copyFiles($from, $to, $directory, $direction) {
+    protected function copyFiles($from, $to, $directory, $direction)
+    {
         foreach (Storage::disk($from)->files($directory) as $file) {
-            //if (Storage::disk($to)->exists($file) && Storage::disk($to)->size($file) != Storage::disk($from)->size($file)) {
+            // if (Storage::disk($to)->exists($file) && Storage::disk($to)->size($file) != Storage::disk($from)->size($file)) {
             //    $this->info('Deleted local file '.$file);
             //    Storage::disk($to)->delete($file);
-            //}
+            // }
             if (! Storage::disk($to)->exists($file)) {
                 Storage::disk($to)->writeStream($file, Storage::disk($from)->readStream($file));
 
                 $log = $direction == 'to' ? 'Sent' : 'Received';
 
                 Log::info($log.' file '.$file);
-                $this->info($log .' file '.$file);
-           }
+                $this->info($log.' file '.$file);
+            }
         }
         foreach (Storage::disk($from)->directories($directory) as $dir) {
             $this->copyFiles($from, $to, $dir, $direction);

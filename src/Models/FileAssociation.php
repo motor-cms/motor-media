@@ -3,8 +3,8 @@
 namespace Motor\Media\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Kra8\Snowflake\HasShortflakePrimary;
 use Illuminate\Database\Eloquent\Model;
+use Kra8\Snowflake\HasShortflakePrimary;
 
 /**
  * Motor\Media\Models\FileAssociation
@@ -31,11 +31,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|FileAssociation whereModelId($value)
  * @method static Builder|FileAssociation whereModelType($value)
  * @method static Builder|FileAssociation whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class FileAssociation extends Model
 {
-
     use HasShortflakePrimary;
 
     /**

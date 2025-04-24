@@ -12,6 +12,7 @@ class FileRequest extends Request
     /**
      * @OA\Schema(
      *   schema="FileRequest",
+     *
      *   @OA\Property(
      *     property="client_id",
      *     type="integer",
@@ -75,12 +76,12 @@ class FileRequest extends Request
     {
         return [
             'description' => 'nullable',
-            'author'      => 'nullable',
-            'source'      => 'nullable',
-            'alt_text'    => 'nullable',
-            'file'        => 'nullable',
-            'is_global'   => 'nullable',
-            'categories'  => 'required|string',
+            'author' => 'nullable',
+            'source' => 'nullable',
+            'alt_text' => 'nullable',
+            'file' => 'nullable',
+            'is_global' => 'nullable',
+            'categories' => 'required|string',
         ];
     }
 }

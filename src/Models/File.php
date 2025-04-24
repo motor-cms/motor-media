@@ -3,8 +3,8 @@
 namespace Motor\Media\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Kra8\Snowflake\HasShortflakePrimary;
 use Illuminate\Database\Eloquent\Model;
+use Kra8\Snowflake\HasShortflakePrimary;
 use Motor\Backend\Models\Category;
 use Motor\Core\Filter\Filter;
 use Motor\Core\Traits\Filterable;
@@ -53,45 +53,44 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @method static Builder|File whereSource($value)
  * @method static Builder|File whereUpdatedAt($value)
  * @method static Builder|File whereUpdatedBy($value)
+ *
  * @mixin \Eloquent
  */
 class File extends Model implements HasMedia
 {
-    use Searchable;
-    use Filterable;
     use BlameableTrait;
-    use InteractsWithMedia;
+    use Filterable;
     use HasShortflakePrimary;
+    use InteractsWithMedia;
+    use Searchable;
 
     /**
-     * @param Media|null $media
-     *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
-                 ->format('png')
-                 ->nonOptimized()
-                 ->nonQueued();
+                ->format('png')
+                ->nonOptimized()
+                ->nonQueued();
             $this->addMediaConversion('preview')
-                 ->format('png')
-                 ->nonOptimized()
-                 ->nonQueued();
+                ->format('png')
+                ->nonOptimized()
+                ->nonQueued();
         } else {
             $this->addMediaConversion('thumb')
-                 ->width(400)
-                 ->height(400)
-                 ->keepOriginalImageFormat()
-                 ->extractVideoFrameAtSecond(10)
-                 ->nonQueued();
+                ->width(400)
+                ->height(400)
+                ->keepOriginalImageFormat()
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
             $this->addMediaConversion('preview')
-                 ->width(1920)
-                 ->height(1080)
-                 ->keepOriginalImageFormat()
-                 ->extractVideoFrameAtSecond(10)
-                 ->nonQueued();
+                ->width(1920)
+                ->height(1080)
+                ->keepOriginalImageFormat()
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
         }
     }
 
