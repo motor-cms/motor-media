@@ -15,6 +15,7 @@ class MotorMediaDatabaseSeeder extends Seeder
     {
         $this->call([
             MotorMediaDefaultCategoryTreeSeeder::class,
+            MotorMediaDefaultFileSeeder::class,
         ]);
     }
 }

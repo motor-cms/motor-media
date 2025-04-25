@@ -2,7 +2,7 @@
 
 namespace Motor\Media\Http\Resources;
 
-use Motor\Backend\Http\Resources\BaseCollection;
+use Motor\Admin\Http\Resources\BaseCollection;
 
 class FileCollection extends BaseCollection
 {
@@ -12,7 +12,7 @@ class FileCollection extends BaseCollection
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return parent::toArray($request);
     }

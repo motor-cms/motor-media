@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('source');
             $table->string('alt_text');
             $table->boolean('is_global');
+            $table->boolean('is_excluded_from_search_index')->default(false);
             $table->bigInteger('created_by')->nullable();
             $table->bigInteger('updated_by')->nullable();
             $table->bigInteger('deleted_by')->nullable();

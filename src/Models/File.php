@@ -3,16 +3,18 @@
 namespace Motor\Media\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Kra8\Snowflake\HasShortflakePrimary;
-use Motor\Backend\Models\Category;
-use Motor\Core\Filter\Filter;
+use Laravel\Scout\Searchable;
+use Motor\Admin\Models\Category;
 use Motor\Core\Traits\Filterable;
-use Motor\Core\Traits\Searchable;
+use Motor\Media\Database\Factories\FileFactory;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Tags\HasTags;
 
 /**
  * Motor\Media\Models\File
@@ -29,18 +31,17 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int|null $deleted_by
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Kalnoy\Nestedset\Collection|\Motor\Backend\Models\Category[] $categories
- * @property-read \Motor\Backend\Models\User $creator
- * @property-read \Motor\Backend\Models\User|null $eraser
- * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\MediaLibrary\Models\Media[] $media
- * @property-read \Motor\Backend\Models\User $updater
+ * @property-read \Kalnoy\Nestedset\Collection|Category[] $categories
+ * @property-read int|null $categories_count
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
  *
- * @method static Builder|File filteredBy(Filter $filter, $column)
- * @method static Builder|File filteredByMultiple(Filter $filter)
+ * @method static Builder|File filteredBy(\Motor\Core\Filter\Filter $filter, $column)
+ * @method static Builder|File filteredByMultiple(\Motor\Core\Filter\Filter $filter)
  * @method static Builder|File newModelQuery()
  * @method static Builder|File newQuery()
  * @method static Builder|File query()
- * @method static Builder|File search($q, $full_text = false)
+ * @method static Builder|File search($query, $full_text = false)
  * @method static Builder|File whereAltText($value)
  * @method static Builder|File whereAuthor($value)
  * @method static Builder|File whereClientId($value)
@@ -60,9 +61,45 @@ class File extends Model implements HasMedia
 {
     use BlameableTrait;
     use Filterable;
+    use HasFactory;
     use HasShortflakePrimary;
+    use HasTags;
     use InteractsWithMedia;
     use Searchable;
+
+
+    /**
+     * Searchable columns for the searchable trait
+     *
+     * @var array
+     */
+    protected $searchableColumns = ['description', 'author', 'source', 'alt_text'];
+    public function searchableAs(): string
+    {
+        return 'motor_media_files_index';
+    }
+
+    public function toSearchableArray()
+    {
+        $file_name = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '';
+        $mime_type = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '';
+
+        return [
+            'description'                   => $this->description,
+            'author'                        => $this->author,
+            'alt_text'                      => $this->alt_text,
+            'source'                        => $this->source,
+            'file_name'                     => $file_name,
+            'file.file_name'                     => $file_name,
+            'mime_type'                     => $mime_type,
+            'file.mime_type'                     => $mime_type,
+            'categories'                    => $this->categories->pluck('id')
+                ->toArray(),
+            'tags'                          => $this->tags->pluck('name')
+                ->toArray(),
+            'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
+        ];
+    }
 
     /**
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
@@ -71,11 +108,11 @@ class File extends Model implements HasMedia
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
-                ->format('png')
+                ->keepOriginalImageFormat()
                 ->nonOptimized()
                 ->nonQueued();
             $this->addMediaConversion('preview')
-                ->format('png')
+                ->keepOriginalImageFormat()
                 ->nonOptimized()
                 ->nonQueued();
         } else {
@@ -95,13 +132,6 @@ class File extends Model implements HasMedia
     }
 
     /**
-     * Searchable columns for the searchable trait
-     *
-     * @var array
-     */
-    protected $searchableColumns = ['description', 'author', 'source', 'alt_text'];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -113,12 +143,15 @@ class File extends Model implements HasMedia
         'source',
         'is_global',
         'alt_text',
+        'is_excluded_from_search_index',
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function categories()
+    protected static function newFactory(): FileFactory
+    {
+        return FileFactory::new();
+    }
+
+    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Category::class);
     }

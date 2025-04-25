@@ -5,6 +5,9 @@ namespace Motor\Media\Providers;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Motor\Media\Console\Commands\MediaSyncToS3sCommand;
+use Motor\Media\Console\Commands\CopyMedia;
+use Motor\Media\Console\Commands\DeleteLocalMedia;
+use Motor\Media\Console\Commands\MigrateMedia;
 use Motor\Media\Models\File;
 
 /**
@@ -19,17 +22,19 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->config();
         $this->routes();
         $this->routeModelBindings();
-        $this->translations();
-        $this->views();
         $this->navigationItems();
         $this->permissions();
         $this->registerCommands();
         $this->migrations();
-        $this->publishResourceAssets();
         merge_local_config_with_db_configuration_variables('motor-media');
+        $this->commands([
+            MigrateMedia::class,
+            CopyMedia::class,
+            DeleteLocalMedia::class,
+
+        ]);
     }
 
     /**
@@ -40,18 +45,9 @@ class MotorServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../../config/motor-media.php', 'motor-media');
-    }
 
-    /**
-     * Set assets to be published
-     */
-    public function publishResourceAssets()
-    {
-        $assets = [
-            __DIR__.'/../../public/plugins/jstree' => public_path('plugins/jstree'),
-        ];
-
-        $this->publishes($assets, 'motor-media-install');
+        $config = $this->app['config']->get('scout', []);
+        $this->app['config']->set('scout', array_merge_recursive(require __DIR__.'/../../config/scout.php', $config));
     }
 
     /**
@@ -67,8 +63,8 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function permissions()
     {
-        $config = $this->app['config']->get('motor-backend-permissions', []);
-        $this->app['config']->set('motor-backend-permissions', array_replace_recursive(require __DIR__.'/../../config/motor-backend-permissions.php', $config));
+        $config = $this->app['config']->get('motor-admin-permissions', []);
+        $this->app['config']->set('motor-admin-permissions', array_merge_recursive(require __DIR__.'/../../config/motor-admin-permissions.php', $config));
     }
 
     /**
@@ -91,8 +87,8 @@ class MotorServiceProvider extends ServiceProvider
     public function routes()
     {
         if (! $this->app->routesAreCached()) {
-            require __DIR__.'/../../routes/web.php';
             require __DIR__.'/../../routes/api.php';
+            require __DIR__.'/../../routes/web.php';
         }
     }
 
@@ -119,18 +115,6 @@ class MotorServiceProvider extends ServiceProvider
     }
 
     /**
-     * Set view path
-     */
-    public function views()
-    {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'motor-media');
-
-        $this->publishes([
-            __DIR__.'/../../resources/views' => resource_path('views/vendor/motor-media'),
-        ], 'motor-media-views');
-    }
-
-    /**
      * Add route model bindings
      */
     public function routeModelBindings()
@@ -145,7 +129,7 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function navigationItems()
     {
-        $config = $this->app['config']->get('motor-backend-navigation', []);
-        $this->app['config']->set('motor-backend-navigation', array_replace_recursive(require __DIR__.'/../../config/motor-backend-navigation.php', $config));
+        $config = $this->app['config']->get('motor-admin-navigation', []);
+        $this->app['config']->set('motor-admin-navigation', array_replace_recursive(require __DIR__.'/../../config/motor-admin-navigation.php', $config));
     }
 }
