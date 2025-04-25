@@ -3,10 +3,10 @@
 namespace Motor\Media\Http\Resources;
 
 use Exception;
-use Motor\Backend\Http\Resources\BaseResource;
-use Motor\Backend\Http\Resources\CategoryResource;
-use Motor\Backend\Http\Resources\ClientResource;
-use Motor\Backend\Http\Resources\MediaResource;
+use Motor\Admin\Http\Resources\BaseResource;
+use Motor\Admin\Http\Resources\CategoryResource;
+use Motor\Admin\Http\Resources\ClientResource;
+use Motor\Admin\Http\Resources\MediaResource;
 
 /**
  * @OA\Schema(
@@ -14,6 +14,11 @@ use Motor\Backend\Http\Resources\MediaResource;
  *
  *   @OA\Property(
  *     property="id",
+ *     type="integer",
+ *     example="1"
+ *   ),
+ *   @OA\Property(
+ *     property="client_id",
  *     type="integer",
  *     example="1"
  *   ),
@@ -38,14 +43,14 @@ use Motor\Backend\Http\Resources\MediaResource;
  *     example="Some photographer"
  *   ),
  *   @OA\Property(
- *     property="alt_text",
- *     type="string",
- *     example="Alternative Text For The IMG Tag"
- *   ),
- *   @OA\Property(
  *     property="is_global",
  *     type="boolean",
  *     example="true"
+ *   ),
+ *   @OA\Property(
+ *     property="alt_text",
+ *     type="string",
+ *     example="Alternative Text For The IMG Tag"
  *   ),
  *   @OA\Property(
  *     property="file",
@@ -60,6 +65,12 @@ use Motor\Backend\Http\Resources\MediaResource;
  *       ref="#/components/schemas/CategoryResource"
  *     ),
  *   ),
+ *
+ *   @OA\Property(
+ *     property="exists",
+ *     type="boolean",
+ *     example="true"
+ *   ),
  * )
  */
 class FileResource extends BaseResource
@@ -70,7 +81,7 @@ class FileResource extends BaseResource
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         // FIXME: why is is like this? do we call the fileresource wrong?
         try {
@@ -78,7 +89,7 @@ class FileResource extends BaseResource
 
             $firstMedia = $this->getFirstMedia('file');
             if (! is_null($firstMedia)) {
-                $exists = file_exists($firstMedia->getPath());
+                $exists = file_exists($firstMedia->getPath()) || $firstMedia->disk == 'media-s3';
             }
             $categories = CategoryResource::collection($this->categories);
         } catch (Exception $e) {
@@ -89,7 +100,7 @@ class FileResource extends BaseResource
                 $file = new MediaResource($this->file->getFirstMedia('file'));
                 $firstMedia = $this->file->getFirstMedia('file');
                 if (! is_null($firstMedia)) {
-                    $exists = file_exists($firstMedia->getPath());
+                    $exists = file_exists($firstMedia->getPath()) || $firstMedia->disk == 'media-s3';
                 }
                 $categories = CategoryResource::collection($this->file->categories);
             } catch (Exception $e) {
@@ -98,16 +109,23 @@ class FileResource extends BaseResource
         }
 
         return [
-            'id' => (int) $this->id,
-            'client' => new ClientResource($this->client),
-            'description' => $this->description,
-            'author' => $this->author,
-            'source' => $this->source,
-            'is_global' => $this->is_gobal,
-            'alt_text' => $this->alt_text,
-            'file' => (isset($file) ? $file : null),
-            'categories' => (isset($categories) ? $categories : null),
-            'exists' => isset($exists) ? $exists : false,
+            'id'                            => (int) $this->id,
+            'client_id'                     => $this->client_id,
+            'client'                        => new ClientResource($this->client),
+            'description'                   => $this->description,
+            'author'                        => $this->author,
+            'source'                        => $this->source,
+            'is_global'                     => $this->is_global,
+            'alt_text'                      => $this->alt_text,
+            'file'                          => $file ?? null,
+            'categories'                    => $categories ?? null,
+            'exists'                        => $exists ?? false, //always true for s3
+            'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
+            'tags'                          => $this->tags()
+                ->get()
+                ->map(function ($tag) {
+                    return $tag->name;
+                }),
         ];
     }
 }

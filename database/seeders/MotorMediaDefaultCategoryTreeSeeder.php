@@ -2,7 +2,9 @@
 
 namespace Motor\Media\Database\Seeders;
 
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Motor\Admin\Models\Category;
 
 /**
  * Class MotorMediaDefaultCategorySeeder
@@ -16,32 +18,23 @@ class MotorMediaDefaultCategoryTreeSeeder extends Seeder
      */
     public function run()
     {
-        $node = \Motor\Backend\Models\Category::create([
-            'name' => 'Media',
-            'scope' => 'media',
-            'created_by' => 1,
-            'updated_by' => 1,
+        $mainCategory = Category::factory()
+            ->create([
+                'name' => 'Media',
+                'scope' => 'media',
+            ]);
 
-            'children' => [
-                [
-                    'name' => 'Images',
-                    'scope' => 'media',
-                    'created_by' => 1,
-                    'updated_by' => 1,
-                ],
-                [
-                    'name' => 'Videos',
-                    'scope' => 'media',
-                    'created_by' => 1,
-                    'updated_by' => 1,
-                ],
-                [
-                    'name' => 'Documents',
-                    'scope' => 'media',
-                    'created_by' => 1,
-                    'updated_by' => 1,
-                ],
-            ],
-        ]);
+        Category::factory()
+            ->count(3)
+            ->state(new Sequence(['parent_id' => $mainCategory->id, 'name' => 'Images', 'scope' => 'media'], [
+                'parent_id' => $mainCategory->id,
+                'name'      => 'Videos',
+                'scope'     => 'media',
+            ], [
+                'parent_id' => $mainCategory->id,
+                'name'      => 'Documents',
+                'scope'     => 'media',
+            ]))
+            ->create();
     }
 }
