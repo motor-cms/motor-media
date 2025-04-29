@@ -70,10 +70,12 @@ class MotorServiceProvider extends ServiceProvider
      */
     public function routes()
     {
-        if (! $this->app->routesAreCached()) {
-            require __DIR__.'/../../routes/api.php';
-            require __DIR__.'/../../routes/web.php';
-        }
+        Route::middleware('api')->prefix('api')->group(function () {
+            $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
+        });
+        Route::middleware('web')->prefix('web')->group(function () {
+            $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
+        });
     }
 
     /**
