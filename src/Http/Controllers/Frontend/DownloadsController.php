@@ -7,7 +7,7 @@ use Motor\Admin\Http\Controllers\ApiController;
 use Motor\Media\Models\File;
 
 /**
- * Class FilesController
+ * Class DownloadsController
  */
 class DownloadsController extends ApiController
 {
