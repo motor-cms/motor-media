@@ -78,26 +78,26 @@ class FilePostRequest extends Request
     public function rules(): array
     {
         return [
-            'client_id'    => [
+            'client_id' => [
                 'nullable',
                 'integer',
             ],
-            'description'  => [
+            'description' => [
                 'nullable',
             ],
-            'author'       => [
+            'author' => [
                 'nullable',
             ],
-            'source'       => [
+            'source' => [
                 'nullable',
             ],
-            'alt_text'     => [
+            'alt_text' => [
                 'nullable',
             ],
-            'is_global'    => [
+            'is_global' => [
                 'nullable',
             ],
-            'categories'   => [
+            'categories' => [
                 'required',
                 'array',
                 'min:1',
@@ -105,19 +105,19 @@ class FilePostRequest extends Request
             'categories.*' => [
                 'exists:categories,id',
             ],
-            'files'        => [
+            'files' => [
                 'required',
                 'array',
                 'min:1',
             ],
-            'file'         => [
+            'file' => [
                 'nullable',
             ],
             'files.*.dataUrl' => [
                 'required',
                 'string',
             ],
-            'files.*.name'    => [
+            'files.*.name' => [
                 'nullable',
                 'string',
             ],

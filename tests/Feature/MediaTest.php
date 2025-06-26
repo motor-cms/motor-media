@@ -23,24 +23,24 @@ describe('File', function () {
         $filecount = File::count();
         $this->asAdmin()
             ->post('/api/files', [
-                'alt_text' => 'alttext',
-                'author' => 'author',
-                'categories' => [Category::whereName('Images')->first()->id],
+                'alt_text'    => 'alttext',
+                'author'      => 'author',
+                'categories'  => [Category::whereName('Images')->first()->id],
                 'description' => 'An Image',
-                'file' => [
+                'file'        => [
                     'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
-                    'name' => 'test.pbm',
+                    'name'    => 'test.pbm',
                 ],
                 'files' => [
                     [
-                        'alt_text' => '',
-                        'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
-                        'name' => 'test.pbm',
+                        'alt_text'    => '',
+                        'dataUrl'     => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
+                        'name'        => 'test.pbm',
                         'description' => '',
                     ],
                 ],
                 'is_excluded_from_search_index' => false,
-                'metadata' => [],
+                'metadata'                      => [],
             ])->assertStatus(201);
         expect(File::count() - $filecount)->toBe(1);
     });
@@ -48,24 +48,24 @@ describe('File', function () {
         $filecount = File::count();
         $this->asAdmin()->withJsonHeaders()
             ->post('/api/files', [
-                'alt_text' => 'alttext',
-                'author' => 'author',
-                'categories' => [0],
+                'alt_text'    => 'alttext',
+                'author'      => 'author',
+                'categories'  => [0],
                 'description' => 'An Image',
-                'file' => [
+                'file'        => [
                     'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
-                    'name' => 'test.pbm',
+                    'name'    => 'test.pbm',
                 ],
                 'files' => [
                     [
-                        'alt_text' => '',
-                        'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
-                        'name' => 'test.pbm',
+                        'alt_text'    => '',
+                        'dataUrl'     => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
+                        'name'        => 'test.pbm',
                         'description' => '',
                     ],
                 ],
                 'is_excluded_from_search_index' => false,
-                'metadata' => [],
+                'metadata'                      => [],
             ])->assertStatus(422);
         expect(File::count() - $filecount)->toBe(0);
     });
@@ -123,24 +123,24 @@ describe('File', function () {
     );
     it('can update files', fn () => $this->asAdmin()
         ->put('/api/files/'.File::first()->id, [
-            'alt_text' => 'alttext',
-            'author' => 'changed',
-            'categories' => [Category::whereName('Images')->first()->id],
+            'alt_text'    => 'alttext',
+            'author'      => 'changed',
+            'categories'  => [Category::whereName('Images')->first()->id],
             'description' => 'An Image',
-            'file' => [
+            'file'        => [
                 'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
-                'name' => 'test.pbm',
+                'name'    => 'test.pbm',
             ],
             'files' => [
                 [
-                    'alt_text' => '',
-                    'dataUrl' => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
-                    'name' => 'test.pbm',
+                    'alt_text'    => '',
+                    'dataUrl'     => 'UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==',
+                    'name'        => 'test.pbm',
                     'description' => '',
                 ],
             ],
             'is_excluded_from_search_index' => false,
-            'metadata' => [],
+            'metadata'                      => [],
         ])->assertStatus(200)
         ->assertJson(fn (AssertableJson $json) => $json->has('data', fn (AssertableJson $data) => $data->where('author', 'changed')->etc())->etc()));
     it('can delete files', function () {

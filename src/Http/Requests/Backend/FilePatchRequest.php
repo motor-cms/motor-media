@@ -78,26 +78,26 @@ class FilePatchRequest extends Request
     public function rules(): array
     {
         return [
-            'client_id'    => [
+            'client_id' => [
                 'nullable',
                 'integer',
             ],
-            'description'  => [
+            'description' => [
                 'nullable',
             ],
-            'author'       => [
+            'author' => [
                 'nullable',
             ],
-            'source'       => [
+            'source' => [
                 'nullable',
             ],
-            'alt_text'     => [
+            'alt_text' => [
                 'nullable',
             ],
-            'is_global'    => [
+            'is_global' => [
                 'nullable',
             ],
-            'categories'   => [
+            'categories' => [
                 'required',
                 'array',
                 'min:1',
@@ -105,14 +105,14 @@ class FilePatchRequest extends Request
             'categories.*' => [
                 'exists:categories,id',
             ],
-            'file'         => [
+            'file' => [
                 'nullable',
             ],
             'file.dataUrl' => [
                 'nullable',
                 'string',
             ],
-            'file.name'    => [
+            'file.name' => [
                 'nullable',
                 'string',
             ],
