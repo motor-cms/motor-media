@@ -118,7 +118,7 @@ class FileResource extends BaseResource
             'alt_text'                      => $this->alt_text,
             'file'                          => $file ?? null,
             'categories'                    => $categories ?? null,
-            'exists'                        => $exists ?? false, //always true for s3
+            'exists'                        => $exists ?? false, // always true for s3
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
             'tags'                          => $this->tags()
                 ->get()
