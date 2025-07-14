@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use \Motor\Core\Traits\CheckForeignKeys;
+
     /**
      * Run the migrations.
      */
@@ -13,7 +15,11 @@ return new class extends Migration
     {
         if (Schema::hasTable('file_associations')) {
             Schema::table('file_associations', function (Blueprint $table) {
-                $table->foreign(['file_id'])->references(['id'])->on('files')->onUpdate('no action')->onDelete('cascade');
+
+                if (! $this->getForeignKeyByColumns('file_associations', ['file_id'])) {
+                    $table->foreign(['file_id'])->references(['id'])->on('files')->onUpdate('no action')->onDelete('cascade');
+                }
+
             });
         }
     }
