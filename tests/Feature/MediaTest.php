@@ -10,6 +10,7 @@ pest()
     ->use(RefreshDatabase::class);
 
 describe('File', function () {
+
     it('can get all Files')
         ->asAdmin()
         ->get('/api/files')
