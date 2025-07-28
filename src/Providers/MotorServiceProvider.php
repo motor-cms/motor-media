@@ -73,7 +73,7 @@ class MotorServiceProvider extends ServiceProvider
         Route::middleware('api')->prefix('api')->group(function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
         });
-        Route::middleware('web')->prefix('web')->group(function () {
+        Route::middleware('web')->group(function () {
             $this->loadRoutesFrom(__DIR__.'/../../routes/web.php');
         });
     }
