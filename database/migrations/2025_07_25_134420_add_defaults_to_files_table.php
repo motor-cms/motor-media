@@ -6,17 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('files', function (Blueprint $table) {
-            $table->boolean('is_excluded_from_search_index')->after('is_global')->default(false);
+            $table->boolean('is_global')->default(false)->change();
         });
     }
 
-    public function down(): void
-    {
-        Schema::table('files', function (Blueprint $table) {
-            $table->dropColumn('is_excluded_from_search_index');
-        });
-    }
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void {}
 };

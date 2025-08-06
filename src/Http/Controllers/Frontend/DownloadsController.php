@@ -7,13 +7,12 @@ use Motor\Admin\Http\Controllers\ApiController;
 use Motor\Media\Models\File;
 
 /**
- * Class FilesController
+ * Class DownloadsController
  */
 class DownloadsController extends ApiController
 {
-    public function index(int $fileId)
+    public function index(File $file)
     {
-        $file = File::find($fileId);
         if (! $file) {
             abort(404);
         }
@@ -22,8 +21,17 @@ class DownloadsController extends ApiController
         if (! $download) {
             abort(404);
         }
+
+        if (! $download->exists) {
+            abort(404);
+        }
+
         // check if download is on disk s3 or local
         if ($download->disk == 'media') {
+            if (! is_file($download->getPath())) {
+                abort(404);
+            }
+
             return response()->download($download->getPath());
         } else {
             // download from s3 instead of just redirecting to file

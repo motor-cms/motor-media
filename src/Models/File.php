@@ -81,17 +81,17 @@ class File extends Model implements HasMedia
         $mime_type = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '';
 
         return [
-            'description'                   => $this->description,
-            'author'                        => $this->author,
-            'alt_text'                      => $this->alt_text,
-            'source'                        => $this->source,
-            'file_name'                     => $file_name,
-            'file.file_name'                     => $file_name,
-            'mime_type'                     => $mime_type,
-            'file.mime_type'                     => $mime_type,
-            'categories'                    => $this->categories->pluck('id')
+            'description'    => $this->description,
+            'author'         => $this->author,
+            'alt_text'       => $this->alt_text,
+            'source'         => $this->source,
+            'file_name'      => $file_name,
+            'file.file_name' => $file_name,
+            'mime_type'      => $mime_type,
+            'file.mime_type' => $mime_type,
+            'categories'     => $this->categories->pluck('id')
                 ->toArray(),
-            'tags'                          => $this->tags->pluck('name')
+            'tags' => $this->tags->pluck('name')
                 ->toArray(),
             'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
         ];

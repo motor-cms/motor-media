@@ -21,10 +21,10 @@ class FileFactory extends Factory
     {
         return [
             'description' => $this->faker->sentence,
-            'author'        => $this->faker->name,
-            'source'        => $this->faker->url,
-            'alt_text'      => $this->faker->sentence,
-            'is_global'     => $this->faker->boolean,
+            'author'      => $this->faker->name,
+            'source'      => $this->faker->url,
+            'alt_text'    => $this->faker->sentence,
+            'is_global'   => $this->faker->boolean,
         ];
     }
 }

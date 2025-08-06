@@ -20,7 +20,7 @@ class MotorMediaDefaultCategoryTreeSeeder extends Seeder
     {
         $mainCategory = Category::factory()
             ->create([
-                'name' => 'Media',
+                'name'  => 'Media',
                 'scope' => 'media',
             ]);
 
