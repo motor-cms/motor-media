@@ -35,11 +35,13 @@ class MotorServiceProvider extends ServiceProvider
         ]);
 
         // Check s3 connectivity
-        try {
-            Storage::disk('media-s3');
-            $this->app['config']->set('filesystems.has_s3', true);
-        } catch (\Exception $e) {
-            $this->app['config']->set('filesystems.has_s3', false);
+        if (config('filesystems.disks.media-s3.bucket') !== null) {
+            try {
+                Storage::disk('media-s3');
+                $this->app['config']->set('filesystems.has_s3', true);
+            } catch (\Exception $e) {
+                $this->app['config']->set('filesystems.has_s3', false);
+            }
         }
     }
 
