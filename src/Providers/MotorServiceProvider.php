@@ -8,6 +8,7 @@ use Motor\Media\Console\Commands\CopyMedia;
 use Motor\Media\Console\Commands\DeleteLocalMedia;
 use Motor\Media\Console\Commands\MigrateMedia;
 use Motor\Media\Models\File;
+use Storage;
 
 /**
  * Class MotorServiceProvider
@@ -31,8 +32,15 @@ class MotorServiceProvider extends ServiceProvider
             MigrateMedia::class,
             CopyMedia::class,
             DeleteLocalMedia::class,
-
         ]);
+
+        // Check s3 connectivity
+        try {
+            Storage::disk('media-s3');
+            $this->app['config']->set('filesystems.has_s3', true);
+        } catch (\Exception $e) {
+            $this->app['config']->set('filesystems.has_s3', false);
+        }
     }
 
     /**
