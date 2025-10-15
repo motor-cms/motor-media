@@ -15,6 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
+use Storage;
 
 /**
  * Motor\Media\Models\File
@@ -81,18 +82,18 @@ class File extends Model implements HasMedia
         $mime_type = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '';
 
         return [
-            'description'    => $this->description,
-            'author'         => $this->author,
-            'alt_text'       => $this->alt_text,
-            'source'         => $this->source,
-            'file_name'      => $file_name,
-            'file.file_name' => $file_name,
-            'mime_type'      => $mime_type,
-            'file.mime_type' => $mime_type,
-            'categories'     => $this->categories->pluck('id')
-                ->toArray(),
-            'tags' => $this->tags->pluck('name')
-                ->toArray(),
+            'description'                   => $this->description,
+            'author'                        => $this->author,
+            'alt_text'                      => $this->alt_text,
+            'source'                        => $this->source,
+            'file_name'                     => $file_name,
+            'file.file_name'                => $file_name,
+            'mime_type'                     => $mime_type,
+            'file.mime_type'                => $mime_type,
+            'categories'                    => $this->categories->pluck('id')
+                                                                ->toArray(),
+            'tags'                          => $this->tags->pluck('name')
+                                                          ->toArray(),
             'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
         ];
     }
@@ -104,26 +105,26 @@ class File extends Model implements HasMedia
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
-                ->keepOriginalImageFormat()
-                ->nonOptimized()
-                ->nonQueued();
+                 ->keepOriginalImageFormat()
+                 ->nonOptimized()
+                 ->nonQueued();
             $this->addMediaConversion('preview')
-                ->keepOriginalImageFormat()
-                ->nonOptimized()
-                ->nonQueued();
+                 ->keepOriginalImageFormat()
+                 ->nonOptimized()
+                 ->nonQueued();
         } else {
             $this->addMediaConversion('thumb')
-                ->width(400)
-                ->height(400)
-                ->keepOriginalImageFormat()
-                ->extractVideoFrameAtSecond(10)
-                ->nonQueued();
+                 ->width(400)
+                 ->height(400)
+                 ->keepOriginalImageFormat()
+                 ->extractVideoFrameAtSecond(10)
+                 ->nonQueued();
             $this->addMediaConversion('preview')
-                ->width(1920)
-                ->height(1080)
-                ->keepOriginalImageFormat()
-                ->extractVideoFrameAtSecond(10)
-                ->nonQueued();
+                 ->width(1920)
+                 ->height(1080)
+                 ->keepOriginalImageFormat()
+                 ->extractVideoFrameAtSecond(10)
+                 ->nonQueued();
         }
     }
 

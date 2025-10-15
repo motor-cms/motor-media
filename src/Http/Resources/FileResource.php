@@ -78,11 +78,11 @@ class FileResource extends BaseResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      */
     public function toArray($request): array
     {
-        // FIXME: why is is like this? do we call the fileresource wrong?
+        //// FIXME: why is is like this? do we call the fileresource wrong?
         try {
             $file = new MediaResource($this->getFirstMedia('file'));
 
@@ -121,10 +121,10 @@ class FileResource extends BaseResource
             'exists'                        => $exists ?? false, // always true for s3
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
             'tags'                          => $this->tags()
-                ->get()
-                ->map(function ($tag) {
-                    return $tag->name;
-                }),
+                                                    ->get()
+                                                    ->map(function ($tag) {
+                                                        return $tag->name;
+                                                    }),
 
         ];
     }
