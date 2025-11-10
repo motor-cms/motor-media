@@ -54,8 +54,10 @@ class MotorServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/../../config/motor-media.php', 'motor-media');
 
-        $config = $this->app['config']->get('scout', []);
-        $this->app['config']->set('scout', array_merge_recursive(require __DIR__.'/../../config/scout.php', $config));
+        if (! app()->configurationIsCached()) {
+            $config = $this->app['config']->get('scout', []);
+            $this->app['config']->set('scout', array_merge_recursive(require __DIR__.'/../../config/scout.php', $config));
+        }
     }
 
     /**
