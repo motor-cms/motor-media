@@ -121,7 +121,6 @@ class FileService extends BaseService
     protected function upload()
     {
         $this->uploadFile(Arr::get($this->data, 'file'), 'file');
-        $this->uploadFile(Arr::get($this->data, 'file'), 'file');
     }
 
     protected function updateCategories()
