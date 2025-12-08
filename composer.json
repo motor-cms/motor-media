@@ -13,7 +13,7 @@
   ],
   "require": {
     "php": "^8.4",
-    "motor-cms/motor-admin": "^4.0",
+    "motor-cms/motor-admin": "^4.0 || >=2025.0.0",
     "php-ffmpeg/php-ffmpeg": "^v1.3",
     "league/flysystem-aws-s3-v3": "^3.29",
     "spatie/laravel-medialibrary": "^11.11"
