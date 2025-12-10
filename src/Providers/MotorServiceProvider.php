@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Motor\Media\Console\Commands\CopyMedia;
 use Motor\Media\Console\Commands\DeleteLocalMedia;
-use Motor\Media\Console\Commands\MigrateMedia;
+use Motor\Media\Console\Commands\MediaCheckCommand;
+use Motor\Media\Console\Commands\MediaSyncCommand;
 use Motor\Media\Models\File;
 use Storage;
 
@@ -29,9 +30,10 @@ class MotorServiceProvider extends ServiceProvider
         $this->migrations();
         merge_local_config_with_db_configuration_variables('motor-media');
         $this->commands([
-            MigrateMedia::class,
             CopyMedia::class,
             DeleteLocalMedia::class,
+            MediaCheckCommand::class,
+            MediaSyncCommand::class,
         ]);
 
         // Check s3 connectivity
