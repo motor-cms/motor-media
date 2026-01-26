@@ -19,7 +19,7 @@ return [
         'index-settings' => [
             \Motor\Media\Models\File::class => [
                 'filterableAttributes' => ['categories', 'mime_type'],
-                'sortableAttributes'   => ['files.name', 'file.file_name', 'file.mime_type', 'files.id', 'author', 'created_at', 'updated_at', 'id'],
+                'sortableAttributes'   => ['files.name', 'file.file_name', 'file.mime_type', 'files.id', 'author', 'created_at', 'updated_at', 'file.created_at', 'file_updated_at', 'id'],
                 'rankingRules'         => ['sort', 'words', 'typo', 'proximity', 'attribute', 'exactness'],
             ],
         ],
