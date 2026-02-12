@@ -22,6 +22,9 @@ class FilesController extends ApiController
 
     protected string $modelResource = 'file';
 
+    /**
+     * @response Illuminate\Http\Resources\Json\AnonymousResourceCollection<Illuminate\Pagination\LengthAwarePaginator<FileResource>>
+     */
     public function index(FileGetRequest $request): FileCollection
     {
         $paginator = FileService::collection()->getPaginator();

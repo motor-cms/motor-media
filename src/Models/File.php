@@ -58,7 +58,8 @@ use Storage;
  *
  * @mixin \Eloquent
  */
-class File extends Model implements HasMedia
+class
+File extends Model implements HasMedia
 {
     use BlameableTrait;
     use Filterable;
