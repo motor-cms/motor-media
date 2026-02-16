@@ -39,6 +39,10 @@ class FilePatchRequest extends Request
             'is_global' => [
                 'nullable',
             ],
+            'is_excluded_from_search_index' => [
+                'nullable',
+                'boolean',
+            ],
             'categories' => [
                 'required',
                 'array',
