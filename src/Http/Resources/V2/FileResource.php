@@ -49,7 +49,7 @@ class FileResource extends BaseResource
             'categories' => $categories ?? null,
             'exists' => $exists ?? false,
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
-            'tags' => $this->tags()->get()->map(fn ($tag) => $tag->name),
+            'tags' => $this->tags->pluck('name'),
         ];
     }
 }

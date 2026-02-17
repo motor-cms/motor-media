@@ -18,6 +18,8 @@ class FileService extends BaseService
 {
     protected $model = File::class;
 
+    protected array $loadColumns = ['categories', 'tags', 'media'];
+
     protected bool $updateBuilderPage = false;
 
     public function filters()
@@ -90,7 +92,7 @@ class FileService extends BaseService
             }
         }
         if (Arr::get($this->data, 'alt_text')) {
-            if ($this->record->description !== Arr::get($this->data, 'alt_text')) {
+            if ($this->record->alt_text !== Arr::get($this->data, 'alt_text')) {
                 // We need to update the file in BuilderPage
                 $this->updateBuilderPage = true;
             }
