@@ -18,7 +18,7 @@ return [
     'meilisearch' => [
         'index-settings' => [
             \Motor\Media\Models\File::class => [
-                'filterableAttributes' => ['categories', 'mime_type'],
+                'filterableAttributes' => ['categories', 'mime_type', 'client_id'],
                 'sortableAttributes'   => ['files.name', 'file.file_name', 'file.mime_type', 'files.id', 'author', 'created_at', 'updated_at', 'id'],
                 'rankingRules'         => ['sort', 'words', 'typo', 'proximity', 'attribute', 'exactness'],
             ],

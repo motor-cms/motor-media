@@ -187,4 +187,25 @@ describe('V2 File API', function () {
         $this->asBasic()->put('/api/v2/files/'.$fileId, [])->assertStatus(403);
         $this->asBasic()->delete('/api/v2/files/'.$fileId)->assertStatus(403);
     });
+
+    it('can filter files by client_id', function () {
+        $client = \Motor\Admin\Models\Client::first();
+
+        // Create files with different client_ids
+        $matchingFile = File::factory()->create(['client_id' => $client->id]);
+        $otherFile = File::factory()->create(['client_id' => null]);
+
+        $response = $this->asAdmin()
+            ->getJson('/api/v2/files?client_id='.$client->id);
+
+        $response->assertStatus(200)
+            ->assertJsonPath('meta.api_version', 'v2');
+
+        $returnedIds = collect($response->json('data'))->pluck('id')->all();
+        expect($returnedIds)->toContain($matchingFile->id);
+        expect($returnedIds)->not->toContain($otherFile->id);
+    });
+
+    // Note: category_id filter uses RelationRenderer which works via Meilisearch array filtering
+    // Not testable with Scout collection driver (test env) - requires Meilisearch
 });

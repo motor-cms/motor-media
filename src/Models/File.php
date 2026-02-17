@@ -87,6 +87,7 @@ File extends Model implements HasMedia
             'author'                        => $this->author,
             'alt_text'                      => $this->alt_text,
             'source'                        => $this->source,
+            'client_id'                     => $this->client_id ? (int) $this->client_id : null,
             'file_name'                     => $file_name,
             'file.file_name'                => $file_name,
             'mime_type'                     => $mime_type,

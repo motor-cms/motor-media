@@ -22,6 +22,8 @@ class FileService extends BaseService
 
     public function filters()
     {
+        $this->filter->addClientFilter();
+
         $categories = Category::where('scope', 'media')
             ->where('_lft', '>', 1)
             ->orderBy('_lft')
