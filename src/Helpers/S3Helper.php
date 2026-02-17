@@ -18,7 +18,7 @@ class S3Helper
         }
         // Check conversions and upload them
         foreach (Storage::disk('media')
-                        ->files($media->id.'/conversions') as $conversion) {
+            ->files($media->id.'/conversions') as $conversion) {
             if ($s3->exists('media/'.$conversion)) {
                 Log::info("Conversion exists on s3 {$conversion}");
             } else {

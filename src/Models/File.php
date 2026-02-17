@@ -15,7 +15,6 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
-use Storage;
 
 /**
  * Motor\Media\Models\File
@@ -58,8 +57,7 @@ use Storage;
  *
  * @mixin \Eloquent
  */
-class
-File extends Model implements HasMedia
+class File extends Model implements HasMedia
 {
     use BlameableTrait;
     use Filterable;
@@ -93,9 +91,9 @@ File extends Model implements HasMedia
             'mime_type'                     => $mime_type,
             'file.mime_type'                => $mime_type,
             'categories'                    => $this->categories->pluck('id')
-                                                                ->toArray(),
+                ->toArray(),
             'tags'                          => $this->tags->pluck('name')
-                                                          ->toArray(),
+                ->toArray(),
             'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
         ];
     }
@@ -107,26 +105,26 @@ File extends Model implements HasMedia
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
-                 ->keepOriginalImageFormat()
-                 ->nonOptimized()
-                 ->nonQueued();
+                ->keepOriginalImageFormat()
+                ->nonOptimized()
+                ->nonQueued();
             $this->addMediaConversion('preview')
-                 ->keepOriginalImageFormat()
-                 ->nonOptimized()
-                 ->nonQueued();
+                ->keepOriginalImageFormat()
+                ->nonOptimized()
+                ->nonQueued();
         } else {
             $this->addMediaConversion('thumb')
-                 ->width(400)
-                 ->height(400)
-                 ->keepOriginalImageFormat()
-                 ->extractVideoFrameAtSecond(10)
-                 ->nonQueued();
+                ->width(400)
+                ->height(400)
+                ->keepOriginalImageFormat()
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
             $this->addMediaConversion('preview')
-                 ->width(1920)
-                 ->height(1080)
-                 ->keepOriginalImageFormat()
-                 ->extractVideoFrameAtSecond(10)
-                 ->nonQueued();
+                ->width(1920)
+                ->height(1080)
+                ->keepOriginalImageFormat()
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
         }
     }
 
