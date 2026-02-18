@@ -3,6 +3,8 @@
 return [
     'modules' => [
         'file' => [
+            'module' => 'motor-media',
+            'entity' => 'files',
             'index' => 'motor_media_files_index',
             'model' => \Motor\Media\Models\File::class,
             'title_field' => 'file_name',
