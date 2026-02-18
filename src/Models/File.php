@@ -90,7 +90,7 @@ class File extends Model implements HasMedia
             'file.file_name'                => $file_name,
             'mime_type'                     => $mime_type,
             'file.mime_type'                => $mime_type,
-            'thumbnail_url'                 => $this->getFirstMediaUrl('file', 'thumb'),
+            'thumbnail_url'                 => $this->getFirstMediaUrl('file', 'thumb') ? config('app.url').$this->getFirstMediaUrl('file', 'thumb') : '',
             'categories'                    => $this->categories->pluck('id')
                 ->toArray(),
             'tags'                          => $this->tags->pluck('name')
