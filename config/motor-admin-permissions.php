@@ -4,6 +4,8 @@ return [
     'media' => [
         'values' => [
             'read',
+            'write',
+            'delete',
         ],
     ],
     'files' => [
