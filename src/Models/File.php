@@ -68,7 +68,7 @@ class File extends Model implements HasMedia
      *
      * @throws \Spatie\Image\Exceptions\InvalidManipulation
      */
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
