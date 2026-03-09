@@ -83,6 +83,7 @@ describe('File', function () {
         [
             'alt_text' => 'alttext',
             'author' => 'changed',
+            'source' => 'test source',
             'categories' => [Category::whereName('Images')->first()->id],
             'description' => 'An Image',
             'file' => [

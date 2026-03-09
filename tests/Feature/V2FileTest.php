@@ -137,6 +137,7 @@ describe('V2 File API', function () {
             ->put('/api/v2/files/'.File::first()->id, [
                 'alt_text' => 'v2 updated alttext',
                 'author' => 'v2 updated author',
+                'source' => 'v2 test source',
                 'categories' => [
                     Category::whereName('Images')->first()->id,
                 ],
