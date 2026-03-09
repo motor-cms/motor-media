@@ -5,9 +5,9 @@ namespace Motor\Media\Http\Controllers\Api\V2;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Motor\Core\Http\Controllers\Api\V2\ApiController;
-use Motor\Media\Http\Requests\Backend\V2\FileGetRequest;
-use Motor\Media\Http\Requests\Backend\V2\FilePatchRequest;
-use Motor\Media\Http\Requests\Backend\V2\FilePostRequest;
+use Motor\Media\Http\Requests\Api\V2\FileGetRequest;
+use Motor\Media\Http\Requests\Api\V2\FilePatchRequest;
+use Motor\Media\Http\Requests\Api\V2\FilePostRequest;
 use Motor\Media\Http\Resources\V2\FileCollection;
 use Motor\Media\Http\Resources\V2\FileResource;
 use Motor\Media\Models\File;
@@ -35,22 +35,22 @@ class FilesController extends ApiController
 
     public function store(FilePostRequest $request): JsonResponse
     {
+        $results = collect();
+
         for ($i = 0; $i < count($request->get('files')); $i++) {
             $requestClone = $request->all();
             $requestClone['file'] = $requestClone['files'][$i];
-            FileService::create($requestClone)->getResult();
+            $results->push(FileService::create($requestClone)->getResult());
         }
 
         if (count($request->get('files')) == 0) {
-            FileService::create($request)->getResult();
+            $results->push(FileService::create($request)->getResult());
         }
 
-        return response()->json([
-            'meta' => [
-                'api_version' => 'v2',
-                'message' => 'File created',
-            ],
-        ], 201);
+        return (new FileCollection($results))
+            ->additional(['meta' => ['message' => 'File created']])
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show(File $file): FileResource

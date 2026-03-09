@@ -1,6 +1,6 @@
 <?php
 
-namespace Motor\Media\Http\Requests\Backend\V2;
+namespace Motor\Media\Http\Requests\Api\V2;
 
 use Motor\Media\Http\Requests\Backend\FilePatchRequest as V1FilePatchRequest;
 
