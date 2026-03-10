@@ -13,7 +13,6 @@ Route::middleware('auth:sanctum')
 |--------------------------------------------------------------------------
 */
 Route::prefix('v2')
-    ->name('v2.')
     ->middleware(['auth:sanctum', \Motor\Core\Http\Middleware\V2\V2ErrorHandler::class])
     ->group(function () {
         Route::apiResource('files', \Motor\Media\Http\Controllers\Api\V2\FilesController::class);
