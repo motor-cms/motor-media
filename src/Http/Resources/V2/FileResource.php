@@ -3,9 +3,9 @@
 namespace Motor\Media\Http\Resources\V2;
 
 use Exception;
-use Motor\Admin\Http\Resources\CategoryResource;
-use Motor\Admin\Http\Resources\ClientResource;
-use Motor\Admin\Http\Resources\MediaResource;
+use Motor\Admin\Http\Resources\V2\CategoryResource;
+use Motor\Admin\Http\Resources\V2\ClientResource;
+use Motor\Admin\Http\Resources\V2\MediaResource;
 use Motor\Core\Http\Resources\V2\BaseResource;
 
 class FileResource extends BaseResource
