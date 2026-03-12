@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Motor\Media\Integration\Controller\Backend;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Motor\Media\Models\File;
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Motor\Media\Integration\Controller\Api;
+
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**

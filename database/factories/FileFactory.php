@@ -1,6 +1,6 @@
 <?php
 
-namespace Motor\CMS\Database\Factories;
+namespace Motor\Media\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Motor\Media\Models\File;
