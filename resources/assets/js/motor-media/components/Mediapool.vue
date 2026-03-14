@@ -22,21 +22,27 @@
     </div>
     <div class="clearfix mb-2"></div>
     <draggable v-model="files"
-               :options="{group:{ name:'files',  pull:'clone', put:false }, sort: false, dragClass: 'sortable-drag', ghostClass: 'sortable-ghost'}"
+               :group="{ name: 'files', pull: 'clone', put: false }"
+               :sort="false"
+               drag-class="sortable-drag"
+               ghost-class="sortable-ghost"
+               item-key="id"
                @start="onStart" @end="onEnd">
-      <div v-for="file in files">
-        <div class="card" v-if="file.file !== null">
-          <img v-if="isImage(file) && file.exists" class="card-img-top" :src="file.file?.conversions?.preview">
-          <div class="card-body" data-toggle="tooltip" data-placement="top" :title="file.description">
-            <p class="card-text">
-              <b v-if="!file.exists && file.file">File not found!<br></b>
-              {{ file.file.file_name }}<br>
-              {{ file.description }}<br>
-              <span class="badge badge-secondary badge-pill">{{ file.file.mime_type }}</span>
-            </p>
+      <template #item="{ element }">
+        <div>
+          <div class="card" v-if="element.file !== null">
+            <img v-if="isImage(element) && element.exists" class="card-img-top" :src="element.file?.conversions?.preview">
+            <div class="card-body" data-toggle="tooltip" data-placement="top" :title="element.description">
+              <p class="card-text">
+                <b v-if="!element.exists && element.file">File not found!<br></b>
+                {{ element.file.file_name }}<br>
+                {{ element.description }}<br>
+                <span class="badge badge-secondary badge-pill">{{ element.file.mime_type }}</span>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </draggable>
   </div>
 </template>
