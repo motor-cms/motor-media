@@ -36,7 +36,7 @@
 </div>
 {!! form_end($form) !!}
 @section('view_scripts')
-    <script>
+    <script type="module">
         $.jstree.defaults.checkbox.three_state = false;
 
         let tree = $('#category-tree').jstree(
