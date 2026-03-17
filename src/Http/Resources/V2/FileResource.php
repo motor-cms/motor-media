@@ -43,7 +43,7 @@ class FileResource extends BaseResource
             'description' => $this->description,
             'author' => $this->author,
             'source' => $this->source,
-            'is_global' => $this->is_global,
+            'is_global' => (bool) $this->is_global,
             'alt_text' => $this->alt_text,
             'file' => $file ?? null,
             'categories' => $categories ?? null,
