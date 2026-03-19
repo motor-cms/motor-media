@@ -5,14 +5,20 @@ namespace Motor\Media\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Kalnoy\Nestedset\Collection;
 use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Scout\Searchable;
 use Motor\Admin\Models\Category;
 use Motor\Core\Traits\Filterable;
 use Motor\Media\Database\Factories\FileFactory;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
@@ -29,11 +35,11 @@ use Spatie\Tags\HasTags;
  * @property int $created_by
  * @property int $updated_by
  * @property int|null $deleted_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Kalnoy\Nestedset\Collection|Category[] $categories
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  *
  * @method static Builder|File filteredBy(\Motor\Core\Filter\Filter $filter, $column)
@@ -100,7 +106,7 @@ class File extends Model implements HasMedia
     }
 
     /**
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     * @throws InvalidManipulation
      */
     public function registerMediaConversions(?Media $media = null): void
     {
@@ -149,8 +155,13 @@ class File extends Model implements HasMedia
         return FileFactory::new();
     }
 
-    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function fileAssociations(): HasMany
+    {
+        return $this->hasMany(FileAssociation::class);
     }
 }
