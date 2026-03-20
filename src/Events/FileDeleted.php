@@ -20,7 +20,7 @@ class FileDeleted
     public function __construct(File $file)
     {
         Log::info('File deleted event fired for file '.$file->id);
-        Artisan::call('motor-builder:file-delete', ['file_id' => $file->id, '--dry-run' => 'false']);
+        Artisan::call('motor:builder:file-delete', ['file_id' => $file->id, '--dry-run' => 'false']);
         Log::info('File deleted event finished for file '.$file->id);
     }
 }

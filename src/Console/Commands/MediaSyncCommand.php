@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaSyncCommand extends Command
 {
-    protected $signature = 'motor-media:sync
+    protected $signature = 'motor:media:sync
                             {--manifest= : Path to manifest file (default: latest in storage/logs)}
                             {--remote-base= : Base URL of the remote server (falls back to client.media_sync_remote_base config)}
                             {--disk= : Override the disk to sync to (default: from media-library config)}
                             {--dry-run : Show what would be downloaded without actually downloading}
                             {--headless : Run without interactive prompts or progress bar (for cron/CI)}';
 
-    protected $description = 'Sync missing media files from a remote server using a manifest file';
+    protected $description = 'Download missing media files from a remote server using a manifest';
 
     private int $downloaded = 0;
 
@@ -124,7 +124,7 @@ class MediaSyncCommand extends Command
 
         if (empty($files)) {
             $this->error('No manifest files found in storage/logs/');
-            $this->info('Run "php artisan motor-media:check" first to generate a manifest.');
+            $this->info('Run "php artisan motor:media:check" first to generate a manifest.');
 
             return null;
         }

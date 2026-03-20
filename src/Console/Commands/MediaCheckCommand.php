@@ -9,12 +9,12 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaCheckCommand extends Command
 {
-    protected $signature = 'motor-media:check
+    protected $signature = 'motor:media:check
                             {--disk= : Override the disk to check (default: from media-library config)}
                             {--output= : Custom output path for the manifest file}
                             {--headless : Run without interactive output (for cron/CI)}';
 
-    protected $description = 'Check if media files referenced in the database exist on disk';
+    protected $description = 'Check if media files referenced in the database exist on disk and generate a manifest';
 
     private array $missing = [];
 

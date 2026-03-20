@@ -10,10 +10,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CopyMedia extends Command
 {
-    protected $signature = 'motor-media:copy_media_to_s3
+    protected $signature = 'motor:media:copy-to-s3
                             {--headless : Run without interactive output (for cron/CI)}';
 
-    protected $description = 'Copy media files to S3';
+    protected $description = 'Copy local media library files to S3 storage';
 
     private int $copied = 0;
 

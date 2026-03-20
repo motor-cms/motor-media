@@ -20,7 +20,7 @@ class FileUploaded
     public function __construct(File $file)
     {
         Log::info('File uploaded event fired for file '.$file->id);
-        Artisan::call('motor-builder:file-update', ['file_id' => $file->id, '--dry-run' => 'false']);
+        Artisan::call('motor:builder:file-update', ['file_id' => $file->id, '--dry-run' => 'false']);
         Log::info('File uploaded event finished for file '.$file->id);
     }
 }
