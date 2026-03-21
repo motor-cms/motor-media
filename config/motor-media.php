@@ -1,8 +1,10 @@
 <?php
 
+use Motor\Media\Models\File;
+
 return [
     'models' => [
-        'file' => Motor\Media\Models\File::class,
+        'file' => File::class,
     ],
     'routes' => [
         'file' => true,

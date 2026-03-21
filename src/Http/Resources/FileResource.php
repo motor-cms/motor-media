@@ -3,6 +3,7 @@
 namespace Motor\Media\Http\Resources;
 
 use Exception;
+use Illuminate\Http\Request;
 use Motor\Admin\Http\Resources\BaseResource;
 use Motor\Admin\Http\Resources\CategoryResource;
 use Motor\Admin\Http\Resources\ClientResource;
@@ -78,7 +79,7 @@ class FileResource extends BaseResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      */
     public function toArray($request): array
     {

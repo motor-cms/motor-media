@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Motor\Media\Models\File;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class FileUploaded
 {
@@ -15,7 +16,7 @@ class FileUploaded
     /**
      * Create a new event instance.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(File $file)
     {

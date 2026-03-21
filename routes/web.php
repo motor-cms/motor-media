@@ -1,3 +1,5 @@
 <?php
 
-Route::get('download/{file}', [\Motor\Media\Http\Controllers\Frontend\DownloadsController::class, 'index']);
+use Motor\Media\Http\Controllers\Frontend\DownloadsController;
+
+Route::get('download/{file}', [DownloadsController::class, 'index']);

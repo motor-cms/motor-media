@@ -2,6 +2,7 @@
 
 namespace Motor\Media\Http\Resources;
 
+use Illuminate\Http\Request;
 use Motor\Admin\Http\Resources\BaseCollection;
 
 class FileCollection extends BaseCollection
@@ -9,7 +10,7 @@ class FileCollection extends BaseCollection
     /**
      * Transform the resource collection into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
      */
     public function toArray($request): array
     {

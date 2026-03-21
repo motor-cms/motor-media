@@ -10,6 +10,8 @@ use Motor\Core\Filter\Renderers\SelectRenderer;
 use Motor\Media\Events\FileDeleted;
 use Motor\Media\Events\FileUploaded;
 use Motor\Media\Models\File;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 /**
  * Class FileService
@@ -69,8 +71,8 @@ class FileService extends BaseService
     }
 
     /**
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     * @throws FileIsTooBig
+     * @throws FileDoesNotExist
      */
     public function afterCreate()
     {
@@ -100,8 +102,8 @@ class FileService extends BaseService
     }
 
     /**
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     public function afterUpdate()
     {
@@ -119,8 +121,8 @@ class FileService extends BaseService
     }
 
     /**
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     protected function upload()
     {

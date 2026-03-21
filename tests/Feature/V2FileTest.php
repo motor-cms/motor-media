@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Motor\Admin\Models\Category;
+use Motor\Admin\Models\Client;
 use Motor\Media\Models\File;
 
 pest()->group('V2File')->use(RefreshDatabase::class);
@@ -190,7 +191,7 @@ describe('V2 File API', function () {
     });
 
     it('can filter files by client_id', function () {
-        $client = \Motor\Admin\Models\Client::first();
+        $client = Client::first();
 
         // Create files with different client_ids
         $matchingFile = File::factory()->create(['client_id' => $client->id]);

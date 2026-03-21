@@ -4,6 +4,7 @@ namespace Motor\Media\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -90,7 +91,7 @@ class MediaCheckCommand extends Command
         }
     }
 
-    private function checkMediaFile(Media $media, \Illuminate\Contracts\Filesystem\Filesystem $disk): void
+    private function checkMediaFile(Media $media, Filesystem $disk): void
     {
         $this->totalChecked++;
 
