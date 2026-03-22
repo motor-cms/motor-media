@@ -3,7 +3,11 @@
 namespace Motor\Media\Http\Resources\V2;
 
 use Motor\Core\Http\Resources\V2\BaseResource;
+use Motor\Media\Models\FileAssociation;
 
+/**
+ * @mixin FileAssociation
+ */
 class FileUsageResource extends BaseResource
 {
     public function toArray($request): array

@@ -7,7 +7,11 @@ use Motor\Admin\Http\Resources\V2\CategoryResource;
 use Motor\Admin\Http\Resources\V2\ClientResource;
 use Motor\Admin\Http\Resources\V2\MediaResource;
 use Motor\Core\Http\Resources\V2\BaseResource;
+use Motor\Media\Models\File;
 
+/**
+ * @mixin File
+ */
 class FileResource extends BaseResource
 {
     public function toArray($request): array

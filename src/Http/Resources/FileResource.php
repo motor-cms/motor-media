@@ -8,6 +8,7 @@ use Motor\Admin\Http\Resources\BaseResource;
 use Motor\Admin\Http\Resources\CategoryResource;
 use Motor\Admin\Http\Resources\ClientResource;
 use Motor\Admin\Http\Resources\MediaResource;
+use Motor\Media\Models\File;
 
 /**
  * @OA\Schema(
@@ -73,6 +74,8 @@ use Motor\Admin\Http\Resources\MediaResource;
  *     example="true"
  *   ),
  * )
+ *
+ * @mixin File
  */
 class FileResource extends BaseResource
 {

@@ -31,7 +31,8 @@ use Spatie\Tags\HasTags;
  * @property string $author
  * @property string $source
  * @property string $alt_text
- * @property int $is_global
+ * @property bool $is_global
+ * @property bool $is_excluded_from_search_index
  * @property int $created_by
  * @property int $updated_by
  * @property int|null $deleted_by
@@ -39,6 +40,8 @@ use Spatie\Tags\HasTags;
  * @property Carbon|null $updated_at
  * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|FileAssociation[] $fileAssociations
+ * @property-read int|null $file_associations_count
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  *
