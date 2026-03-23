@@ -13,7 +13,8 @@ class MediaCheckCommand extends Command
     protected $signature = 'motor:media:check
                             {--disk= : Override the disk to check (default: from media-library config)}
                             {--output= : Custom output path for the manifest file}
-                            {--headless : Run without interactive output (for cron/CI)}';
+                            {--headless : Run without interactive output (for cron/CI)}
+                            {--fail-on-missing : Exit with failure if any files are missing (default: success after check; use for strict CI)}';
 
     protected $description = 'Check if media files referenced in the database exist on disk and generate a manifest';
 
@@ -73,7 +74,7 @@ class MediaCheckCommand extends Command
         // Print summary
         $this->printSummary($manifestPath, $isHeadless);
 
-        return count($this->missing) > 0 ? self::FAILURE : self::SUCCESS;
+        return $this->exitCodeAfterCheck();
     }
 
     private function validateDisk(string $diskName): bool
@@ -205,5 +206,18 @@ class MediaCheckCommand extends Command
 
         $this->newLine();
         $this->info("Manifest written to: {$manifestPath}");
+    }
+
+    /**
+     * Exit code: missing files alone do not fail the command so pipelines can run
+     * `motor:media:check && motor:media:sync` (sync fixes missing files). Use --fail-on-missing for strict CI.
+     */
+    private function exitCodeAfterCheck(): int
+    {
+        if ($this->option('fail-on-missing') && count($this->missing) > 0) {
+            return self::FAILURE;
+        }
+
+        return self::SUCCESS;
     }
 }
