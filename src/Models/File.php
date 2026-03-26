@@ -15,6 +15,8 @@ use Motor\Admin\Models\Category;
 use Motor\Core\Traits\Filterable;
 use Motor\Media\Database\Factories\FileFactory;
 use RichanFongdasen\EloquentBlameable\BlameableTrait;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -74,7 +76,17 @@ class File extends Model implements HasMedia
     use HasShortflakePrimary;
     use HasTags;
     use InteractsWithMedia;
+    use LogsActivity;
     use Searchable;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logOnlyDirty()
+            ->dontSubmitEmptyLogs()
+            ->setDescriptionForEvent(fn(string $eventName) => $eventName);
+    }
 
     /**
      * Get the name of the index associated with the model.
