@@ -6,56 +6,90 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-/**
- * Class MediaSyncToS3sCommand
- */
 class MediaSyncToS3sCommand extends Command
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $signature = 'motor:media:sync-to-s3';
+    protected $signature = 'motor:media:sync-to-s3
+                            {--direction=both : Sync direction (to, from, both)}
+                            {--dry-run : Show what would be synced without copying}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Sync media folder';
+    protected $description = 'Sync media folder to/from S3';
 
-    /**
-     * Execute the console command.
-     *
-     * @return mixed
-     */
     public function handle()
     {
-        // First we sync our own files to the s3 bucket
-        $this->copyFiles('media', 'do-s3', '/', 'to');
+        $direction = $this->option('direction');
 
-        // Then we loop through all the remote machines that we want to sync to our local folder
-        $this->copyFiles('do-s3', 'media', '/', 'from');
+        if (!in_array($direction, ['to', 'from', 'both'])) {
+            $this->error("Invalid direction '{$direction}'. Use: to, from, both");
+            return 1;
+        }
+
+        if ($direction === 'to' || $direction === 'both') {
+            $this->syncDisk('media', 'do-s3', 'Sent');
+        }
+
+        if ($direction === 'from' || $direction === 'both') {
+            $this->syncDisk('do-s3', 'media', 'Received');
+        }
     }
 
-    protected function copyFiles($from, $to, $directory, $direction) {
-        foreach (Storage::disk($from)->files($directory) as $file) {
-            //if (Storage::disk($to)->exists($file) && Storage::disk($to)->size($file) != Storage::disk($from)->size($file)) {
-            //    $this->info('Deleted local file '.$file);
-            //    Storage::disk($to)->delete($file);
-            //}
-            if (! Storage::disk($to)->exists($file)) {
-                Storage::disk($to)->writeStream($file, Storage::disk($from)->readStream($file));
+    protected function syncDisk(string $from, string $to, string $label): void
+    {
+        $this->info("Listing files on {$from}...");
+        $sourceFiles = $this->allFiles($from);
+        $this->info("  Found " . count($sourceFiles) . " files on {$from}");
 
-                $log = $direction == 'to' ? 'Sent' : 'Received';
+        $this->info("Listing files on {$to}...");
+        $targetFiles = array_flip($this->allFiles($to));
+        $this->info("  Found " . count($targetFiles) . " files on {$to}");
 
-                Log::info($log.' file '.$file);
-                $this->info($log .' file '.$file);
-           }
+        $missing = array_filter($sourceFiles, fn ($file) => !isset($targetFiles[$file]));
+        $this->info("  " . count($missing) . " files to sync");
+
+        if (count($missing) === 0) {
+            return;
         }
-        foreach (Storage::disk($from)->directories($directory) as $dir) {
-            $this->copyFiles($from, $to, $dir, $direction);
+
+        $bar = $this->output->createProgressBar(count($missing));
+        $bar->start();
+
+        $failed = 0;
+
+        foreach ($missing as $file) {
+            if ($this->option('dry-run')) {
+                $this->line(" [dry-run] {$label} {$file}");
+                $bar->advance();
+                continue;
+            }
+
+            try {
+                $stream = Storage::disk($from)->readStream($file);
+                if ($stream === null) {
+                    Log::warning("Skipped {$file}: could not open read stream from {$from}");
+                    $this->warn(" Skipped: {$file}");
+                    $failed++;
+                    $bar->advance();
+                    continue;
+                }
+                Storage::disk($to)->writeStream($file, $stream);
+                Log::info("{$label} file {$file}");
+            } catch (\Throwable $e) {
+                Log::error("Failed to sync {$file}: {$e->getMessage()}");
+                $this->warn(" Failed: {$file}");
+                $failed++;
+            }
+
+            $bar->advance();
         }
+
+        $bar->finish();
+        $this->newLine();
+
+        $synced = count($missing) - $failed;
+        $this->info("{$label} {$synced} files" . ($failed ? ", {$failed} failed" : ''));
+    }
+
+    protected function allFiles(string $disk): array
+    {
+        return Storage::disk($disk)->allFiles('/');
     }
 }
