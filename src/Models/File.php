@@ -14,9 +14,9 @@ use Laravel\Scout\Searchable;
 use Motor\Admin\Models\Category;
 use Motor\Core\Traits\Filterable;
 use Motor\Media\Database\Factories\FileFactory;
-use RichanFongdasen\EloquentBlameable\BlameableTrait;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Mattiverse\Userstamps\Traits\Userstamps;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -70,7 +70,7 @@ use Spatie\Tags\HasTags;
  */
 class File extends Model implements HasMedia
 {
-    use BlameableTrait;
+    use Userstamps;
     use Filterable;
     use HasFactory;
     use HasShortflakePrimary;
@@ -84,7 +84,7 @@ class File extends Model implements HasMedia
         return LogOptions::defaults()
             ->logOnly(['*'])
             ->logOnlyDirty()
-            ->dontSubmitEmptyLogs()
+            ->dontLogEmptyChanges()
             ->setDescriptionForEvent(fn(string $eventName) => $eventName);
     }
 
