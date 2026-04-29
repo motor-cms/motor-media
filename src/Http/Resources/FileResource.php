@@ -3,10 +3,12 @@
 namespace Motor\Media\Http\Resources;
 
 use Exception;
+use Illuminate\Http\Request;
 use Motor\Admin\Http\Resources\BaseResource;
 use Motor\Admin\Http\Resources\CategoryResource;
 use Motor\Admin\Http\Resources\ClientResource;
 use Motor\Admin\Http\Resources\MediaResource;
+use Motor\Media\Models\File;
 
 /**
  * @OA\Schema(
@@ -72,17 +74,19 @@ use Motor\Admin\Http\Resources\MediaResource;
  *     example="true"
  *   ),
  * )
+ *
+ * @mixin File
  */
 class FileResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  Request  $request
      */
     public function toArray($request): array
     {
-        //// FIXME: why is is like this? do we call the fileresource wrong?
+        // // FIXME: why is is like this? do we call the fileresource wrong?
         try {
             $file = new MediaResource($this->getFirstMedia('file'));
 
@@ -110,7 +114,7 @@ class FileResource extends BaseResource
         return [
             'id'                            => (int) $this->id,
             'client_id'                     => $this->client_id,
-            'client'                        => new ClientResource($this->client),
+            'client'                        => $this->whenLoaded('client', fn () => new ClientResource($this->client)),
             'description'                   => $this->description,
             'author'                        => $this->author,
             'source'                        => $this->source,
@@ -120,11 +124,7 @@ class FileResource extends BaseResource
             'categories'                    => $categories ?? null,
             'exists'                        => $exists ?? false, // always true for s3
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
-            'tags'                          => $this->tags()
-                                                    ->get()
-                                                    ->map(function ($tag) {
-                                                        return $tag->name;
-                                                    }),
+            'tags'                          => $this->tags->pluck('name'),
 
         ];
     }

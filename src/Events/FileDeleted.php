@@ -7,6 +7,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Motor\Media\Models\File;
+use Psr\SimpleCache\InvalidArgumentException;
 
 class FileDeleted
 {
@@ -15,12 +16,12 @@ class FileDeleted
     /**
      * Create a new event instance.
      *
-     * @throws \Psr\SimpleCache\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __construct(File $file)
     {
         Log::info('File deleted event fired for file '.$file->id);
-        Artisan::call('motor-builder:file-delete', ['file_id' => $file->id, '--dry-run' => 'false']);
+        Artisan::call('motor:builder:file-delete', ['file_id' => $file->id, '--dry-run' => 'false']);
         Log::info('File deleted event finished for file '.$file->id);
     }
 }

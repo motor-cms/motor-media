@@ -4,6 +4,9 @@ namespace Motor\Media\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 use Kra8\Snowflake\HasShortflakePrimary;
 
 /**
@@ -15,9 +18,9 @@ use Kra8\Snowflake\HasShortflakePrimary;
  * @property int $model_id
  * @property string $identifier
  * @property array $custom_properties
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Motor\Media\Models\File $file
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read File $file
  * @property-read Model|\Eloquent $model
  *
  * @method static Builder|FileAssociation newModelQuery()
@@ -56,18 +59,12 @@ class FileAssociation extends Model
         'custom_properties' => 'array',
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function file()
+    public function file(): BelongsTo
     {
         return $this->belongsTo(File::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo();
     }

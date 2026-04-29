@@ -5,17 +5,24 @@ namespace Motor\Media\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Kalnoy\Nestedset\Collection;
 use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Scout\Searchable;
 use Motor\Admin\Models\Category;
 use Motor\Core\Traits\Filterable;
 use Motor\Media\Database\Factories\FileFactory;
-use RichanFongdasen\EloquentBlameable\BlameableTrait;
+use Mattiverse\Userstamps\Traits\Userstamps;
+use Spatie\Activitylog\Support\LogOptions;
+use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
-use Storage;
 
 /**
  * Motor\Media\Models\File
@@ -26,15 +33,18 @@ use Storage;
  * @property string $author
  * @property string $source
  * @property string $alt_text
- * @property int $is_global
+ * @property bool $is_global
+ * @property bool $is_excluded_from_search_index
  * @property int $created_by
  * @property int $updated_by
  * @property int|null $deleted_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Kalnoy\Nestedset\Collection|Category[] $categories
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|Category[] $categories
  * @property-read int|null $categories_count
- * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read \Illuminate\Database\Eloquent\Collection|FileAssociation[] $fileAssociations
+ * @property-read int|null $file_associations_count
+ * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  *
  * @method static Builder|File filteredBy(\Motor\Core\Filter\Filter $filter, $column)
@@ -60,13 +70,23 @@ use Storage;
  */
 class File extends Model implements HasMedia
 {
-    use BlameableTrait;
+    use Userstamps;
     use Filterable;
     use HasFactory;
     use HasShortflakePrimary;
     use HasTags;
     use InteractsWithMedia;
+    use LogsActivity;
     use Searchable;
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*'])
+            ->logOnlyDirty()
+            ->dontLogEmptyChanges()
+            ->setDescriptionForEvent(fn(string $eventName) => $eventName);
+    }
 
     /**
      * Get the name of the index associated with the model.
@@ -86,45 +106,47 @@ class File extends Model implements HasMedia
             'author'                        => $this->author,
             'alt_text'                      => $this->alt_text,
             'source'                        => $this->source,
+            'client_id'                     => $this->client_id ? (int) $this->client_id : null,
             'file_name'                     => $file_name,
             'file.file_name'                => $file_name,
             'mime_type'                     => $mime_type,
             'file.mime_type'                => $mime_type,
+            'thumbnail_url'                 => $this->getFirstMediaUrl('file', 'thumb') ? config('app.url').$this->getFirstMediaUrl('file', 'thumb') : '',
             'categories'                    => $this->categories->pluck('id')
-                                                                ->toArray(),
+                ->toArray(),
             'tags'                          => $this->tags->pluck('name')
-                                                          ->toArray(),
+                ->toArray(),
             'is_excluded_from_search_index' => $this->is_excluded_from_search_index,
         ];
     }
 
     /**
-     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     * @throws InvalidManipulation
      */
     public function registerMediaConversions(?Media $media = null): void
     {
         if ($media->mime_type == 'image/gif') {
             $this->addMediaConversion('thumb')
-                 ->keepOriginalImageFormat()
-                 ->nonOptimized()
-                 ->nonQueued();
+                ->keepOriginalImageFormat()
+                ->nonOptimized()
+                ->nonQueued();
             $this->addMediaConversion('preview')
-                 ->keepOriginalImageFormat()
-                 ->nonOptimized()
-                 ->nonQueued();
+                ->keepOriginalImageFormat()
+                ->nonOptimized()
+                ->nonQueued();
         } else {
             $this->addMediaConversion('thumb')
-                 ->width(400)
-                 ->height(400)
-                 ->keepOriginalImageFormat()
-                 ->extractVideoFrameAtSecond(10)
-                 ->nonQueued();
+                ->width(400)
+                ->height(400)
+                ->keepOriginalImageFormat()
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
             $this->addMediaConversion('preview')
-                 ->width(1920)
-                 ->height(1080)
-                 ->keepOriginalImageFormat()
-                 ->extractVideoFrameAtSecond(10)
-                 ->nonQueued();
+                ->width(1920)
+                ->height(1080)
+                ->keepOriginalImageFormat()
+                ->extractVideoFrameAtSecond(10)
+                ->nonQueued();
         }
     }
 
@@ -148,8 +170,13 @@ class File extends Model implements HasMedia
         return FileFactory::new();
     }
 
-    public function categories(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function categories(): BelongsToMany
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function fileAssociations(): HasMany
+    {
+        return $this->hasMany(FileAssociation::class);
     }
 }

@@ -10,18 +10,24 @@ use Motor\Core\Filter\Renderers\SelectRenderer;
 use Motor\Media\Events\FileDeleted;
 use Motor\Media\Events\FileUploaded;
 use Motor\Media\Models\File;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 /**
  * Class FileService
  */
 class FileService extends BaseService
 {
-    protected $model = File::class;
+    protected string $model = File::class;
+
+    protected array $loadColumns = ['categories', 'tags', 'media'];
 
     protected bool $updateBuilderPage = false;
 
-    public function filters()
+    public function filters(): void
     {
+        $this->filter->addClientFilter();
+
         $categories = Category::where('scope', 'media')
             ->where('_lft', '>', 1)
             ->orderBy('_lft')
@@ -48,12 +54,12 @@ class FileService extends BaseService
         $this->filter->add(new SelectRenderer('mime_type'))->setOptions(['application/pdf' => 'PDF']);
     }
 
-    public function beforeDelete()
+    public function beforeDelete(): void
     {
         FileDeleted::dispatch($this->record);
     }
 
-    public function beforeCreate()
+    public function beforeCreate(): void
     {
         // check if we have separate description and alt_text fields in the file object
         if (Arr::get($this->data, 'file.description')) {
@@ -65,10 +71,10 @@ class FileService extends BaseService
     }
 
     /**
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
+     * @throws FileIsTooBig
+     * @throws FileDoesNotExist
      */
-    public function afterCreate()
+    public function afterCreate(): void
     {
         $this->upload();
         $this->updateCategories();
@@ -78,7 +84,7 @@ class FileService extends BaseService
         $this->record->refresh()->searchable();
     }
 
-    public function beforeUpdate()
+    public function beforeUpdate(): void
     {
         // check if we have separate description and alt_text fields in the file object
         if (Arr::get($this->data, 'description')) {
@@ -88,7 +94,7 @@ class FileService extends BaseService
             }
         }
         if (Arr::get($this->data, 'alt_text')) {
-            if ($this->record->description !== Arr::get($this->data, 'alt_text')) {
+            if ($this->record->alt_text !== Arr::get($this->data, 'alt_text')) {
                 // We need to update the file in BuilderPage
                 $this->updateBuilderPage = true;
             }
@@ -96,10 +102,10 @@ class FileService extends BaseService
     }
 
     /**
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
-    public function afterUpdate()
+    public function afterUpdate(): void
     {
         $this->upload();
         $this->updateCategories();
@@ -115,8 +121,8 @@ class FileService extends BaseService
     }
 
     /**
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist
-     * @throws \Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig
+     * @throws FileDoesNotExist
+     * @throws FileIsTooBig
      */
     protected function upload()
     {

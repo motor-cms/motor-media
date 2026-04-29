@@ -14,14 +14,14 @@ class DeleteLocalMedia extends Command
      *
      * @var string
      */
-    protected $signature = 'motor-media:delete_local_media';
+    protected $signature = 'motor:media:delete-local';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Delete local media files';
+    protected $description = 'Delete local copies of media files after S3 migration';
 
     /**
      * Execute the console command.

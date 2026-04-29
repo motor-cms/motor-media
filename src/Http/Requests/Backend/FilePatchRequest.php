@@ -25,19 +25,30 @@ class FilePatchRequest extends Request
                 'integer',
             ],
             'description' => [
-                'nullable',
+                'required',
             ],
             'author' => [
-                'nullable',
+                'required',
             ],
             'source' => [
-                'nullable',
+                'required',
             ],
             'alt_text' => [
-                'nullable',
+                'required',
             ],
             'is_global' => [
                 'nullable',
+            ],
+            'is_excluded_from_search_index' => [
+                'nullable',
+                'boolean',
+            ],
+            'tags' => [
+                'nullable',
+                'array',
+            ],
+            'tags.*' => [
+                'string',
             ],
             'categories' => [
                 'required',

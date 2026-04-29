@@ -3,19 +3,20 @@
 namespace Motor\Media\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class MediaSyncCommand extends Command
 {
-    protected $signature = 'motor-media:sync
+    protected $signature = 'motor:media:sync
                             {--manifest= : Path to manifest file (default: latest in storage/logs)}
-                            {--remote-base=https://backend-energis-web.energis.de : Base URL of the remote server}
+                            {--remote-base= : Base URL of the remote server (falls back to client.media_sync_remote_base config)}
                             {--disk= : Override the disk to sync to (default: from media-library config)}
                             {--dry-run : Show what would be downloaded without actually downloading}
                             {--headless : Run without interactive prompts or progress bar (for cron/CI)}';
 
-    protected $description = 'Sync missing media files from a remote server using a manifest file';
+    protected $description = 'Download missing media files from a remote server using a manifest';
 
     private int $downloaded = 0;
 
@@ -36,7 +37,13 @@ class MediaSyncCommand extends Command
         }
 
         $diskName = $this->option('disk') ?? config('media-library.disk_name', 'public');
-        $remoteBase = rtrim($this->option('remote-base'), '/');
+        $remoteBase = $this->option('remote-base') ?: config('client.media_sync_remote_base', '');
+        if (empty($remoteBase)) {
+            $this->error('No remote base URL provided. Use --remote-base or set CLIENT_MEDIA_SYNC_REMOTE_BASE in .env');
+
+            return self::FAILURE;
+        }
+        $remoteBase = rtrim($remoteBase, '/');
         $isDryRun = $this->option('dry-run');
         $isHeadless = $this->option('headless');
 
@@ -117,7 +124,7 @@ class MediaSyncCommand extends Command
 
         if (empty($files)) {
             $this->error('No manifest files found in storage/logs/');
-            $this->info('Run "php artisan motor-media:check" first to generate a manifest.');
+            $this->info('Run "php artisan motor:media:check" first to generate a manifest.');
 
             return null;
         }
@@ -155,7 +162,7 @@ class MediaSyncCommand extends Command
         }
     }
 
-    private function syncFile(array $item, \Illuminate\Contracts\Filesystem\Filesystem $disk, string $remoteBase, bool $isDryRun): void
+    private function syncFile(array $item, Filesystem $disk, string $remoteBase, bool $isDryRun): void
     {
         $localUrl = $item['url'] ?? '';
         $expectedPath = $item['expected_path'] ?? '';

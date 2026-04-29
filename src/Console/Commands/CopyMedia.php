@@ -2,7 +2,10 @@
 
 namespace Motor\Media\Console\Commands;
 
+use Aws\S3\ObjectUploader;
+use Aws\S3\S3Client;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Motor\Media\Models\File;
@@ -10,10 +13,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class CopyMedia extends Command
 {
-    protected $signature = 'motor-media:copy_media_to_s3
-                            {--headless : Run without interactive output (for cron/CI)}';
+    protected $signature = 'motor:media:copy-to-s3
+                            {--headless : Run without interactive output (for cron/CI)}
+                            {--count= : Number of files to upload (default: all)}
+                            {--skip=0 : Number of files to skip from the beginning}
+                            {--type=sdk : Upload type: "filesystem" or "sdk"}';
 
-    protected $description = 'Copy media files to S3';
+    protected $description = 'Copy local media library files to S3 storage';
 
     private int $copied = 0;
 
@@ -26,6 +32,16 @@ class CopyMedia extends Command
     public function handle(): int
     {
         $isHeadless = $this->option('headless');
+        $skip = (int) $this->option('skip');
+        $count = $this->option('count') ? (int) $this->option('count') : null;
+        $type = $this->option('type');
+
+        // Validate upload type
+        if (! in_array($type, ['filesystem', 'sdk'])) {
+            $this->error('Invalid upload type. Must be "filesystem" or "sdk".');
+
+            return self::FAILURE;
+        }
 
         // Validate S3 disk is accessible
         if (! $this->validateS3Disk()) {
@@ -45,16 +61,34 @@ class CopyMedia extends Command
             }
         }
 
-        $total = $mediaItems->count();
+        $totalAll = $mediaItems->count();
 
-        if ($total === 0) {
+        if ($totalAll === 0) {
             $this->info('No local media files to copy.');
 
             return self::SUCCESS;
         }
 
+        // Apply skip and count
+        if ($skip > 0) {
+            $mediaItems = $mediaItems->slice($skip);
+        }
+
+        if ($count !== null) {
+            $mediaItems = $mediaItems->take($count);
+        }
+
+        $total = $mediaItems->count();
+
+        if ($total === 0) {
+            $this->info("No media files to copy after skipping {$skip} items.");
+
+            return self::SUCCESS;
+        }
+
         if (! $isHeadless) {
-            $this->info("Copying {$total} media items to S3...");
+            $skipInfo = $skip > 0 ? " (skipping first {$skip})" : '';
+            $this->info("Copying {$total} of {$totalAll} media items to S3 using {$type} method{$skipInfo}...");
             $this->newLine();
             $progressBar = $this->output->createProgressBar($total);
             $progressBar->start();
@@ -63,7 +97,7 @@ class CopyMedia extends Command
         $s3 = Storage::disk('media-s3');
 
         foreach ($mediaItems as $mediaItem) {
-            $this->copyMediaItem($mediaItem, $s3);
+            $this->copyMediaItem($mediaItem, $s3, $type);
             if (! $isHeadless) {
                 $progressBar->advance();
             }
@@ -92,7 +126,7 @@ class CopyMedia extends Command
         }
     }
 
-    private function copyMediaItem(Media $media, \Illuminate\Contracts\Filesystem\Filesystem $s3): void
+    private function copyMediaItem(Media $media, Filesystem $s3, string $type): void
     {
         // Check if local file exists
         if (! file_exists($media->getPath())) {
@@ -112,17 +146,18 @@ class CopyMedia extends Command
             if ($s3->exists($s3Path)) {
                 $this->skipped++;
             } else {
-                $s3->put($s3Path, file_get_contents($media->getPath()), 'public');
+                $this->uploadFile($media->getPath(), $s3Path, $s3, $type);
                 $this->copied++;
             }
 
             // Copy conversions
-            $conversions = Storage::disk('media')->files($media->id.'/conversions');
+            $conversions = Storage::disk('media')
+                ->files($media->id.'/conversions');
             foreach ($conversions as $conversion) {
                 if (! $s3->exists($conversion)) {
                     $localPath = public_path().'/media/'.$conversion;
                     if (file_exists($localPath)) {
-                        $s3->put($conversion, file_get_contents($localPath), 'public');
+                        $this->uploadFile($localPath, $conversion, $s3, $type);
                     }
                 }
             }
@@ -135,6 +170,36 @@ class CopyMedia extends Command
             $this->failed++;
             Log::error("Error copying media {$media->id} to S3: {$e->getMessage()}");
         }
+    }
+
+    private function uploadFile(string $localPath, string $s3Path, Filesystem $s3, string $type): void
+    {
+        if ($type === 'filesystem') {
+            $s3->put($s3Path, file_get_contents($localPath));
+        } else {
+            $this->uploadFileUsingSdk($localPath, $s3Path);
+        }
+    }
+
+    private function uploadFileUsingSdk(string $localPath, string $s3Path): void
+    {
+        $fileContent = file_get_contents($localPath);
+
+        $s3Client = new S3Client([
+            'region' => config('filesystems.disks.media-s3.region'),
+            'version' => '2006-03-01',
+        ]);
+
+        $bucket = config('filesystems.disks.media-s3.bucket');
+
+        $uploader = new ObjectUploader(
+            $s3Client,
+            $bucket,
+            $s3Path,
+            $fileContent
+        );
+
+        $uploader->upload();
     }
 
     private function printSummary(bool $isHeadless): void
