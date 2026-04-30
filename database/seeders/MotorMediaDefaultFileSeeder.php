@@ -28,7 +28,7 @@ class MotorMediaDefaultFileSeeder extends Seeder
         }
 
         $files = File::factory()->count(10)->create();
-        $imageFile = file_get_contents('https://images.pexels.com/photos/7336640/pexels-photo-7336640.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+        $imageFile = $this->generatePlaceholderPng();
 
         foreach ($files as $file) {
             $filename = Str::random(10).'.png';
@@ -53,5 +53,18 @@ class MotorMediaDefaultFileSeeder extends Seeder
                 'generated_conversions' => '{"thumb": true, "preview": true}',
             ]);
         }
+    }
+
+    private function generatePlaceholderPng(): string
+    {
+        $image = imagecreatetruecolor(16, 16);
+        imagefill($image, 0, 0, imagecolorallocate($image, 200, 200, 200));
+
+        ob_start();
+        imagepng($image);
+        $bytes = ob_get_clean();
+        imagedestroy($image);
+
+        return $bytes;
     }
 }
