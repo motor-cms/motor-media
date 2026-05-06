@@ -6,9 +6,9 @@ use Illuminate\Support\Arr;
 use Motor\Admin\Models\Category;
 use Motor\Admin\Services\BaseService;
 use Motor\Core\Filter\Renderers\RelationRenderer;
-use Motor\Core\Filter\Renderers\SelectRenderer;
 use Motor\Media\Events\FileDeleted;
 use Motor\Media\Events\FileUploaded;
+use Motor\Media\Filter\Renderers\MimeTypeRenderer;
 use Motor\Media\Models\File;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
@@ -51,7 +51,14 @@ class FileService extends BaseService
             ->setEmptyOption('-- '.trans('motor-backend::backend/categories.categories').' --')
             ->setOptions($options);
 
-        $this->filter->add(new SelectRenderer('mime_type'))->setOptions(['application/pdf' => 'PDF']);
+        $this->filter->add(new MimeTypeRenderer('mime_type'))
+            ->setOptions([
+                'image' => 'Images',
+                'video' => 'Videos',
+                'audio' => 'Audio',
+                'document' => 'Documents',
+                'application/pdf' => 'PDF',
+            ]);
     }
 
     public function beforeDelete(): void

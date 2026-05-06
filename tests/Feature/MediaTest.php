@@ -114,4 +114,29 @@ describe('File', function () {
         '/api/files',
         File::first()->id
     ));
+
+    // Regression + bucket expansion: `mime_type` lives on the related media row,
+    // not the `files` table. The filter is routed through Scout via onlyScout,
+    // and short bucket keywords (`image`, `video`, `audio`, `document`) expand
+    // to a whereIn over every MIME in that bucket.
+    it('aggregates all images when filtering by mime_type=image (v1)', function () {
+        $this->asAdmin()
+            ->getJson('/api/files?mime_type=image')
+            ->assertStatus(200)
+            ->assertJsonCount(10, 'data');
+    });
+
+    it('aggregates all images when filtering by mime_type=image (v2)', function () {
+        $this->asAdmin()
+            ->getJson('/api/v2/files?mime_type=image')
+            ->assertStatus(200)
+            ->assertJsonCount(10, 'data');
+    });
+
+    it('matches exact MIME types when given a full mime_type', function () {
+        $this->asAdmin()
+            ->getJson('/api/files?mime_type=image/png')
+            ->assertStatus(200)
+            ->assertJsonCount(10, 'data');
+    });
 });
