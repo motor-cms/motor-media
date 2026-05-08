@@ -4,10 +4,12 @@ namespace Motor\Media\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Motor\Admin\Models\User;
+use Motor\Core\Traits\AuthorizesClientAccess;
 use Motor\Media\Models\File;
 
 class FilePolicy
 {
+    use AuthorizesClientAccess;
     use HandlesAuthorization;
 
     /**
@@ -40,6 +42,10 @@ class FilePolicy
      */
     public function view(User $user, File $file)
     {
+        if ($this->denyForeignClient($file)) {
+            return false;
+        }
+
         return $user->hasPermissionTo('files.read');
     }
 
@@ -60,6 +66,10 @@ class FilePolicy
      */
     public function update(User $user, File $file)
     {
+        if ($this->denyForeignClient($file)) {
+            return false;
+        }
+
         return $user->hasPermissionTo('files.write');
     }
 
@@ -70,6 +80,10 @@ class FilePolicy
      */
     public function delete(User $user, File $file)
     {
+        if ($this->denyForeignClient($file)) {
+            return false;
+        }
+
         return $user->hasPermissionTo('files.delete');
     }
 
@@ -80,6 +94,9 @@ class FilePolicy
      */
     public function restore(User $user, File $file)
     {
+        if ($this->denyForeignClient($file)) {
+            return false;
+        }
         //
     }
 
@@ -90,6 +107,9 @@ class FilePolicy
      */
     public function forceDelete(User $user, File $file)
     {
+        if ($this->denyForeignClient($file)) {
+            return false;
+        }
         //
     }
 }
