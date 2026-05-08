@@ -11,12 +11,13 @@ use Illuminate\Support\Carbon;
 use Kalnoy\Nestedset\Collection;
 use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Scout\Searchable;
+use Mattiverse\Userstamps\Traits\Userstamps;
 use Motor\Admin\Models\Category;
+use Motor\Core\Traits\BelongsToClient;
 use Motor\Core\Traits\Filterable;
 use Motor\Media\Database\Factories\FileFactory;
-use Mattiverse\Userstamps\Traits\Userstamps;
-use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Activitylog\Models\Concerns\LogsActivity;
+use Spatie\Activitylog\Support\LogOptions;
 use Spatie\Image\Exceptions\InvalidManipulation;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -70,7 +71,7 @@ use Spatie\Tags\HasTags;
  */
 class File extends Model implements HasMedia
 {
-    use Userstamps;
+    use BelongsToClient;
     use Filterable;
     use HasFactory;
     use HasShortflakePrimary;
@@ -78,6 +79,7 @@ class File extends Model implements HasMedia
     use InteractsWithMedia;
     use LogsActivity;
     use Searchable;
+    use Userstamps;
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -85,7 +87,7 @@ class File extends Model implements HasMedia
             ->logOnly(['*'])
             ->logOnlyDirty()
             ->dontLogEmptyChanges()
-            ->setDescriptionForEvent(fn(string $eventName) => $eventName);
+            ->setDescriptionForEvent(fn (string $eventName) => $eventName);
     }
 
     /**
