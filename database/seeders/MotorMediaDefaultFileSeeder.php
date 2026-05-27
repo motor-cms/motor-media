@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Kra8\Snowflake\Snowflake;
+use Motor\Admin\Models\Client;
 use Motor\Media\Models\File;
 use Storage;
 
@@ -27,7 +28,12 @@ class MotorMediaDefaultFileSeeder extends Seeder
             Storage::disk('media')->delete($files);
         }
 
-        $files = File::factory()->count(10)->create();
+        // Pin seeded files to the Default client so V2 callers under Phase 6
+        // tenant scoping can see them (the factory leaves client_id null
+        // otherwise, which the global ClientScope filters out for any
+        // non-SuperAdmin caller).
+        $defaultClientId = Client::query()->orderBy('id')->value('id');
+        $files = File::factory()->count(10)->create(['client_id' => $defaultClientId]);
         $imageFile = $this->generatePlaceholderPng();
 
         foreach ($files as $file) {

@@ -1,5 +1,6 @@
 <?php
 
+use Motor\Core\Http\Middleware\ScopeRequestsToClient;
 use Motor\Core\Http\Middleware\V2\V2ErrorHandler;
 use Motor\Media\Http\Controllers\Api\FilesController;
 use Motor\Media\Http\Controllers\Api\V2\FileUsageController;
@@ -16,7 +17,7 @@ Route::middleware('auth:sanctum')
 */
 Route::prefix('v2')
     ->name('v2.')
-    ->middleware(['auth:sanctum', V2ErrorHandler::class])
+    ->middleware(['auth:sanctum', V2ErrorHandler::class, ScopeRequestsToClient::class])
     ->group(function () {
         Route::apiResource('files', Motor\Media\Http\Controllers\Api\V2\FilesController::class);
         Route::get('files/{file}/usage', [FileUsageController::class, 'show'])
