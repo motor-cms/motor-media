@@ -109,6 +109,13 @@ class File extends Model implements HasMedia
             'alt_text'                      => $this->alt_text,
             'source'                        => $this->source,
             'client_id'                     => $this->client_id ? (int) $this->client_id : null,
+            // Index the File record's own timestamps so the list/gallery can sort
+            // by them (declared sortable in config/scout.php). Stored as Unix
+            // timestamps for correct numeric ordering in Meilisearch. The File
+            // created_at is stable across media replacements, unlike the Spatie
+            // media-row date — ZRMDEV-220.
+            'created_at'                    => $this->created_at?->timestamp,
+            'updated_at'                    => $this->updated_at?->timestamp,
             'file_name'                     => $file_name,
             'file.file_name'                => $file_name,
             'mime_type'                     => $mime_type,
