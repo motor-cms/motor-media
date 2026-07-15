@@ -139,4 +139,21 @@ describe('File', function () {
             ->assertStatus(200)
             ->assertJsonCount(10, 'data');
     });
+
+    // The admin search UI shares this URL via "copy link" — it must point at
+    // the public storage path (S3/CloudFront on prod), never at the
+    // VPN-only backend /download route.
+    it('indexes the public file url in the searchable array', function () {
+        $file = File::factory()->create();
+        $file->addMediaFromBase64('UDEKMyAzCjEgMSAxCjAgMSAwCjAgMSAwCg==')
+            ->usingFileName('test.pbm')
+            ->toMediaCollection('file');
+
+        $file = $file->fresh();
+        $media = $file->getFirstMedia('file');
+        $searchable = $file->toSearchableArray();
+
+        expect($searchable['url'])->toContain('/media/'.$media->id.'/test.pbm')
+            ->and($searchable['url'])->not->toContain('/download/');
+    });
 });
