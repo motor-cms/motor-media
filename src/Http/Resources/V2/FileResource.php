@@ -54,7 +54,9 @@ class FileResource extends BaseResource
             'exists' => $exists ?? false,
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
             'tags' => $this->tags->pluck('name'),
+            /** @format date-time */
             'created_at' => $this->created_at?->toIso8601String(),
+            /** @format date-time */
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }
