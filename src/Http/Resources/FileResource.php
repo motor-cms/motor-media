@@ -55,6 +55,13 @@ use Motor\Media\Models\File;
  *     example="Alternative Text For The IMG Tag"
  *   ),
  *   @OA\Property(
+ *     property="ai_labeling",
+ *     type="string",
+ *     nullable=true,
+ *     enum={"generated", "modified"},
+ *     example="generated"
+ *   ),
+ *   @OA\Property(
  *     property="file",
  *     type="object",
  *     ref="#/components/schemas/MediaResource"
@@ -120,6 +127,7 @@ class FileResource extends BaseResource
             'source'                        => $this->source,
             'is_global'                     => $this->is_global,
             'alt_text'                      => $this->alt_text,
+            'ai_labeling'                   => $this->ai_labeling,
             'file'                          => $file ?? null,
             'categories'                    => $categories ?? null,
             'exists'                        => $exists ?? false, // always true for s3

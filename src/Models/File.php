@@ -35,6 +35,7 @@ use Spatie\Tags\HasTags;
  * @property string $author
  * @property string $source
  * @property string $alt_text
+ * @property string|null $ai_labeling
  * @property bool $is_global
  * @property bool $is_excluded_from_search_index
  * @property int $created_by
@@ -55,6 +56,7 @@ use Spatie\Tags\HasTags;
  * @method static Builder|File newQuery()
  * @method static Builder|File query()
  * @method static Builder|File search($query, $full_text = false)
+ * @method static Builder|File whereAiLabeling($value)
  * @method static Builder|File whereAltText($value)
  * @method static Builder|File whereAuthor($value)
  * @method static Builder|File whereClientId($value)
@@ -191,6 +193,7 @@ class File extends Model implements HasMedia
         'source',
         'is_global',
         'alt_text',
+        'ai_labeling',
         'is_excluded_from_search_index',
     ];
 

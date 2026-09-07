@@ -36,6 +36,10 @@ class FilePostRequest extends Request
             'alt_text' => [
                 'required',
             ],
+            'ai_labeling' => [
+                'nullable',
+                'in:generated,modified',
+            ],
             'is_global' => [
                 'nullable',
             ],

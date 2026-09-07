@@ -49,6 +49,7 @@ class FileResource extends BaseResource
             'source' => $this->source,
             'is_global' => (bool) $this->is_global,
             'alt_text' => $this->alt_text,
+            'ai_labeling' => $this->ai_labeling,
             'file' => $file ?? null,
             'categories' => $categories ?? null,
             'exists' => $exists ?? false,
