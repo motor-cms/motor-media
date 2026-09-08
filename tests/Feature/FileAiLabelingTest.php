@@ -80,6 +80,24 @@ describe('File ai_labeling', function () {
         $response->assertStatus(422);
     });
 
+    it('exposes ai_labeling in the V2 list the media picker reads', function () {
+        $this->asAdmin()
+            ->postJson('/api/v2/files', aiLabelingPayload(['ai_labeling' => 'generated']))
+            ->assertStatus(201);
+
+        $created = File::latest('id')->first();
+
+        $response = $this->asAdmin()
+            ->getJson('/api/v2/files?per_page=0')
+            ->assertStatus(200);
+
+        $entry = collect($response->json('data'))->firstWhere('id', $created->id);
+
+        expect($entry)->not->toBeNull()
+            ->and($entry)->toHaveKey('ai_labeling')
+            ->and($entry['ai_labeling'])->toBe('generated');
+    });
+
     it('exposes ai_labeling in the V1 FileResource', function () {
         $file = File::first();
         $file->update(['ai_labeling' => 'generated']);
