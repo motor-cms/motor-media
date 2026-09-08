@@ -106,6 +106,14 @@ class FileService extends BaseService
                 $this->updateBuilderPage = true;
             }
         }
+        // null is a valid ai_labeling value, so the key has to decide here
+        // instead of the value - clearing the label has to reach the atoms too.
+        if (array_key_exists('ai_labeling', $this->data)) {
+            if ($this->record->ai_labeling !== Arr::get($this->data, 'ai_labeling')) {
+                // We need to update the file in BuilderPage
+                $this->updateBuilderPage = true;
+            }
+        }
     }
 
     /**
