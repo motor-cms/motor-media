@@ -49,12 +49,15 @@ class FileResource extends BaseResource
             'source' => $this->source,
             'is_global' => (bool) $this->is_global,
             'alt_text' => $this->alt_text,
+            'ai_labeling' => $this->ai_labeling,
             'file' => $file ?? null,
             'categories' => $categories ?? null,
             'exists' => $exists ?? false,
             'is_excluded_from_search_index' => (bool) $this->is_excluded_from_search_index,
             'tags' => $this->tags->pluck('name'),
+            /** @format date-time */
             'created_at' => $this->created_at?->toIso8601String(),
+            /** @format date-time */
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];
     }

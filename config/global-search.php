@@ -11,7 +11,7 @@ return [
             'model' => File::class,
             'title_field' => 'file_name',
             'excerpt_field' => 'description',
-            'meta_fields' => ['mime_type', 'alt_text', 'thumbnail_url'],
+            'meta_fields' => ['mime_type', 'alt_text', 'thumbnail_url', 'url'],
             'default_filter' => null,
         ],
     ],

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Kalnoy\Nestedset\Collection;
 use Kra8\Snowflake\HasShortflakePrimary;
 use Laravel\Scout\Searchable;
@@ -34,6 +35,7 @@ use Spatie\Tags\HasTags;
  * @property string $author
  * @property string $source
  * @property string $alt_text
+ * @property string|null $ai_labeling
  * @property bool $is_global
  * @property bool $is_excluded_from_search_index
  * @property int $created_by
@@ -54,6 +56,7 @@ use Spatie\Tags\HasTags;
  * @method static Builder|File newQuery()
  * @method static Builder|File query()
  * @method static Builder|File search($query, $full_text = false)
+ * @method static Builder|File whereAiLabeling($value)
  * @method static Builder|File whereAltText($value)
  * @method static Builder|File whereAuthor($value)
  * @method static Builder|File whereClientId($value)
@@ -100,8 +103,26 @@ class File extends Model implements HasMedia
 
     public function toSearchableArray()
     {
-        $file_name = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->file_name : '';
-        $mime_type = $this->getFirstMedia('file') ? $this->getFirstMedia('file')->mime_type : '';
+        $media = $this->getFirstMedia('file');
+        $file_name = $media ? $media->file_name : '';
+        $mime_type = $media ? $media->mime_type : '';
+
+        // Public storage/CDN URL of the original file — same resolution as
+        // MediaResource. The admin search UI shares this URL via "copy link",
+        // so it must not point at the (VPN-only) backend /download route.
+        $url = '';
+        if ($media) {
+            $urlPrefix = Storage::disk('media')->url($media->id);
+            $prependAppUrl = true;
+            if (config('filesystems.has_s3')) {
+                $s3 = Storage::disk('media-s3');
+                if ($s3->exists('media/'.$media->id.'/'.$media->file_name)) {
+                    $urlPrefix = $s3->url('media/'.$media->id);
+                    $prependAppUrl = false;
+                }
+            }
+            $url = ($prependAppUrl ? config('app.url') : '').$urlPrefix.'/'.$media->file_name;
+        }
 
         return [
             'description'                   => $this->description,
@@ -121,6 +142,7 @@ class File extends Model implements HasMedia
             'mime_type'                     => $mime_type,
             'file.mime_type'                => $mime_type,
             'thumbnail_url'                 => $this->getFirstMediaUrl('file', 'thumb') ? config('app.url').$this->getFirstMediaUrl('file', 'thumb') : '',
+            'url'                           => $url,
             'categories'                    => $this->categories->pluck('id')
                 ->toArray(),
             'tags'                          => $this->tags->pluck('name')
@@ -171,6 +193,7 @@ class File extends Model implements HasMedia
         'source',
         'is_global',
         'alt_text',
+        'ai_labeling',
         'is_excluded_from_search_index',
     ];
 
